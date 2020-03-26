@@ -1,4 +1,5 @@
 import 'package:dequarantine/widgets/Events/cards.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -38,6 +39,22 @@ class _EventsState extends State<Events> {
       itemCount: widget.events.length,
       itemBuilder: (context, index) {
         final item = widget.events[index];
+        print("${index.toString()}, ${item["title"]}");
+        // double leftPad = 0;
+        // double rightPad = 0;
+        // double pad = 7;
+        // if (index == 0) {
+        //   leftPad = pad;
+        // } else if (index == 1) {
+        //   rightPad = pad;
+        // } else {
+        //   if (index % 2 == 0) {
+        //     rightPad = pad;
+        //   } else {
+        //     leftPad = pad;
+        //   }
+        // }
+        // DragStartBehavior behavior = DragStartBehavior.();
         return Card(
           elevation: 3,
           child: InkWell(
@@ -54,14 +71,14 @@ class _EventsState extends State<Events> {
             child: Container(
               padding: EdgeInsets.all(8),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5),
                     child: Image.network("https://source.unsplash.com/600x300/?${item["title"]}"),
                   ),
-                  Text(item["title"], style: Theme.of(context).textTheme.headline5,),
-                  Text(item["description"])
+                  Text(item["title"], style: Theme.of(context).textTheme.headline6,),
+                  // Text(item["description"])
                 ],
               ),
             ),

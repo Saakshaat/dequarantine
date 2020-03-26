@@ -73,10 +73,7 @@ class _DiscoverState extends State<Discover> {
                 "description": element["description"]
               });
             });
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Events(events: events),
-            );
+            return Events(events: events);
           }
 
           return Container(

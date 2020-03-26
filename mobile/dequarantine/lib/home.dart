@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              margin: EdgeInsets.all(5),
+              margin: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 boxShadow: [

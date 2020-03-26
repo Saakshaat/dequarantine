@@ -16,8 +16,9 @@ void main() {
     ),
     darkTheme: ThemeData(
       brightness: Brightness.dark,
-      primaryColor: Colors.black,
-      accentColor: Colors.blueGrey,
+      backgroundColor: Colors.black87,
+      primaryColor: Color.fromRGBO(43, 189, 126, 1),
+      buttonColor: Color.fromRGBO(0, 41, 132, 1),
     ),
   ));
 }
