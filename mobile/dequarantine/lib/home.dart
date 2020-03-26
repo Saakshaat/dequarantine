@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
             child: Container(
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                color: Color.fromRGBO(194,	248,	203, 1),
+                color: Theme.of(context).primaryColor,
                 boxShadow: [
                   BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.3))
                 ],
@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
                     iconSize: 24,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     duration: Duration(milliseconds: 300),
-                    tabBackgroundColor: Color.fromRGBO(115,29,216, 1),
+                    tabBackgroundColor: Theme.of(context).buttonColor,
                     tabs: [
                       GButton(
                         icon: LineIcons.heart_o,

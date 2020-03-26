@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dequarantine/main.dart';
-import 'package:dequarantine/widgets/staggered_view.dart';
+import 'package:dequarantine/widgets/Events/staggered_view.dart';
 import 'package:flutter/material.dart';
 
 class Discover extends StatefulWidget {

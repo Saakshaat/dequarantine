@@ -9,6 +9,11 @@ var fireStoreReference = Firestore.instance;
 void main() {
   runApp(MaterialApp(
     home: Home(),
+    theme: ThemeData(
+      primaryColor: Color.fromRGBO(	105, 240, 174, 1),
+      buttonColor: Color.fromRGBO(63, 81, 181, 1),
+      backgroundColor: Colors.white60
+    ),
     darkTheme: ThemeData(
       brightness: Brightness.dark,
       primaryColor: Colors.black,
