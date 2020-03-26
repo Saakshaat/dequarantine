@@ -1,5 +1,4 @@
 import 'package:dequarantine/widgets/Events/cards.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 

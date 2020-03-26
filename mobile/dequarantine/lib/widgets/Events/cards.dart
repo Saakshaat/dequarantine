@@ -1,6 +1,5 @@
 import 'package:dequarantine/widgets/Events/details.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 
 
 class DetailedView extends StatefulWidget {
@@ -31,23 +30,32 @@ class _DetailedViewState extends State<DetailedView> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.network(widget.imageUrl)
-          ),
-          Details(
-            title: widget.title,
-            description: widget.description,
-            dateTime: widget.dateTime,
-            attendees: widget.attendees,
-            totalAttendents: widget.totalAttendents,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(
+            width: 5,
+            color: Colors.white
           )
-        ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(7),
+              child: Image.network(widget.imageUrl)
+            ),
+            Details(
+              title: widget.title,
+              description: widget.description,
+              dateTime: widget.dateTime,
+              attendees: widget.attendees,
+              totalAttendents: widget.totalAttendents,
+            )
+          ],
+        ),
       ),
     );
   }

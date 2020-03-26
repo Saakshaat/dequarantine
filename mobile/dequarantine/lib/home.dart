@@ -2,6 +2,7 @@
 import 'package:dequarantine/pages/discover.dart';
 import 'package:dequarantine/pages/likes.dart';
 import 'package:dequarantine/pages/live.dart';
+import 'package:dequarantine/pages/login.dart';
 import 'package:dequarantine/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -20,9 +21,7 @@ class _HomeState extends State<Home> {
     Settings(),
   ];
 
-  int _selectedIndex = 1;
-  @override
-  Widget build(BuildContext context) {
+  Widget home() {
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -81,6 +80,12 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
+  bool loggedIn = false;
+
+  int _selectedIndex = 1;
+  @override
+  Widget build(BuildContext context) {
+    return home();
+  }
 }
-
-
