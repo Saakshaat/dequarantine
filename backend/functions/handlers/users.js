@@ -131,9 +131,19 @@ exports.googleSignin = (req, res) => {
         var token = result.credential.accessToken;
         // The signed-in user info.
         var user = result.user;
-        // console.log(user);
-        //TODO: maybe try using login() and pass the user object?
-        return res.status(201).json({ token });
+        console.log(user);
+        const userCredentials = {
+          userName: user.displayName,
+          email: user.email,
+          imageUrl: user.photoUrl,
+          createdAt: new Date().toISOString(),
+          userId: user.uid
+        };
+        db.doc(`/users/${user.userName}`).set(userCredentials);
+        return res.json({ token });
     })
-    .catch(console.error("Well, F"))
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ general: `Internal Server Error ${err}` });
+    })
 };

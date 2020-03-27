@@ -12,11 +12,12 @@ User authentication is done through [FBAuth](https://github.com/Saakshaat/dequar
 - [handlers](#handlers)
 - [utils](#utils)
 
-### Handlers
+## Handlers
 
 This directory maintains the [user](https://github.com/Saakshaat/dequarantine/blob/saakshaat-login-signup/backend/functions/handlers/users.js) and [events](https://github.com/Saakshaat/dequarantine/blob/saakshaat-login-signup/backend/functions/handlers/events.js) operations.
 
-#### Users
+
+### Users
  
 This file has the firebase methods for:
 -   Signin using email
@@ -28,16 +29,23 @@ Except for the Google sign-in all the other methods use [validators](https://git
 
 Upon signin or login, a token is generated and stored in the browser's local storage to keep the user signed in.
 
-#### Events
+#### User Routes
+
+-   Signup: /signup
+-   Login: /login
+-   Forgot Password: /user/password
+-   Google Sign In: /g/signin
+
+### Events
 
 
-### Utils
+## Utils
 This directory maintains all the utility functions and configuration files, used by the rest of the API functions. 
 
-#### Admin
+### Admin
 
 [This](https://github.com/Saakshaat/dequarantine/blob/saakshaat-login-signup/backend/functions/util/admin.js) initializes the Firebase application and interfaces access with the Firestore Database.
 
-#### Validators
+### Validators
 
 This file has all the functions that are used to validate input data against some conditions. This helps throw exceptions.
