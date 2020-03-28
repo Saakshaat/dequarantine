@@ -1,5 +1,7 @@
 import 'package:dequarantine/constants.dart';
-import 'package:dequarantine/models/user.dart';
+import 'package:dequarantine/models/google_user.dart';
+import 'dart:convert' as convert;
+import 'dart:core';
 
 import 'package:http/http.dart' as http;
 
@@ -8,6 +10,7 @@ class UserManagement {
   bool isLogginIn = false;
 
   String _baseGoogleUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/g/signin";
+  String _baseEmailUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/login";
 
   Future<bool> googleLogin() async {
     try {
@@ -30,13 +33,21 @@ class UserManagement {
         "idToken": accessCodes["idToken"],
       };
       
-      currentUser = User(user);
+      currentUser = GoogleUser(user);
       currentUser.printData();
       return true;
     } catch (error) {
       print(error);
       return false;
     }
+  }
+
+
+  Future emailSignIn(String email, String password) async {
+    Map user = {
+      "email": email,
+      "password": password
+    };
   }
 
 
@@ -48,8 +59,26 @@ class UserManagement {
     googleSignIn.disconnect();
   }
 
-  void sendToApi() {
-    //TODO: post user data to backend and await response
-    http.post(_baseGoogleUrl);
+  Future<bool> signInEmailToApi() async {
+    var attributes =  currentUser.get();
+    var a = await http.post(
+      _baseEmailUrl,
+      body: {
+        "email": attributes["email"],
+        "password": attributes["password"],
+      }
+    );
+
+    var response = convert.jsonDecode(a.body);
+
+    print(a.statusCode);
+    if (a.statusCode == 200) {
+      print("sign in successfull");
+
+      currentUser.setToken(response["token"]);
+
+      return true;
+    }
+    return false;
   }
 }
