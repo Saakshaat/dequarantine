@@ -59,7 +59,7 @@ When the user signs up or logs in, Firebase returns a token which is stored in t
 
 The token is sent through the header in the request in the following format:
 
-Bearer <token>
+Bearer {token}
 
 Whenever a function needs to facilitate user authentication, the request parameter only need to include FBAuth. 
 
