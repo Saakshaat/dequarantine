@@ -64,7 +64,7 @@ class UserManagement {
   }
 
 
-  Future<bool> signUpEmail(String username, String email, String pass1, String pass2) async {
+  Future<Map<String, dynamic>> signUpEmail(String username, String email, String pass1, String pass2) async {
     var a = await http.post(_baseSignUpEmailUrl,
       body: {
         "email": email,
@@ -80,8 +80,9 @@ class UserManagement {
     print(a.statusCode);
 
     if (a.statusCode == 200) {
-      return true;
+      return {"code": true, "body": response};
     }
+    return {"code": false, "body": response};
   }
 
 
@@ -96,6 +97,10 @@ class UserManagement {
     );
 
     var response = convert.jsonDecode(a.body);
+
+    print(response);
+
+    //TODO: tell backend to send user document name
 
     print(a.statusCode);
     if (a.statusCode == 200) {
