@@ -49,3 +49,18 @@ This directory maintains all the utility functions and configuration files, used
 ### Validators
 
 This file has all the functions that are used to validate input data against some conditions. This helps throw exceptions.
+
+
+### FBAuth
+
+This file facilitates user authentication. 
+
+When the user signs up or logs in, Firebase returns a token which is stored in the browser's local storage. Whenever the user makes a request which requires user authentication, FBAuth is included as a request parameter and the token is sent as a request header.
+
+The token is sent through the header in the request in the following format:
+
+Bearer <token>
+
+Whenever a function needs to facilitate user authentication, the request parameter only need to include FBAuth. 
+
+For example <app.post("/user", FBAuth, addUserDetails);>
