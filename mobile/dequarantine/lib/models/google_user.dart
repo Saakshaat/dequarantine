@@ -32,14 +32,14 @@ class GoogleUser{
   }
 
   get (){
-    List attributes = [
-      _uid,
-      _name,
-      _imageUrl,
-      _email,
-      _accessToken,
-      _idToken,
-    ];
+    Map attributes = {
+      "uid": _uid,
+      "name": _name,
+      "imageUrl": _imageUrl,
+      "email": _email,
+      "accessToken": _accessToken,
+      "idToken":_idToken,
+    };
 
     return attributes;
   }

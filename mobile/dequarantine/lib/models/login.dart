@@ -10,10 +10,11 @@ class UserManagement {
   bool isLogginIn = false;
 
   String _baseGoogleUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/g/signin";
-  String _baseEmailUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/login";
+  String _baseSignInEmailUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/login";
+  String _baseSignUpEmailUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/signup";
 
   Future<bool> googleLogin() async {
-    try {
+   
       var _signInDetails = await googleSignIn.signIn();
       var _authDetails = _signInDetails.authentication;
       
@@ -35,11 +36,14 @@ class UserManagement {
       
       currentUser = GoogleUser(user);
       currentUser.printData();
-      return true;
-    } catch (error) {
-      print(error);
+
+      var api = await signInGoogleToApi();
+      print(api);
+      if (api){
+        return true;
+      }
       return false;
-    }
+    
   }
 
 
@@ -59,10 +63,32 @@ class UserManagement {
     googleSignIn.disconnect();
   }
 
+
+  Future<bool> signUpEmail(String username, String email, String pass1, String pass2) async {
+    var a = await http.post(_baseSignUpEmailUrl,
+      body: {
+        "email": email,
+        "password": pass1,
+        "confirmPassword": pass2,
+        "userName": username
+      }
+    );
+
+    var response = convert.jsonDecode(a.body);
+    print(response);
+
+    print(a.statusCode);
+
+    if (a.statusCode == 200) {
+      return true;
+    }
+  }
+
+
   Future<bool> signInEmailToApi() async {
     var attributes =  currentUser.get();
     var a = await http.post(
-      _baseEmailUrl,
+      _baseSignInEmailUrl,
       body: {
         "email": attributes["email"],
         "password": attributes["password"],
@@ -81,4 +107,31 @@ class UserManagement {
     }
     return false;
   }
+
+  Future<bool> signInGoogleToApi() async {
+    Map attributes = currentUser.get();
+
+    var a = await http.post(
+      _baseGoogleUrl,
+      body: {
+        "userName": attributes["name"],
+        "email": attributes["email"],
+        "imageUrl": attributes["imageUrl"],
+        "userId": attributes["uid"]
+      }
+    );
+
+    var response = convert.jsonDecode(a.body);
+
+    print(a.statusCode);
+
+    print(response);
+
+    if (a.statusCode == 200) {
+      print("sign in successfull");
+      return true;
+    }
+    return false;
+  }
 }
+
