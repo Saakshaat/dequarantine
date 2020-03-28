@@ -1,4 +1,4 @@
-class User{
+class GoogleUser{
   String _uid;
   String _name;
   String _imageUrl;
@@ -7,7 +7,7 @@ class User{
   String _accessToken;
   String _idToken;
 
-  User(user) {
+  GoogleUser(user) {
     _init(user);
   }
 
