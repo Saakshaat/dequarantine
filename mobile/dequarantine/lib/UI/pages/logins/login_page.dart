@@ -13,7 +13,6 @@ class _LoginPageState extends State<LoginPage> {
     double paddingVertical = MediaQuery.of(context).size.height * 0.10;
     double paddingHorizontal = MediaQuery.of(context).size.width * 0.15;
     return Container(
-      color: Colors.white,
       padding: EdgeInsets.symmetric(horizontal: paddingHorizontal, vertical: paddingVertical),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
