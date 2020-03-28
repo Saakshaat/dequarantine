@@ -16,6 +16,9 @@ class _SignupPageState extends State<SignupPage> {
   String _password0;
   String _password1;
 
+  double _opacity = 0;
+  String _errorText = "";
+
   TextEditingController _usernameController;
 
   TextEditingController _emailController0;
@@ -51,12 +54,21 @@ class _SignupPageState extends State<SignupPage> {
 
     
     if (_email0 == _email1) {
-      bool signUp = await login.signUpEmail(
+      Map signUp = await login.signUpEmail(
         _username,
         _email0,
         _password0,
         _password1,
-      ).whenComplete(() => print(bool));
+      );
+
+      print(signUp);
+
+      if (!signUp["code"]) {
+        setState(() {
+          _opacity = 1;
+          _errorText = signUp["body"].toString().substring(1, signUp["body"].toString().length -1);
+        });
+      }
 
       // if (signUp) {
       //   Navigator.pop(context);
@@ -93,6 +105,11 @@ class _SignupPageState extends State<SignupPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          AnimatedOpacity(
+            opacity: _opacity,
+            duration: Duration(milliseconds: 1000),
+            child: Text(_errorText, style: TextStyle(color: Colors.red),),
+          ),
           TextFormField(
             decoration: const InputDecoration(
               icon: Icon(Icons.account_circle),
