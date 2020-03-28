@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dequarantine/UI/widgets/events/staggered_view.dart';
 import 'package:dequarantine/constants.dart';
-import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
 
 class Discover extends StatefulWidget {
@@ -28,53 +27,17 @@ class _DiscoverState extends State<Discover> {
             List events = [];
             snapshot.data.documents.forEach((element) {
               events.add({
-                "title": element["title"].toString(),
-                "tag": fireStoreReference.collection("category").document("${element["tags"][0]}").toString(),
+                "title": element["name"].toString(),
+                "tag": element["category"].toString(),
                 "time": element["time"].toString(),
-                "description": element["description"]
+                "description": element["Description"].toString()
               });
             });
-            snapshot.data.documents.forEach((element) {
-              events.add({
-                "title": element["title"].toString(),
-                "tag": fireStoreReference.collection("category").document("${element["tags"][0]}").toString(),
-                "time": element["time"].toString(),
-                "description": element["description"]
-              });
-            });
-            snapshot.data.documents.forEach((element) {
-              events.add({
-                "title": element["title"].toString(),
-                "tag": fireStoreReference.collection("category").document("${element["tags"][0]}").toString(),
-                "time": element["time"].toString(),
-                "description": element["description"]
-              });
-            });
-            snapshot.data.documents.forEach((element) {
-              events.add({
-                "title": element["title"].toString(),
-                "tag": fireStoreReference.collection("category").document("${element["tags"][0]}").toString(),
-                "time": element["time"].toString(),
-                "description": element["description"]
-              });
-            });
-            snapshot.data.documents.forEach((element) {
-              events.add({
-                "title": element["title"].toString(),
-                "tag": fireStoreReference.collection("category").document("${element["tags"][0]}").toString(),
-                "time": element["time"].toString(),
-                "description": element["description"]
-              });
-            });
-            snapshot.data.documents.forEach((element) {
-              events.add({
-                "title": element["title"].toString(),
-                "tag": fireStoreReference.collection("category").document("${element["tags"][0]}").toString(),
-                "time": element["time"].toString(),
-                "description": element["description"]
-              });
-            });
-            return Events(events: events);
+            for (int i = 0; i < 5; ++i){
+              events += events;
+            }
+
+            return Events(events: events, length: events.length);
           }
 
           return Container(
