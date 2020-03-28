@@ -33,7 +33,6 @@ void main() => runApp(MaterialApp(
         color: Colors.black,
         fontWeight: FontWeight.w500
       ),
-
     )
   ),
 
@@ -42,5 +41,19 @@ void main() => runApp(MaterialApp(
     backgroundColor: Colors.black87,
     primaryColor: Color.fromRGBO(43, 189, 126, 1),
     buttonColor: Color.fromRGBO(0, 41, 132, 1),
+
+    textTheme: TextTheme(
+      headline1: TextStyle(
+        fontSize: 45,
+        color: Colors.white,
+        fontWeight: FontWeight.w700
+      ),
+
+      bodyText1: TextStyle(
+        fontSize: 20,
+        color: Colors.white,
+        fontWeight: FontWeight.w500
+      ),
+    )
   ),
 ));
