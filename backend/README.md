@@ -63,4 +63,4 @@ Bearer <token>
 
 Whenever a function needs to facilitate user authentication, the request parameter only need to include FBAuth. 
 
-For example <app.post("/user", FBAuth, addUserDetails);>
+For example app.post("/user", FBAuth, addUserDetails);
