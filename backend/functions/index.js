@@ -1,4 +1,4 @@
-const functions = require('firebase-nctions');
+const functions = require('firebase-functions');
 const app = require("express")();
 const FBAuth = require("./util/FBAuth.js");
 const { db } = require("./util/admin");
@@ -16,13 +16,26 @@ const {
     getAuthenticatedUser,
     getUserDetails,
     markNotificationsRead,
-} = require("./handlers/users");
+} = require("./handlers/users"); 
+
+const {
+    getAllEvents,
+    getOneEvent,
+    postEvents,deleteEvents
+} = require("./handlers/events");
 
 //users routes
 app.post("/signup", signup);
 app.post("/login", login);
 app.post("/user/password", forgotPassword);
 app.post("/g/signin", googleSignin);
+
+
+//events routes
+app.get("/events",getAllEvents)
+//app.get("/events",getOneEvent)
+app.post("/events",FBAuth,postEvents)
+app.delete("/events/:eventId",FBAuth,deleteEvents)
 /**
  * TODO: write all the user methods for basic user functionality
 app.post("/user/image", FBAuth, uploadImage);
@@ -33,3 +46,4 @@ app.post("/notifications", FBAuth, markNotificationsRead);
  */
 
 exports.baseapi = functions.https.onRequest(app);
+
