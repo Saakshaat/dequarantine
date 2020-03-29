@@ -57,3 +57,21 @@
     padding: 0 50px;
   }
 }
+
+.login-footer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .google-button{
+    width : 40%;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .btn {
+    width : 40%;
+    }
+}

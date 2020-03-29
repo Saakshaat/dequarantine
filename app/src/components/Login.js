@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
+import { GoogleLogin } from 'react-google-login'
+import '../App.scss';
 import axios from 'axios';
 
 const initialState = {
@@ -60,6 +62,10 @@ class Login extends Component {
         }
     }
 
+    responseHandler = (res)=> {
+        console.log(res)
+    }
+
     render () {
         const { emailError, passwordError } = this.state
 
@@ -87,8 +93,16 @@ class Login extends Component {
                             <div className='alert'>{passwordError}</div>
 
                         </div>
-                        <div className="modal-footer">
-                            <button type="submit" className="btn btn-primary">Log in</button>
+                        <div className="login-footer">
+                            <button type="submit" className="btn btn-primary">Login</button>
+                            <GoogleLogin 
+                                clientId="313860307734-5kct2odf93nuutvrbbg184n41m7qqb85.apps.googleusercontent.com"
+                                buttonText="Login"
+                                onSuccess={this.responseHandler}
+                                onFailure={this.responseHandler}
+                                cookiePolicy={'single_host_origin'}
+                                className="google-button"
+                            />
                         </div>
                     </form>
                 </div>
@@ -98,4 +112,4 @@ class Login extends Component {
     }
 }
 
-export default withRouter(Login)
+export default Login
