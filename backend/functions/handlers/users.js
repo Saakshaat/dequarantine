@@ -124,7 +124,15 @@ exports.forgotPassword = (req, res) => {
  *  * Use the token to authorize access person and keep them signed in
  */
 exports.googleSignin = (req, res) => {
-    firebase
+    const credential = firebase.auth.GoogleAuthProvider.credential(req.body.id_token);
+    // console.log('credential\n', credential);
+    firebase.auth().signInWithCredential(credential).catch(function(error) {
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        let email = error.email;
+        let authCredential = error.credential;
+    });
+/*    firebase
     .auth().signInWithPopup(provider)
     .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
@@ -146,4 +154,5 @@ exports.googleSignin = (req, res) => {
       console.error(err);
       return res.status(500).json({ general: `Internal Server Error ${err}` });
     })
+*/
 };
