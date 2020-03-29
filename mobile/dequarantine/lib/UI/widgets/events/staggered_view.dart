@@ -59,10 +59,12 @@ class _EventsState extends State<Events> {
                 DetailedView(
                   title: item["title"],
                   description: item["description"],
-                  dateTime: "24.03.2020 - 12:00 PST",
-                  attendees: 12,
-                  totalAttendents: 40,
-                  imageUrl: "https://source.unsplash.com/600x300/?${item["title"]}",
+                  dateTime: item["time"],
+                  attendees: item["cap"],
+                  totalAttendents: item["cap"],
+                  imageUrl: "https://source.unsplash.com/600x300/?${item["category"]}",
+                  organizer: item["organizer"],
+                  category: item["category"],
                 )
               ),
               child: Container(
@@ -72,7 +74,7 @@ class _EventsState extends State<Events> {
                   children: <Widget>[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      child: Image.network("https://source.unsplash.com/300x100/?${item["title"]}"),
+                      child: Image.network("https://source.unsplash.com/300x100/?${item["category"]}"),
                     ),
                     Text(item["title"], style: Theme.of(context).textTheme.headline6,),
                   ],

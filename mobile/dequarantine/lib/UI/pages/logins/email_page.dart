@@ -1,6 +1,7 @@
 import 'package:dequarantine/constants.dart';
 import 'package:dequarantine/models/email_user.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class EmailPage extends StatefulWidget {
@@ -28,6 +29,7 @@ class _EmailPageState extends State<EmailPage> {
 
 
   void _signIn() async {
+    Fluttertoast.showToast(msg: "Signing you in");
     _email = _emailController.text;
     _password = _passwordController.text;
     currentUser = EmailUser({
@@ -40,15 +42,10 @@ class _EmailPageState extends State<EmailPage> {
     bool response = await login.signInEmailToApi();
 
     if (response) {
+      Fluttertoast.showToast(msg: "Redirecting");
       Navigator.pushReplacementNamed(context, "/home");
     } else {
-      Builder(
-        builder: (BuildContext context) {
-          return SnackBar(
-            content: Text("Sign in unsuccessful"),
-          );
-        },
-      );
+      Fluttertoast.showToast(msg: "Sign in unsuccessful");
     }
 }
 

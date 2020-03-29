@@ -34,4 +34,13 @@ class EmailUser {
     print(_password);
     print("===================");
   }
+
+  void signOut() {
+    this._uid = null;
+    this._uid = null;
+    this._email = null;
+    this._username = null;
+    this._token = null;
+    this._password = null;
+  }
 }

@@ -1,8 +1,8 @@
 
+import 'package:dequarantine/UI/pages/main_pages/account.dart';
 import 'package:dequarantine/UI/pages/main_pages/create.dart';
 import 'package:dequarantine/UI/pages/main_pages/discover.dart';
 import 'package:dequarantine/UI/pages/main_pages/likes.dart';
-import 'package:dequarantine/UI/pages/main_pages/live.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
     Likes(),
     Create(),
     Discover(),
-    Live()
+    Account()
   ];
 
   @override
@@ -50,8 +50,8 @@ class _HomeState extends State<Home> {
               text: 'Discover',
             ),
             GButton(
-              icon: LineIcons.ils,
-              text: 'Live',
+              icon: LineIcons.info_circle,
+              text: 'Account',
             ),
           ],
           selectedIndex: _selectedIndex,

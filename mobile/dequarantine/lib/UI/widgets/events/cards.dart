@@ -9,6 +9,8 @@ class DetailedView extends StatefulWidget {
   final totalAttendents;
   final description;
   final dateTime;
+  final organizer;
+  final category;
 
   DetailedView({
     @required this.imageUrl,
@@ -16,7 +18,9 @@ class DetailedView extends StatefulWidget {
     @required this.attendees,
     @required this.totalAttendents,
     @required this.description,
-    @required this.dateTime
+    @required this.dateTime,
+    @required this.organizer,
+    @required this.category,
   });
 
   @override

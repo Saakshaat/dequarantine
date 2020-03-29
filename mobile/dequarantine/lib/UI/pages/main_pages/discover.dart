@@ -27,10 +27,15 @@ class _DiscoverState extends State<Discover> {
             List events = [];
             snapshot.data.documents.forEach((element) {
               events.add({
+                "attending": element["attending"] as int,
+                "cap": element["cap"] as int,
+                "category": element["category"].toString(),
+                "description": element["description"].toString(),
+                "imageUlr": element["imageUrl"].toString(),
                 "title": element["name"].toString(),
-                "tag": element["category"].toString(),
+                "organizer": element["organizer"].toString(),
                 "time": element["time"].toString(),
-                "description": element["Description"].toString()
+                "participants": element["participants"].toString()
               });
             });
             for (int i = 0; i < 5; ++i){

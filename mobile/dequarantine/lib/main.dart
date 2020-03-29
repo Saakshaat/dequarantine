@@ -28,6 +28,12 @@ void main() => runApp(MaterialApp(
         fontWeight: FontWeight.w700
       ),
 
+      headline2: TextStyle(
+        fontSize: 30,
+        color: Colors.black,
+        fontWeight: FontWeight.w700
+      ),
+
       bodyText1: TextStyle(
         fontSize: 20,
         color: Colors.black,
@@ -45,6 +51,12 @@ void main() => runApp(MaterialApp(
     textTheme: TextTheme(
       headline1: TextStyle(
         fontSize: 45,
+        color: Colors.white,
+        fontWeight: FontWeight.w700
+      ),
+
+      headline2: TextStyle(
+        fontSize: 30,
         color: Colors.white,
         fontWeight: FontWeight.w700
       ),

@@ -79,7 +79,7 @@ class UserManagement {
 
     print(a.statusCode);
 
-    if (a.statusCode == 200) {
+    if (a.statusCode == 201) {
       return {"code": true, "body": response};
     }
     return {"code": false, "body": response};
@@ -139,4 +139,3 @@ class UserManagement {
     return false;
   }
 }
-

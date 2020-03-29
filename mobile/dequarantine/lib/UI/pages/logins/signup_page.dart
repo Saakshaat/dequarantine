@@ -1,5 +1,6 @@
 import 'package:dequarantine/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -68,19 +69,10 @@ class _SignupPageState extends State<SignupPage> {
           _opacity = 1;
           _errorText = signUp["body"].toString().substring(1, signUp["body"].toString().length -1);
         });
+      } else if (signUp["code"]) {
+        Fluttertoast.showToast(msg: "Signing you up");
+        Navigator.pop(context);
       }
-
-      // if (signUp) {
-      //   Navigator.pop(context);
-      // } else {
-      //   Builder(
-      //     builder: (BuildContext context) {
-      //       return SnackBar(
-      //         content: Text("An error occured"),
-      //       );
-      //     },
-      //   );
-      // }
     }
   }
 
