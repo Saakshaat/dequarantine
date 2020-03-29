@@ -4,7 +4,7 @@ exports.getAllEvents = (req,res)=>{
   db
   .collection('events')
   .get()
-  .then(data=>{
+  .then(data => {
       let events=[];
       data.forEach(doc=>{
           events.push({
@@ -15,8 +15,8 @@ exports.getAllEvents = (req,res)=>{
               time:doc.data().time,
               cap:doc.data().cap,
               category:doc.data().category,
-              description:doc.data().description
-
+              description:doc.data().description,
+              participants: doc.data().participants
        });
       });
       return res.json(events);
@@ -25,16 +25,16 @@ exports.getAllEvents = (req,res)=>{
 } 
 
 exports.postEvents = (req, res) => {
-  organizer = req.user.userName;
-
+  participants = [];
   const newEvent = {
       name: req.body.name,
       cap:req.body.cap,
       category:req.body.category,
-      organizer,
+      organizer: req.body.organizer,
       description:req.body.description,
       time:new Date().toISOString(),
-      imageUrl:req.body.imageUrl      
+      imageUrl:req.body.imageUrl,
+      participants
   };
  db
       .collection('events')
@@ -50,9 +50,6 @@ exports.postEvents = (req, res) => {
       });
 }
 
-
-
-
 exports.deleteEvents= (req, res) => {
    const document = db.doc(`/events/${req.params.eventId}`);
     document
@@ -63,14 +60,13 @@ exports.deleteEvents= (req, res) => {
           }
           if((doc.data().organizer !== req.user.userName)){
             return res.status(403).json({ error: `Unauthorized` });
-          }
-            
+          } 
           else{
             return document.delete();
           }
       })
       .then(() => {
-          res.json({ message: `event deleted successfully` });
+          res.json({ message: `Event deleted successfully` });
       })
       .catch(err => {
           console.error(err);

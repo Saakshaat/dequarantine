@@ -29,18 +29,17 @@ app.post("/signup", signup);
 app.post("/login", login);
 app.post("/user/password", forgotPassword);
 app.post("/g/signin", googleSignin);
-
+app.post("/user", FBAuth, addUserDetails);
+// app.get("/user", FBAuth, getAuthenticatedUser);
 
 //events routes
-app.get("/events",getAllEvents)
+app.get("/events",getAllEvents);
 //app.get("/events",getOneEvent)
-app.post("/events",FBAuth,postEvents)
-app.delete("/events/:eventId",FBAuth,deleteEvents)
+app.post("/events", FBAuth, postEvents);
+app.delete("/events/:eventId", FBAuth, deleteEvents);
 /**
  * TODO: write all the user methods for basic user functionality
 app.post("/user/image", FBAuth, uploadImage);
-app.post("/user", FBAuth, addUserDetails);
-app.get("/user", getAuthenticatedUser);
 app.get("user/:handle", getUserDetails);
 app.post("/notifications", FBAuth, markNotificationsRead);
  */

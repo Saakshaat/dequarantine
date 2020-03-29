@@ -43,12 +43,14 @@ exports.signup = (req, res) => {
     })
     .then(idToken => {
       token = idToken;
+      attending = [];
       const userCredentials = {
         userName: newUser.userName,
         email: newUser.email,
         imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
         createdAt: new Date().toISOString(),
-        userId
+        userId,
+        attending
       };
       db.doc(`/users/${newUser.userName}`).set(userCredentials);
     })
@@ -131,13 +133,15 @@ exports.googleSignin = (req, res) => {
         var token = result.credential.accessToken;
         // The signed-in user info.
         var user = result.user;
+        attending = [];
         console.log(user);
         const userCredentials = {
           userName: user.displayName,
           email: user.email,
           imageUrl: user.photoUrl,
           createdAt: new Date().toISOString(),
-          userId: user.uid
+          userId: user.uid,
+          attending
         };
         db.doc(`/users/${user.userName}`).set(userCredentials);
         return res.json({ token });
@@ -146,4 +150,17 @@ exports.googleSignin = (req, res) => {
       console.error(err);
       return res.status(500).json({ general: `Internal Server Error ${err}` });
     })
+};
+
+exports.addUserDetails = (req, res) => {
+  let userDetails = reduceUserDetails(req.body);
+  db.doc(`/users/${req.user.userDetails}`)
+    .update(userDetails)
+    .then(() => {
+      return res.json({ message: `Details added successfully` });
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
 };
