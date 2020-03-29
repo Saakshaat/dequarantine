@@ -9,14 +9,15 @@ exports.getAllEvents = (req,res)=>{
       data.forEach(doc=>{
           events.push({
               eventId: doc.id,
-              imageUrl:doc.data().imageUrl,
-              name:doc.data().name,
-              organizer:doc.data().organizer,
-              time:doc.data().time,
-              cap:doc.data().cap,
-              category:doc.data().category,
-              description:doc.data().description,
-              participants: doc.data().participants
+              imageUrl: doc.data().imageUrl,
+              name: doc.data().name,
+              organizer: doc.data().organizer,
+              time: doc.data().time,
+              cap: doc.data().cap,
+              attending: doc.data().attending,
+              category: doc.data().category,
+              description: doc.data().description, 
+              participants: doc.data().part
        });
       });
       return res.json(events);
@@ -70,9 +71,6 @@ exports.deleteEvents= (req, res) => {
       })
       .catch(err => {
           console.error(err);
-          return res.status(500).json({ error: err.code });
+          return res.status(500).json(err);
       });
 };
-
-
-

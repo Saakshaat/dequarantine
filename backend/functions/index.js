@@ -21,7 +21,10 @@ const {
 const {
     getAllEvents,
     getOneEvent,
-    postEvents,deleteEvents
+    postEvents,
+    deleteEvents,
+    markAttending,
+    unmarkAttending
 } = require("./handlers/events");
 
 //users routes

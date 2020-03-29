@@ -152,9 +152,11 @@ exports.googleSignin = (req, res) => {
     })
 };
 
+
+//Adding user details
 exports.addUserDetails = (req, res) => {
   let userDetails = reduceUserDetails(req.body);
-  db.doc(`/users/${req.user.userDetails}`)
+  db.doc(`/users/${req.user.userName}`)
     .update(userDetails)
     .then(() => {
       return res.json({ message: `Details added successfully` });
