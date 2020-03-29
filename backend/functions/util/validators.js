@@ -46,3 +46,9 @@ exports.reduceUserDetails = (data) => {
     
     return userDetails;
 };
+
+exports.reduceUserDetails = (data) => {
+    let userDetails = {};
+    if(!isEmpty(data.location.trim())) userDetails.location = data.location;  
+    return userDetails;
+};
