@@ -166,3 +166,38 @@ exports.addUserDetails = (req, res) => {
       return res.status(500).json({ error: err.code });
     });
 };
+
+// exports.uploadImage = (req, res) => {}
+
+/**
+ * Get User Account Data
+ * - Image
+ * - Email
+ * - Name
+ * - Upcoming Events
+ */
+exports.getAuthenticatedUser = (req, res) => {
+  let userData = {};
+  db.doc(`/users/${req.user.userName}`)
+    .get()
+    .then(doc => {
+      if (doc.exists) {
+        userData.credentials = doc.data();
+        return db
+          .collection("events")
+          .where("participants", "array-contains", req.user.userName)
+          .get();
+      }
+    })
+    .then(data => {
+      userData.attending = [];
+      data.forEach(doc => {
+        userData.attending.push(doc.data());
+      });
+      return res.json(userData);
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+};
