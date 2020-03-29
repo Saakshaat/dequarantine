@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: _pages.elementAt(_selectedIndex),
       bottomNavigationBar: Container(
+        color: Theme.of(context).primaryColor,
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
         child: GNav(
           gap: 8,
