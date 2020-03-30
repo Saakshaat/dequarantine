@@ -12,6 +12,7 @@ class EmailUser {
   void _init(user){
     this._email = user["email"];
     this._password = user["password"];
+    this._token = user["token"];
   }
 
   get (){
@@ -30,6 +31,7 @@ class EmailUser {
 
   void printData() {
     print("===================");
+    print(_username);
     print(_email);
     print(_password);
     print("===================");
@@ -42,5 +44,9 @@ class EmailUser {
     this._username = null;
     this._token = null;
     this._password = null;
+  }
+
+  String getToken() {
+    return _token;
   }
 }

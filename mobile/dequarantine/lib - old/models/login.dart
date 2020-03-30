@@ -47,13 +47,6 @@ class UserManagement {
   }
 
 
-  Future emailSignIn(String email, String password) async {
-    Map user = {
-      "email": email,
-      "password": password
-    };
-  }
-
 
   //Clean user data and disconnect google log in
   void signOut() {
@@ -99,8 +92,6 @@ class UserManagement {
     var response = convert.jsonDecode(a.body);
 
     print(response);
-
-    //TODO: tell backend to send user document name
 
     print(a.statusCode);
     if (a.statusCode == 200) {

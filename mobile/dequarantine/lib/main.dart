@@ -1,19 +1,21 @@
-import 'package:dequarantine/UI/pages/logins/email_page.dart';
-import 'package:dequarantine/UI/pages/logins/login_page.dart';
-import 'package:dequarantine/UI/pages/logins/signup_page.dart';
-import 'package:dequarantine/UI/pages/main_pages/home_page.dart';
+import 'package:dequarantine/UI/pages/home/home_page.dart';
+import 'package:dequarantine/UI/pages/setup/signin_page.dart';
+import 'package:dequarantine/UI/pages/setup/signin_with_email_page.dart';
+import 'package:dequarantine/UI/pages/setup/signup_page.dart';
+import 'package:dequarantine/logic/models/user.dart';
+
 import 'package:flutter/material.dart';
 
-
+User currentUser; 
 
 void main() => runApp(MaterialApp(
   initialRoute: "/login",
 
   routes: {
     "/home" : ( context ) => Material(child: Home()),
-    "/login" : ( context ) => Material(child: LoginPage()),
-    "/email" : ( context ) => Material(child: EmailPage()),
-    "/signup" : ( context ) => Material(child: SignupPage()),
+    "/login" : ( context ) => Material(child: SignInPage()),
+    "/email" : ( context ) => Material(child: SignInWithEmailPage()),
+    "/signup" : ( context ) => Material(child: SignUpPage()),
   },
 
   theme: ThemeData(

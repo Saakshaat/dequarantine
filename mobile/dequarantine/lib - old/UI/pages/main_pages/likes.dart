@@ -8,10 +8,20 @@ class Likes extends StatefulWidget {
 }
 
 class _LikesState extends State<Likes> {
+  bool activeUser = false;
+
   @override
   Widget build(BuildContext context) {
-    currentUser.printData();
-    return Container(
+    try {
+      currentUser.printData();
+    } catch (e) {
+      if (e == NoSuchMethodError) {
+        setState(() {
+          activeUser = false;
+        });
+      }
+    }
+    return activeUser ? Container(
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -20,7 +30,9 @@ class _LikesState extends State<Likes> {
             Text("currently signed in : ${currentUser.get()["email"]}")
           ],
         ),
-      ),
+      ) 
+    ) : Container(
+      child: Center(child: Text("Sign in to access liked events :)")),
     );
   }
 }

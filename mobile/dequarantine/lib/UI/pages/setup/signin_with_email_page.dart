@@ -1,15 +1,13 @@
-import 'package:dequarantine/constants.dart';
-import 'package:dequarantine/models/email_user.dart';
+import 'package:dequarantine/logic/functions/signin_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
-class EmailPage extends StatefulWidget {
+class SignInWithEmailPage extends StatefulWidget {
   @override
-  _EmailPageState createState() => _EmailPageState();
+  _SignInWithEmailPageState createState() => _SignInWithEmailPageState();
 }
 
-class _EmailPageState extends State<EmailPage> {
+class _SignInWithEmailPageState extends State<SignInWithEmailPage> {
   bool obscurePassword = true;
 
   String _email;
@@ -20,34 +18,47 @@ class _EmailPageState extends State<EmailPage> {
 
   final passwordFocus = FocusNode();
 
+  double _opacity = 0;
+  String _error = "";
+
+  void _signIn() async {
+    Fluttertoast.showToast(
+      msg: "Signing you in"
+    );
+
+    _email = _emailController.text;
+    _password = _passwordController.text;
+
+    Map signInReturned = await signInWithEmail(_email, _password);
+
+    switch (signInReturned["code"]) {
+      case true:
+        Fluttertoast.showToast(
+          msg: "Sign in successful"
+        );
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          "/home",
+          (Route<dynamic> route) => false //user can't come back to login screen
+        );
+        break;
+      default:
+        Fluttertoast.showToast(
+          msg: "Sign in successful"
+        );
+        setState(() {
+          _opacity = 1;
+          _error = signInReturned["body"];
+        });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
   }
-
-
-  void _signIn() async {
-    Fluttertoast.showToast(msg: "Signing you in");
-    _email = _emailController.text;
-    _password = _passwordController.text;
-    currentUser = EmailUser({
-      "email": _email,
-      "password": _password
-    });
-
-    currentUser.printData();
-
-    bool response = await login.signInEmailToApi();
-
-    if (response) {
-      Fluttertoast.showToast(msg: "Redirecting");
-      Navigator.pushReplacementNamed(context, "/home");
-    } else {
-      Fluttertoast.showToast(msg: "Sign in unsuccessful");
-    }
-}
 
 
   @override
@@ -57,6 +68,11 @@ class _EmailPageState extends State<EmailPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          AnimatedOpacity(
+            opacity: _opacity,
+            duration: Duration(seconds: 1),
+            child: Text(_error, style: TextStyle(color: Colors.red[300])),
+          ),
           TextFormField(
             decoration: const InputDecoration(
               icon: Icon(Icons.email),

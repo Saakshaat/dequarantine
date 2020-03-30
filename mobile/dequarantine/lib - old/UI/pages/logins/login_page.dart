@@ -1,18 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dequarantine/UI/pages/main_pages/home_page.dart';
-import 'package:dequarantine/UI/widgets/logins/outline_button.dart';
-import 'package:dequarantine/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'dart:core';
 
+import 'package:dequarantine/UI/pages/main_pages/home_page.dart';
+import 'package:dequarantine/UI/widgets/logins/outline_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,7 +18,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   //keep track of progress
   bool isLoading = false;
@@ -66,6 +61,8 @@ class _LoginPageState extends State<LoginPage> {
 
     //keeps the auth data
     final GoogleSignInAuthentication googleAuth = await googelUser.authentication;
+
+    print(googleAuth.idToken);
 
     //create firebase cretentials, using given auth account
     AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -156,9 +153,9 @@ class _LoginPageState extends State<LoginPage> {
           //   },
           // ),
 
-          // GoogleSignInButton(
-          //   onPressed: () => _handleSignIn(),
-          // ),
+          GoogleSignInButton(
+            onPressed: () => _handleSignIn(),
+          ),
 
           OutlineButtonLandingPage(
             text: "Continue without signing in",
