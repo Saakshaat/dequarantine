@@ -57,6 +57,12 @@ Future<Map> signInWithEmail(String email, String password) async {
 }
 
 
+
+
+
+
+
+
 Future<void> handleSignInGoogle() async {
   //create reauired consts used to sign in with firebase,
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -80,7 +86,6 @@ Future<void> handleSignInGoogle() async {
   String _baseGoogleUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/g/signin";
 
   Map body = {
-    "id_token": googleAuth.idToken,
     "accessToken": googleAuth.accessToken,
   };
 
