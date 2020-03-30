@@ -141,12 +141,14 @@ exports.googleSignin = (req, res) => {
                 console.log('User Exists. Do nothing.\n'); //, querySnapshot.docs[0].data());
             } else { //Create a new user in docs/user
                 const noImg = `no-img.png`;
+                attending = [];
                 const userCredentials = {
                     userName: newUser.userName,
                     email: newUser.email,
                     imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
                     createdAt: new Date().toISOString(),
-                    userId: result.user.uid
+                    userId: result.user.uid,
+                    attending
                 };
 
                 db.doc(`/users/${newUser.userName}`).set(userCredentials);
