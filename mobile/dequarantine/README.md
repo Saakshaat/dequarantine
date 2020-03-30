@@ -1,16 +1,34 @@
-# dequarantine
+# dequarantine - mobile
 
-A new Flutter project.
+Mobile app of the dequaratine project  
 
-## Getting Started
+## How the app works
 
-This project is a starting point for a Flutter application.
+### Log in :
 
-A few resources to get you started if this is your first Flutter project:
+- Login screen shows up 
+- User has a choice of email, google, not signing in 
+- Log in stuff happens, receives token from API 
+- App requests user data, stores it in User object,
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Discover screen:
+
+- code requests all events through API using equivalent to promise 
+- once received all evnts are displayed in a list (planning on a grid view - had some issues getting that working) 
+- Users can tap on events or dismiss left/right, if tapped a bottom sheet shows up with more info
+
+
+### Account screen:
+
+- Asks the user to log in if not already done so
+- Displays temporary data (work in progress)
+
+### Create event screen:
+
+- Fields required dislpayed
+- sends to API when "make it live!" is pressed
+
+### Liked/Saved events screen:
+
+- Haven't started :) 
