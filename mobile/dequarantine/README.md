@@ -31,4 +31,7 @@ Mobile app of the dequaratine project
 
 ### Liked/Saved events screen:
 
-- Haven't started :) 
+- Haven't started :)
+
+
+#### For non flutter devs, the app code is in the lib/ folder
