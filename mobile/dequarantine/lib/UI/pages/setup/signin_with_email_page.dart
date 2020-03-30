@@ -44,7 +44,7 @@ class _SignInWithEmailPageState extends State<SignInWithEmailPage> {
         break;
       default:
         Fluttertoast.showToast(
-          msg: "Sign in successful"
+          msg: "Sign in failed"
         );
         setState(() {
           _opacity = 1;

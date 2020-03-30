@@ -49,6 +49,14 @@ class User {
     return _token;
   }
 
+  void clean(){
+    this._token = null;
+    this._userId = null;
+    this._email = null;
+    this._imageUrl = null;
+    this._userName = null;
+  }
+
 
   Future<Map<String, dynamic>> getLikedEvents() async {
     //TODO: ask Saak on how to
