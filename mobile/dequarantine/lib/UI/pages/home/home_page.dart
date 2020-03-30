@@ -24,11 +24,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: IndexedStack(
-      //   children: _pages,
-      //   index: _selectedIndex,
-      // ),
-      body: _pages.elementAt(_selectedIndex),
+      body: IndexedStack(
+        children: _pages,
+        index: _selectedIndex,
+      ),
+      // body: _pages.elementAt(_selectedIndex), //for testing
       bottomNavigationBar: Container(
         color: Theme.of(context).primaryColor,
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
