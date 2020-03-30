@@ -124,12 +124,38 @@ exports.forgotPassword = (req, res) => {
  *  * Use the token to authorize access person and keep them signed in
  */
 exports.googleSignin = (req, res) => {
-    const credential = firebase.auth.GoogleAuthProvider.credential(req.body.id_token);
-    //console.log('credential\n', credential);
+    const credential = firebase.auth.GoogleAuthProvider.credential(null, req.body.access_token);
 
     firebase.auth().signInWithCredential(credential)
+    .then((result)=> {
+        let newUser = {};
+        newUser.email = result.user.email;
+        newUser.userName = result.user.displayName.replace(/\s/g, '');
+
+        db.collection(`users`).where('email', '==', newUser.email)
+        .get()
+        .then(querySnapshot => {
+            if(querySnapshot.size > 0) {
+                console.log('User Exists. Do nothing.\n'); //, querySnapshot.docs[0].data());
+            } else { //Create a new user in docs/user
+                const noImg = `no-img.png`;
+                const userCredentials = {
+                    userName: newUser.userName,
+                    email: newUser.email,
+                    imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${noImg}?alt=media`,
+                    createdAt: new Date().toISOString(),
+                    userId: result.user.uid
+                };
+
+                db.doc(`/users/${newUser.userName}`).set(userCredentials);
+            }
+        })
+        .then(() => {
+            return res.status(201).json({ refreshToken: result.user.refreshToken, token: req.body.access_token });
+        });
+    })
     .catch(function(error) {
-       // console.log('ERROR\n-----------------\n', error.code);
+        // console.log('ERROR\n-----------------\n', error);
         let errorCode = error.code;
         let errorMessage = error.message;
         let email = error.email;
