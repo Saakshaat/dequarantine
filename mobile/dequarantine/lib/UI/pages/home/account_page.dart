@@ -2,10 +2,6 @@ import 'package:dequarantine/logic/functions/signout_functions.dart';
 import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
 
-import 'dart:convert' as convert;
-import 'dart:core';
-
-import 'package:http/http.dart' as http;
 
 class AccountPage extends StatefulWidget {
   @override

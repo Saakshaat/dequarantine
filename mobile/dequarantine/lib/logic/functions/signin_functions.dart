@@ -3,13 +3,11 @@ import 'dart:core';
 
 import 'package:dequarantine/logic/models/user.dart';
 import 'package:dequarantine/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
 Future<Map> signInWithEmail(String email, String password) async {
   String _baseSignInEmailUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/login";
-  String _baseUserUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/user";
 
   http.Response signIn  = await http.post(
     _baseSignInEmailUrl,
@@ -31,7 +29,6 @@ Future<Map> signInWithEmail(String email, String password) async {
 
       print("Token: $userToken");
 
-      //TODO: getting 404 here
       http.Response userData  = await http.get(
         _baseUserUrl,
         headers: {
