@@ -45,6 +45,10 @@ class User {
     }
   }
 
+  String getToken() {
+    return _token;
+  }
+
 
   Future<Map<String, dynamic>> getLikedEvents() async {
     //TODO: ask Saak on how to

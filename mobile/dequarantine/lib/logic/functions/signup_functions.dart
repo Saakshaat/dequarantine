@@ -9,10 +9,10 @@ Future<Map<String, dynamic>> signUpEmail(String username, String email, String p
     
     var signUp = await http.post(_baseSignUpEmailUrl,
       body: {
+        "userName": username,
         "email": email,
         "password": pass1,
         "confirmPassword": pass2,
-        "userName": username
       }
     );
 

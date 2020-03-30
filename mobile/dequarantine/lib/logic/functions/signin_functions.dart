@@ -39,11 +39,17 @@ Future<Map> signInWithEmail(String email, String password) async {
         }
       );
 
-      print(convert.jsonDecode(userData.body));
+      Map response2 = convert.jsonDecode(userData.body);
 
-      // currentUser = User({
-        
-      // });
+      print(response);
+
+      currentUser = User({
+        "token": userToken,
+        "userId": response2["credentials"]["userId"],
+        "email": response2["credentials"]["email"],
+        "imageUrl": response2["credentials"]["imageUrl"],
+        "userName": response2["credentials"]["userName"],
+      });
 
       return {"code": true, "body": response};
       break;

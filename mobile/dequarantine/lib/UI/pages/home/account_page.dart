@@ -65,7 +65,7 @@ class _AccountPageState extends State<AccountPage> {
     //   }
     // }
 
-    return  Column(
+    return Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
