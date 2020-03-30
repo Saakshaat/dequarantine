@@ -36,7 +36,9 @@ class _CreatePageState extends State<CreatePage> {
       "name": _titleController.text,
       "cap": _capController.text,
       "category": _category,
+      "organizer": _nameController.text,
       "description": _descriptionController.text,
+      "imageUrl": "https://aatc-bkk.com/wp-content/uploads/2015/01/tempimage.png",
     };
 
     print(body);

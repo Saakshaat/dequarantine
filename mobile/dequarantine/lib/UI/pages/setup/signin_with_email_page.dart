@@ -48,7 +48,7 @@ class _SignInWithEmailPageState extends State<SignInWithEmailPage> {
         );
         setState(() {
           _opacity = 1;
-          _error = signInReturned["body"];
+          _error = signInReturned["body"].toString();
         });
     }
   }
