@@ -59,7 +59,7 @@ class _AccountPageState extends State<AccountPage> {
             children: <Widget>[
               CircleAvatar(
                 backgroundImage: NetworkImage(
-                    "https://vignette.wikia.nocookie.net/gtawiki/images/7/70/CJ-GTASA.png/revision/latest/top-crop/width/360/height/360?cb=20190612091918"),
+                    "https://www.nicepng.com/png/detail/152-1529091_happy-smile-png-smiley-face-icon-png.png"),
                 // child: Text("GL"),
                 foregroundColor: Colors.transparent,
                 minRadius: MediaQuery.of(context).size.width / 8,
