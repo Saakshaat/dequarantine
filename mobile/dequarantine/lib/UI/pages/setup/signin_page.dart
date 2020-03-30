@@ -1,14 +1,8 @@
-import 'dart:convert' as convert;
 import 'dart:core';
-
 import 'package:dequarantine/UI/widgets/logins/outline_button.dart';
 import 'package:dequarantine/logic/functions/signin_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -41,7 +35,7 @@ class _SignInPageState extends State<SignInPage> {
           ),
 
           GoogleSignInButton(
-            onPressed: () => handleSignIn(),
+            onPressed: () => handleSignInGoogle(),
           ),
 
           OutlineButtonLandingPage(

@@ -60,7 +60,7 @@ Future<Map> signInWithEmail(String email, String password) async {
 }
 
 
-Future<void> handleSignIn() async {
+Future<void> handleSignInGoogle() async {
   //create reauired consts used to sign in with firebase,
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
