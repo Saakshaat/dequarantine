@@ -23,7 +23,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
         }
 
         return Center(
-          child: Text("Loading"),
+          child: CircularProgressIndicator(),
         );
       },
     );
