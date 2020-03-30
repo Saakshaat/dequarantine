@@ -125,12 +125,21 @@ exports.forgotPassword = (req, res) => {
  */
 exports.googleSignin = (req, res) => {
     const credential = firebase.auth.GoogleAuthProvider.credential(req.body.id_token);
-    // console.log('credential\n', credential);
-    firebase.auth().signInWithCredential(credential).catch(function(error) {
+    //console.log('credential\n', credential);
+
+    firebase.auth().signInWithCredential(credential)
+    .catch(function(error) {
+       // console.log('ERROR\n-----------------\n', error.code);
         let errorCode = error.code;
         let errorMessage = error.message;
         let email = error.email;
         let authCredential = error.credential;
+
+        if (errorCode == 'auth/invalid-credential') {
+            return res.status(400).send("Invalid Credentials. Please log in again.");
+        } else {
+            return res.status(400).send("Error. Please try again.");
+        }
     });
 /*    firebase
     .auth().signInWithPopup(provider)
