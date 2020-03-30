@@ -35,7 +35,7 @@ Future<Map> signInWithEmail(String email, String password) async {
       http.Response userData  = await http.get(
         _baseUserUrl,
         headers: {
-          "authorization" : "Bearer $userToken"
+          "Authorization" : "Bearer $userToken"
         }
       );
 
