@@ -61,17 +61,42 @@
 .login-footer{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
-  .google-button{
+  .google-btn{
     width : 40%;
     display : flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-  }
-  .btn {
-    width : 40%;
+    background-color: #007bff;
+    border-radius: 4px;
+    color : whitesmoke;
+    span{
+      color :#f4c20d	;
+      margin : 5px;
     }
+  }
+}
+
+.form-btn{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  .btn {
+  width : 40%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: none !important;
+  color : whitesmoke;
+  background-color: #007bff !important;
+  justify-content: center;
+  span{
+    margin: 5px;
+    text-align: left;
+    color :#f4c20d
+  }
+  }
 }
