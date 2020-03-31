@@ -1,6 +1,7 @@
 import 'dart:convert' as convert;
 import 'dart:core';
 
+import 'package:dequarantine/main.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -30,18 +31,15 @@ class User {
       }
     );
 
-    Map body = convert.jsonDecode(userDetail.body);
-    body["code"] = userDetail.statusCode;
-
     switch (userDetail.statusCode) {
       case 200:
+        Map body = convert.jsonDecode(userDetail.body);
         body["code"] = true;
         return body;
         break;
 
       default:
-        body["code"] = false;
-        return body;
+        return {"code": false};
     }
   }
 
@@ -55,6 +53,22 @@ class User {
     this._email = null;
     this._imageUrl = null;
     this._userName = null;
+    currentUser = null;
+  }
+
+
+  Future<String> getImageUrl() async {
+    //TODO
+    http.Response getRequest = await http.get(_imageUrl,
+      headers: {
+        "Authorization": "Bearer $_token"
+      }
+    );
+
+    if (getRequest.statusCode == 200) {
+      String image = getRequest.body;
+      print(image); 
+    }
   }
 
 
