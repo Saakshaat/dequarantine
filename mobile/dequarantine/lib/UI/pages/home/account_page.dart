@@ -1,4 +1,4 @@
-import 'package:dequarantine/logic/functions/sign_out_functions.dart';
+import 'package:dequarantine/logic/functions/auth/sign_out_functions.dart';
 import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
 

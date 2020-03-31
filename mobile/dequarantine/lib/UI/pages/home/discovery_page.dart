@@ -1,5 +1,5 @@
 import 'package:dequarantine/UI/widgets/events/staggered_view.dart';
-import 'package:dequarantine/logic/functions/get_events_functions.dart';
+import 'package:dequarantine/logic/functions/general/get_events_functions.dart';
 import 'package:flutter/material.dart';
 
 class DiscoverPage extends StatefulWidget {
