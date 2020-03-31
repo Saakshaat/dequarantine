@@ -16,6 +16,7 @@ const {
     getAuthenticatedUser,
     getUserDetails,
     markNotificationsRead,
+    getAttending
 } = require("./handlers/users"); 
 
 const {
@@ -35,6 +36,7 @@ app.post("/g/signin", googleSignin);
 app.post("/user", FBAuth, addUserDetails);
 app.post("/user/image", FBAuth, uploadImage);
 app.get("/user", FBAuth, getAuthenticatedUser);
+app.get("/user/attending", FBAuth, getAttending);
 
 //events routes
 app.get("/events",getAllEvents);

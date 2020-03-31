@@ -35,6 +35,7 @@ exports.postEvents = (req, res) => {
       description:req.body.description,
       time:new Date().toISOString(),
       imageUrl:req.body.imageUrl,
+      attending: 0,
       participants
   };
  db
