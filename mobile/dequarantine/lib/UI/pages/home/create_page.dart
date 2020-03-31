@@ -1,4 +1,4 @@
-import 'package:dequarantine/logic/functions/create_event_functions.dart';
+import 'package:dequarantine/logic/functions/user/create_event_functions.dart';
 import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
 
