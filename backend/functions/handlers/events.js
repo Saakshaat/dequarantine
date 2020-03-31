@@ -25,6 +25,23 @@ exports.getAllEvents = (req,res)=>{
     .catch(err=> console.error(err))
 } 
 
+//Getting one event when the event ID is given
+exports.getOneEvent = (req, res) => {
+  let screamData = {};
+    db.doc(`/events/${req.params.eventId}`).get()
+        .then(doc => {
+            if(!doc.exists){
+                return res.status(404).json({ error: `Event not found` });
+            }
+            eventData = doc.data();
+            eventData.screamId = doc.id;
+            return res.json(eventData);
+        })
+        .catch(err => {
+            res.status(500).json({ error: err });
+        });
+}
+
 exports.postEvents = (req, res) => {
   participants = [];
   const newEvent = {

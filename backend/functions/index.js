@@ -41,7 +41,7 @@ app.get("/user/attending", FBAuth, getAttending);
 
 //events routes
 app.get("/events",getAllEvents);
-// app.get("/events",getOneEvent)
+app.get("/event/:eventId",getOneEvent)
 app.post("/events", FBAuth, postEvents);
 app.delete("/events/:eventId", FBAuth, deleteEvents);
 app.get("/events/markAttended/:eventId",FBAuth,markAttended);
