@@ -87,11 +87,14 @@ exports.markAttended=(req,res)=>{
         if (doc.exists) {
           eventData = doc.data();
           eventData.eventId = doc.id;
-          eventData.participants.indexOf(req.user.userName) === -1 ? eventData.participants.push(req.user.userName) : 
-          console.log("You are already attending");
-              eventData.attending++;
-             return (eventDocument.update({ participants: eventData.participants },{attending:eventData.attending}))
-                   } else {
+          if(eventData.participants.indexOf(req.user.userName) === -1) {
+            eventData.participants.push(req.user.userName);
+            eventData.attending++;
+            return (eventDocument.update({ participants: eventData.participants },{attending:eventData.attending}));
+          } else {
+            return res.json({ error: `You are already attending` });
+          }
+        } else {
           return res.status(404).json({ error: 'Event not found' });
         }
       })
@@ -112,4 +115,24 @@ exports.markAttended=(req,res)=>{
         console.error(err);
         res.status(500).json({ error: err.code });
       });
-} 
+}
+
+//Getting the names of all participants
+exports.getParticipants = (req, res) => {
+  db.doc(`/events/${req.params.eventId}`)
+    .get()
+    .then(doc => {
+      if(doc.exists) {
+        let users = [];
+        doc.get('participants').forEach(data => {
+          users.push(data);
+        })
+        return res.json(users);
+      } else {
+        return res.status(400).json({ error: `Event does not exist` });
+      }
+    })
+    .catch(err => {
+      return res.status(500).json({ error : `${err}`});
+    })
+}
