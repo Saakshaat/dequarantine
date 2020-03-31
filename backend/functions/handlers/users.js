@@ -271,3 +271,28 @@ exports.uploadImage = (req, res) => {
   });
   busboy.end(req.rawBody);
 }
+
+//Get all the events that the user is attending
+exports.getAttending = (req, res) => {
+  db.doc(`/users/${req.user.userName}`)
+    .get()
+    .then(doc => {
+      if (doc.exists) {
+        return db
+          .collection("events")
+          .where("participants", "array-contains", req.user.userName)
+          .get();
+      }
+    })
+    .then(data => {
+      let events = [];
+      data.forEach(doc => {
+        events.push(doc.data());
+      });
+      return res.json(events);
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+}
