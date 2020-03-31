@@ -25,7 +25,8 @@ const {
     postEvents,
     deleteEvents,
     markAttended,
-    unmarkAttending
+    unmarkAttending,
+    getParticipants
 } = require("./handlers/events");
 
 //users routes
@@ -40,11 +41,11 @@ app.get("/user/attending", FBAuth, getAttending);
 
 //events routes
 app.get("/events",getAllEvents);
-//app.get("/events",getOneEvent)
-
+// app.get("/events",getOneEvent)
 app.post("/events", FBAuth, postEvents);
 app.delete("/events/:eventId", FBAuth, deleteEvents);
-app.get("/events/markAttended/:eventId",FBAuth,markAttended)
+app.get("/events/markAttended/:eventId",FBAuth,markAttended);
+app.get("/event/:eventId/participants", FBAuth, getParticipants);
 
 /**
  * TODO: write all the user methods for basic user functionality

@@ -274,13 +274,14 @@ exports.uploadImage = (req, res) => {
 
 //Get all the events that the user is attending
 exports.getAttending = (req, res) => {
-  db.doc(`/users/${req.user.userName}`)
+  const userName = req.user.userName;
+  db.doc(`/users/${userName}`)
     .get()
     .then(doc => {
       if (doc.exists) {
         return db
           .collection("events")
-          .where("participants", "array-contains", req.user.userName)
+          .where("participants", "array-contains", userName)
           .get();
       }
     })
