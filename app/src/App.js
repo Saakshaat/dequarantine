@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/styles'
+import { CssBaseline } from '@material-ui/core'
+import theme from './style/theme'
 
 import Button from '@material-ui/core/Button';
 
@@ -43,43 +46,47 @@ class App extends Component {
 
   render () {
     return (
-      <Router>
-        <div className='App'>
-          <header>
-            <div className='title'>Dequarantine</div>
-            <nav class="dropdown">
-              <button
-                className="dropdown-btn" 
-                onClick={this.handleShowMenu.bind(this)} 
-                variant="contained" 
-                color="primary"
-              >
-                MENU
-              </button>
-              <div id="myDropdown" class="dropdown-content">
-                <Link to="/">Home</Link>
-                <Link to="/login">Login</Link>
-                <Link to="/account">Account</Link>
-                <Link to="/schedule">Schedule</Link>
-                <Link to="/attended">Attended</Link>
-                <Link to="/attending">Attending</Link>
-              </div>
-            </nav>
-          </header>
+      <ThemeProvider theme={theme} >
+        <CssBaseline>
+        <Router>
+          <div className='App'>
+            <header>
+              <div className='title'>Dequarantine</div>
+              <nav class="dropdown">
+                <button
+                  className="dropdown-btn" 
+                  onClick={this.handleShowMenu.bind(this)} 
+                  variant="contained" 
+                  color="primary"
+                >
+                  MENU
+                </button>
+                <div id="myDropdown" class="dropdown-content">
+                  <Link to="/">Home</Link>
+                  <Link to="/login">Login</Link>
+                  <Link to="/account">Account</Link>
+                  <Link to="/schedule">Schedule</Link>
+                  <Link to="/attended">Attended</Link>
+                  <Link to="/attending">Attending</Link>
+                </div>
+              </nav>
+            </header>
 
-          <section>
-            <Switch>
-              <Route exact path="/" component={Category} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/account" component={Account} />
-              <Route exact path="/schedule" component={Schedule} />
-              <Route exact path="/attended" component={Attended} />
-              <Route exact path="/attending" component={Attending} />
-            </Switch>
-          </section>
+            <section>
+              <Switch>
+                <Route exact path="/" component={Category} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/account" component={Account} />
+                <Route exact path="/schedule" component={Schedule} />
+                <Route exact path="/attended" component={Attended} />
+                <Route exact path="/attending" component={Attending} />
+              </Switch>
+            </section>
 
-        </div>
-      </Router>
+          </div>
+        </Router>
+        </CssBaseline>
+      </ThemeProvider>
     )
   }
 }

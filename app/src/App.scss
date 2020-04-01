@@ -1,6 +1,6 @@
 .App {
   margin: 0;
-  background-color: #99e6ff;
+  background-color: #ffffff;
 
   header {
     height: 100px;
@@ -70,9 +70,10 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: #007bff;
+    background-color: #ffffff;
     border-radius: 4px;
-    color : whitesmoke;
+    color : #000000;
+    font-weight: 100;
     span{
       color :#f4c20d	;
       margin : 5px;
@@ -96,7 +97,7 @@
   span{
     margin: 5px;
     text-align: left;
-    color :#f4c20d
+    color : #ffffff;
   }
   }
 }
