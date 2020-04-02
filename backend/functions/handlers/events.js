@@ -4,20 +4,20 @@ exports.getAllEvents = (req,res)=>{
   db
   .collection('events')
   .get()
-  .then(data => {
-      let events=[];
-      data.forEach(doc=>{
+  .then(doc => {
+      let events = [];
+      doc.forEach(data => {
           events.push({
-              eventId: doc.id,
-              imageUrl: doc.data().imageUrl,
-              name: doc.data().name,
-              organizer: doc.data().organizer,
-              time: doc.data().time,
-              cap: doc.data().cap,
-              attending: doc.data().attending,
-              category: doc.data().category,
-              description: doc.data().description, 
-              participants: doc.data().part
+              eventId: data.id,
+              imageUrl: data.data().imageUrl,
+              name: data.data().name,
+              organizer: data.data().organizer,
+              time: data.data().time,
+              cap: data.data().cap,
+              attending: data.data().attending,
+              category: data.data().category,
+              description: data.data().description, 
+              participants: data.data().part
        });
       });
       return res.json(events);
@@ -50,7 +50,7 @@ exports.postEvents = (req, res) => {
       category:req.body.category,
       organizer: req.body.organizer,
       description:req.body.description,
-      time:new Date().toISOString(),
+      time: req.body.time,
       imageUrl:req.body.imageUrl,
       attending: 0,
       participants
@@ -134,6 +134,10 @@ exports.markAttended=(req,res)=>{
       });
 }
 
+/**
+ * TODO: implement unmarkAttended
+ */
+
 //Getting the names of all participants
 exports.getParticipants = (req, res) => {
   db.doc(`/events/${req.params.eventId}`)
@@ -144,7 +148,7 @@ exports.getParticipants = (req, res) => {
         doc.get('participants').forEach(data => {
           users.push(data);
         })
-        return res.json(users);
+        return res.json(users);mmmm
       } else {
         return res.status(400).json({ error: `Event does not exist` });
       }
@@ -152,4 +156,35 @@ exports.getParticipants = (req, res) => {
     .catch(err => {
       return res.status(500).json({ error : `${err}`});
     })
+}
+
+//Getting all the events from a certain category
+exports.getCategoryEvents = (req, res) => {
+  db
+  .collection('events')
+  .where("category", "==", req.params.categoryName)
+  .get()
+  .then(doc => {
+    if(!doc.empty) {
+      let events = [];
+      doc.forEach(data => {
+          events.push({
+              eventId: data.id,
+              imageUrl: data.data().imageUrl,
+              name: data.data().name,
+              organizer: data.data().organizer,
+              time: data.data().time,
+              cap: data.data().cap,
+              attending: data.data().attending,
+              category: data.data().category,
+              description: data.data().description, 
+              participants: data.data().part
+       });
+      });
+      return res.json(events);
+    } else {
+      return res.status(404).json({ general: `No Events Found` });
+    }
+  })
+    .catch(err=> console.error(err))
 }
