@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles'
-import { CssBaseline } from '@material-ui/core'
+import { CssBaseline, AppBar, Toolbar, Menu, MenuItem, MenuList} from '@material-ui/core'
 import theme from './style/theme'
+import MenuLinks from './components/Menu'
+
 
 import Button from '@material-ui/core/Button';
 
@@ -50,27 +52,9 @@ class App extends Component {
         <CssBaseline>
         <Router>
           <div className='App'>
-            <header>
-              <div className='title'>Dequarantine</div>
-              <nav class="dropdown">
-                <button
-                  className="dropdown-btn" 
-                  onClick={this.handleShowMenu.bind(this)} 
-                  variant="contained" 
-                  color="primary"
-                >
-                  MENU
-                </button>
-                <div id="myDropdown" class="dropdown-content">
-                  <Link to="/">Home</Link>
-                  <Link to="/login">Login</Link>
-                  <Link to="/account">Account</Link>
-                  <Link to="/schedule">Schedule</Link>
-                  <Link to="/attended">Attended</Link>
-                  <Link to="/attending">Attending</Link>
-                </div>
-              </nav>
-            </header>
+              <AppBar>
+                <MenuLinks />
+              </AppBar>
 
             <section>
               <Switch>
