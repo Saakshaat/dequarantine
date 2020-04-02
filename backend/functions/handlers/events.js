@@ -44,30 +44,30 @@ exports.getOneEvent = (req, res) => {
 
 exports.postEvents = (req, res) => {
   participants = [];
+  let organizer  = req.user.userName;
   const newEvent = {
-      name: req.body.name,
-      cap:req.body.cap,
-      category:req.body.category,
-      organizer: req.body.organizer,
-      description:req.body.description,
-      time: req.body.time,
-      imageUrl:req.body.imageUrl,
-      attending: 0,
-      participants
+    name: req.body.name,
+    cap: req.body.cap,
+    category: req.body.category,
+    description: req.body.description,
+    time: req.body.time,
+    imageUrl: req.body.imageUrl,
+    attending: 0,
+    participants,
+    organizer: organizer ? organizer : "someone"
   };
- db
-      .collection('events')
-      .add(newEvent)
-      .then(doc => {
-          const resEvent = newEvent;
-          resEvent.eventId = doc.id;
-          res.json(resEvent);
-      })
-      .catch(err => {
-          res.status(500).json({error: `something went wrong`});
-          console.error(err);
-      });
-}
+  db.collection("events")
+    .add(newEvent)
+    .then(doc => {
+      const resEvent = newEvent;
+      resEvent.eventId = doc.id;
+      res.json(resEvent);
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: `something went wrong` });
+    });
+};
 
 exports.deleteEvents= (req, res) => {
    const document = db.doc(`/events/${req.params.eventId}`);
