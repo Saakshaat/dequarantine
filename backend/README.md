@@ -24,6 +24,9 @@ This file has the firebase methods for:
 -   Login using existing account
 -   Signin using Google Account
 -   Resetting Forgotten Password through a reset link
+-   Uploading user's image
+-   Adding and Getting User details
+-   Getting all the events that the user is attending
 
 Except for the Google sign-in all the other methods use [validators](https://github.com/Saakshaat/dequarantine/blob/saakshaat-login-signup/backend/functions/util/validators.js) for verifying the user input.
 
@@ -31,13 +34,26 @@ Upon signin or login, a token is generated and stored in the browser's local sto
 
 #### User Routes
 
--   Signup: /signup
--   Login: /login
--   Forgot Password: /user/password
--   Google Sign In: /g/signin
+-   Signup: POST /signup
+-   Login: POST /login
+-   Forgot Password: POST /user/password
+-   Google Sign In: POST /g/signin
+-   Upload User Image: POST /user/image (Requires User Authentication)
+-   Getting User Details: GET /user (Requires User Authentication)
+-   Adding User Details: POST /user (Requires User Authentication)
+-   Getting All Attending Events: GET /user/attending (Requires User Authentication)
 
 ### Events
 
+#### Events Routes
+
+-   Getting all events: GET /events
+-   Getting a single event: GET /event/:eventId
+-   Posting an Event: POST /events (Requires User Authentication)
+-   Deleting an Event: DELETE /events/:eventId (Requires User Authentication)
+-   Marking an event as attending: GET /events/markAttended/:eventId (Requires User Authentication)
+-   Getting all Participants for an event: GET /event/:eventId/participants (Requires User Authentication)
+-   Getting all events in a category: /events/category/:categoryName 
 
 ## Utils
 This directory maintains all the utility functions and configuration files, used by the rest of the API functions. 

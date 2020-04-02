@@ -134,7 +134,8 @@ exports.googleSignin = (req, res) => {
         newUser.email = result.user.email;
         newUser.userName = result.user.displayName.replace(/\s/g, '');
 
-        db.collection(`users`).where('email', '==', newUser.email)
+        db.collection(`users`)
+        .where('email', '==', newUser.email)
         .get()
         .then(querySnapshot => {
             if(querySnapshot.size > 0) {
