@@ -53,7 +53,7 @@ Upon signin or login, a token is generated and stored in the browser's local sto
 -   Deleting an Event: DELETE /events/:eventId (Requires User Authentication)
 -   Marking an event as attending: GET /events/markAttended/:eventId (Requires User Authentication)
 -   Getting all Participants for an event: GET /event/:eventId/participants (Requires User Authentication)
--   Getting all events in a category: /events/category/:categoryName 
+-   Getting all events in a category: GET /events/category/:categoryName 
 
 ## Utils
 This directory maintains all the utility functions and configuration files, used by the rest of the API functions. 
