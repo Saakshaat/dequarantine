@@ -10,11 +10,13 @@ class CreatePage extends StatefulWidget {
 }
 
 class _CreatePageState extends State<CreatePage> {
+  //stores entered values in textfields
   TextEditingController _titleController;
   TextEditingController _descriptionController;
   TextEditingController _capController;
   TextEditingController _nameController;
 
+  //not to sure what i'm doing with those but they should stay here
   String _titleString = "";
   String _description = "";
   String _category = "Professional";
@@ -23,18 +25,23 @@ class _CreatePageState extends State<CreatePage> {
 
   String _dropDownValueCategory = "Professional";
 
+  //values used to send date / time
   DateTime _startDate;
   TimeOfDay _startTime;
 
   DateTime _endDate;
   TimeOfDay _endTime;
 
+
+  //values displayed in buttons
   String _startDateButton = "Start";
   String _startTimeButton = "";
 
   String _endDateButton = "End";
   String _endTimeButton = "";
 
+
+  //changes output in buttons
   void _selectStart(DateTime date, TimeOfDay time) {
     String dateString = "${date.year}, ${date.month}, ${date.day}";
     String timeString = "${time.hour} : ${time.minute}";
@@ -53,13 +60,8 @@ class _CreatePageState extends State<CreatePage> {
     });
   }
 
-  Widget _title(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
-      child: Text(text, style: Theme.of(context).textTheme.headline2),
-    );
-  }
 
+  //sends to api through backend
   void _onSubmit() async {
     Focus.of(context).unfocus();
 
@@ -96,6 +98,8 @@ class _CreatePageState extends State<CreatePage> {
     }
   }
 
+
+  //clears events fields
   void _deleteFields() {
     setState(() {
       _titleController.text = "";
@@ -105,6 +109,7 @@ class _CreatePageState extends State<CreatePage> {
     });
   }
 
+  //initialise variables on first state
   @override
   void initState() {
     super.initState();
@@ -114,6 +119,8 @@ class _CreatePageState extends State<CreatePage> {
     _nameController = TextEditingController();
   }
 
+
+  //renders page
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -122,10 +129,8 @@ class _CreatePageState extends State<CreatePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          // Padding(
-          //   padding: const EdgeInsets.only(top: 20.0),
-          //   child: _title("Event title"),
-          // ),
+
+          //Organizer name
           TextFormField(
             decoration: InputDecoration(
               hintText: "Your name ?",
@@ -140,6 +145,8 @@ class _CreatePageState extends State<CreatePage> {
               });
             },
           ),
+
+          //Event title
           TextField(
             decoration: InputDecoration(
               hintText: "Title: Tell us what your event is about",
@@ -155,6 +162,8 @@ class _CreatePageState extends State<CreatePage> {
             },
           ),
 
+
+          //Event description
           TextFormField(
             decoration: InputDecoration(
               hintText:
@@ -171,9 +180,13 @@ class _CreatePageState extends State<CreatePage> {
             },
           ),
 
+
+          //event start and end date/time
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
+
+              //Start
               OutlineButton(
                 onPressed: () async {
                   DateTime tempDate = await showDatePicker(
@@ -209,6 +222,8 @@ class _CreatePageState extends State<CreatePage> {
                 ),
               ),
               Text("to"),
+
+              //End
               OutlineButton(
                 onPressed: () async {
                   DateTime tempDate = await showDatePicker(
@@ -246,6 +261,8 @@ class _CreatePageState extends State<CreatePage> {
             ],
           ),
 
+
+          //How many people can attend
           TextFormField(
             decoration: InputDecoration(
               hintText: "How many people can attend ?",
@@ -261,6 +278,9 @@ class _CreatePageState extends State<CreatePage> {
               });
             },
           ),
+
+
+          //categories
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -301,6 +321,9 @@ class _CreatePageState extends State<CreatePage> {
                   })
             ],
           ),
+
+
+          //Submit button
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50.0),
             child: OutlineButton(
