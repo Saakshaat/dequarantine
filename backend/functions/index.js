@@ -25,7 +25,7 @@ const {
     postEvents,
     deleteEvents,
     markAttended,
-    unmarkAttending,
+    unmarkAttended,
     getParticipants,
     getCategoryEvents
 } = require("./handlers/events");
@@ -45,8 +45,8 @@ app.get("/events",getAllEvents);
 app.get("/event/:eventId",getOneEvent)
 app.post("/events", FBAuth, postEvents);
 app.delete("/events/:eventId", FBAuth, deleteEvents);
-app.get("/events/markAttended/:eventId",FBAuth,markAttended);
-//app.get("/events/unmarkAttended/:eventId",FBAuth,unmarkAttended);
+app.get("/events/markAttended/:eventId", FBAuth, markAttended);
+app.get("/events/unmarkAttended/:eventId",FBAuth, unmarkAttended);
 app.get("/event/:eventId/participants", FBAuth, getParticipants);
 app.get("/events/category/:categoryName", getCategoryEvents);
 
