@@ -92,46 +92,6 @@ exports.deleteEvents = (req, res) => {
     });
 };
 
-// exports.markAttended=(req,res)=>{
-//   const user = db.doc(`/users/${req.user.userName}`);
-//   const eventDocument= db.doc(`/events/${req.params.eventId}`);
-//   let userData
-//   let eventData;
-//  eventDocument
-//       .get()
-//       .then((doc) => {
-//         if (doc.exists) {
-//           eventData = doc.data();
-//           eventData.eventId = doc.id;
-//           if(eventData.participants.indexOf(req.user.userName) === -1) {
-//             eventData.participants.push(req.user.userName);
-//             eventData.attending++;
-//             return (eventDocument.update({ participants: eventData.participants },{attending:eventData.attending}));
-//           } else {
-//             return res.json({ error: `You are already attending` });
-//           }
-//         } else {
-//           return res.status(404).json({ error: 'Event not found' });
-//         }
-//       })
-//       user
-//            .get()
-//            .then((doc)=>{
-//              if(doc.exists){
-//             userData=doc.data();
-//             console.log(userData.attending)
-//             userData.attending.push(eventData.eventId);
-//             userData.attending.indexOf(eventData.eventId) === -1 ? userData.attending.push(eventData.eventId) :
-//             console.log("You are  already attending");
-//             return(user.update({attending:userData.attending}))
-
-//            }})
-
-//       .catch((err) => {
-//         console.error(err);
-//         res.status(500).json({ error: err.code });
-//       });
-// }
 
 exports.markAttended = (req, res) => {
   let batch = db.batch();
