@@ -2,6 +2,7 @@ import 'package:dequarantine/UI/pages/home/account_page.dart';
 import 'package:dequarantine/UI/pages/home/create_page.dart';
 import 'package:dequarantine/UI/pages/home/discovery_page.dart';
 import 'package:dequarantine/UI/pages/home/likes_page.dart';
+import 'package:dequarantine/UI/pages/home/new_discovery_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -12,23 +13,23 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
 
   List<Widget> _pages = [
+    DiscoverPage(),
     LikesPage(),
     CreatePage(),
-    DiscoverPage(),
     AccountPage()
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        children: _pages,
-        index: _selectedIndex,
-      ),
-      // body: _pages.elementAt(_selectedIndex), //for testing
+      // body: IndexedStack(
+      //   children: _pages,
+      //   index: _selectedIndex,
+      // ),
+      body: _pages.elementAt(_selectedIndex), //for testing
       bottomNavigationBar: Container(
         color: Theme.of(context).primaryColor,
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
@@ -41,16 +42,16 @@ class _HomeState extends State<Home> {
           tabBackgroundColor: Theme.of(context).buttonColor,
           tabs: [
             GButton(
-              icon: LineIcons.heart_o,
+              icon: LineIcons.search,
+              text: 'Discover',
+            ),
+            GButton(
+              icon: Icons.event,
               text: 'My Events',
             ),
             GButton(
               icon: LineIcons.plus,
               text: 'Create',
-            ),
-            GButton(
-              icon: LineIcons.search,
-              text: 'Discover',
             ),
             GButton(
               icon: LineIcons.info_circle,

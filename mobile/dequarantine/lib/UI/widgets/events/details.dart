@@ -1,4 +1,6 @@
+import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_icons/line_icons.dart';
 
 
@@ -8,13 +10,15 @@ class Details extends StatelessWidget {
   final totalAttendents;
   final description;
   final dateTime;
+  final eventId;
 
   Details({
     @required this.title,
     @required this.attendees,
     @required this.totalAttendents,
     @required this.description,
-    @required this.dateTime
+    @required this.dateTime,
+    @required this.eventId,
   });
 
   @override
@@ -33,26 +37,35 @@ class Details extends StatelessWidget {
           ),
           Text(description),
           Text(dateTime),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              IconButton(
-                color: Colors.redAccent,
-                icon: Icon(LineIcons.sign_out),
-                onPressed: () {
-                  print("Dismissed");
-                  Navigator.pop(context);  
-                },
+          Center(
+            child: InkWell(
+              onTap: () {
+                Fluttertoast.showToast(
+                  msg: "Adding to attending events"
+                );
+                currentUser.markAttending(eventId);
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    // IconButton(
+                    //   color: Colors.redAccent,
+                    //   icon: Icon(LineIcons.sign_out),
+                    //   onPressed: () {
+                    //     print("Dismissed");
+                    //     Navigator.pop(context);  
+                    //   },
+                    // ),
+                    Text("Add to my event", style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Theme.of(context).primaryColor)),),
+                    Icon(LineIcons.save, color: Theme.of(context).primaryColor,),
+                  ],
+                ),
               ),
-              IconButton(
-                color: Colors.greenAccent,
-                icon: Icon(LineIcons.check),
-                onPressed: () {
-                  print("Liked");
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+            ),
           )
         ],
       ),

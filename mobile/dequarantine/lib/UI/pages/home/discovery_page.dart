@@ -1,31 +1,79 @@
-import 'package:dequarantine/UI/widgets/events/staggered_view.dart';
+import 'package:dequarantine/UI/widgets/events/events_view.dart';
 import 'package:dequarantine/logic/functions/general/get_events_functions.dart';
+import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
 
-class DiscoverPage extends StatefulWidget {
+class DiscoverPageOld extends StatefulWidget {
   @override
-  _DiscoverPageState createState() => _DiscoverPageState();
+  _DiscoverPageOldState createState() => _DiscoverPageOldState();
 }
 
-class _DiscoverPageState extends State<DiscoverPage> {
+class _DiscoverPageOldState extends State<DiscoverPageOld> {
+  String _username = "";
+  String _greeting = "";
+
+  @override
+  void initState() {
+    super.initState();
+    print("first state");
+    _username = currentUser.getUserName()[0].toUpperCase() +
+        currentUser.getUserName().substring(1);
+    int now = DateTime.now().hour;
+    _greeting = _timeGreeting(now);
+  }
+
+  String _timeGreeting(int hour) {
+    String greeting = "";
+
+    if (0 <= hour && hour < 6)
+      greeting = "night";
+    else if (6 <= hour && hour < 12)
+      greeting = "morning";
+    else if (12 <= hour && hour < 18)
+      greeting = "afternoon";
+    else if (18 <= hour && hour < 23)
+      greeting = "evening";
+    else
+      return "Hello";
+
+    return "Good " + greeting;
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getAllEvents(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          List eventsList = snapshot.data["body"];
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 3,
+          title: Text("$_greeting $_username"),
+        ),
+        body: FutureBuilder(
+          future: getAllEvents(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              List eventsList = snapshot.data["body"];
 
-          return Events(
-            events: eventsList,
-            length: eventsList.length,
-          );
-        }
+              return Stack(
+                children: <Widget>[
+                  Events(
+                    events: eventsList,
+                    length: eventsList.length,
+                  ),
+                  FlatButton(
+                    child: Text("Refresh"),
+                    onPressed: () => setState(() {}),
+                  )
+                ],
+              );
+            }
 
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      },
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
+      ),
     );
   }
 }

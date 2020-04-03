@@ -13,6 +13,8 @@ class User {
   String _imageUrl;
   String _userName;
 
+  Map _userDataFB = {};
+
 
   User(user) {
     this._token = user["token"];
@@ -20,6 +22,11 @@ class User {
     this._email = user["email"];
     this._imageUrl = user["imageUrl"];
     this._userName = user["userName"];
+  }
+
+
+  String getUserName() {
+    return _userDataFB["credentials"]["userName"];
   }
 
 
@@ -33,9 +40,11 @@ class User {
 
     switch (userDetail.statusCode) {
       case 200:
-        Map body = convert.jsonDecode(userDetail.body);
-        body["code"] = true;
-        return body;
+        _userDataFB = convert.jsonDecode(userDetail.body);
+        
+        _userDataFB["code"] = true;
+        
+        return _userDataFB;
         break;
 
       default:
@@ -71,8 +80,26 @@ class User {
     }
   }
 
+  Future<void> markAttending(String eventId) async {
+    print(eventId);
+
+    String url = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/events/markAttended/$eventId";
+
+    http.Response marked = await http.get(url,
+      headers: {
+        "Authorization": "Bearer $_token"
+      }
+    );
+
+    //409 for already marked attending
+
+    print(marked.statusCode);
+  }
+
 
   Future<Map<String, dynamic>> getLikedEvents() async {
     //TODO: ask Saak on how to
   }
 }
+
+

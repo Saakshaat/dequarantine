@@ -1,6 +1,7 @@
 import 'dart:convert' as convert;
 import 'dart:core';
 
+import 'package:dequarantine/logic/functions/auth/sign_in_functions.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -21,6 +22,9 @@ Future<Map<String, dynamic>> signUpEmail(String username, String email, String p
     switch (signUp.statusCode) {
       case (201):
         print("Sign up successful");
+
+        
+
         return {"code": true, "body": response};
         break;
 

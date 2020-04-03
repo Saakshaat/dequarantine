@@ -1,4 +1,3 @@
-import 'package:dequarantine/UI/widgets/general/date_time_picker.dart';
 import 'package:dequarantine/logic/functions/user/create_event_functions.dart';
 import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +20,6 @@ class _CreatePageState extends State<CreatePage> {
   String _description = "";
   String _category = "Professional";
   int _cap = 0;
-  String _name = "";
 
   String _dropDownValueCategory = "Professional";
 
@@ -41,13 +39,21 @@ class _CreatePageState extends State<CreatePage> {
   String _endTimeButton = "";
 
 
+  Widget _startWidget = Text("Start");
+  Widget _endWidget = Text("End");
+
+
   //changes output in buttons
   void _selectStart(DateTime date, TimeOfDay time) {
     String dateString = "${date.year}, ${date.month}, ${date.day}";
     String timeString = "${time.hour} : ${time.minute}";
     setState(() {
-      _startDateButton = dateString;
-      _startTimeButton = timeString;
+      _startWidget = Column(
+        children: <Widget>[
+          Text(dateString),
+          Text(timeString),
+        ],
+      );
     });
   }
 
@@ -55,14 +61,18 @@ class _CreatePageState extends State<CreatePage> {
     String dateString = "${date.year}, ${date.month}, ${date.day}";
     String timeString = "${time.hour} : ${time.minute}";
     setState(() {
-      _endDateButton = dateString;
-      _endTimeButton = timeString;
+      _endWidget = Column(
+        children: <Widget>[
+          Text(dateString),
+          Text(timeString),
+        ],
+      );
     });
   }
 
 
   //sends to api through backend
-  void _onSubmit() async {
+  void _onSubmit(BuildContext context) async {
     Focus.of(context).unfocus();
 
     DateTime time = DateTime(
@@ -81,7 +91,7 @@ class _CreatePageState extends State<CreatePage> {
       "description": _descriptionController.text,
       "imageUrl":
           "https://aatc-bkk.com/wp-content/uploads/2015/01/tempimage.png",
-      "time": time
+      "time": time.toIso8601String()
     };
 
     print(body);
@@ -129,22 +139,6 @@ class _CreatePageState extends State<CreatePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-
-          //Organizer name
-          TextFormField(
-            decoration: InputDecoration(
-              hintText: "Your name ?",
-            ),
-            expands: false,
-            minLines: 1,
-            maxLines: 1,
-            controller: _nameController,
-            onEditingComplete: () {
-              setState(() {
-                _name = _nameController.text;
-              });
-            },
-          ),
 
           //Event title
           TextField(
@@ -213,13 +207,7 @@ class _CreatePageState extends State<CreatePage> {
 
                   _selectStart(_startDate, _startTime);
                 },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(_startDateButton),
-                    Text(_startTimeButton)
-                  ],
-                ),
+                child: _startWidget
               ),
               Text("to"),
 
@@ -250,13 +238,7 @@ class _CreatePageState extends State<CreatePage> {
 
                   _selectEnd(_endDate, _endTime);
                 },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(_endDateButton),
-                    Text(_endTimeButton)
-                  ],
-                ),
+                child: _endWidget
               ),
             ],
           ),
@@ -328,7 +310,7 @@ class _CreatePageState extends State<CreatePage> {
             padding: const EdgeInsets.symmetric(horizontal: 50.0),
             child: OutlineButton(
               child: Text("Make it live!"),
-              onPressed: () => _onSubmit(),
+              onPressed: () => _onSubmit(context),
             ),
           ),
         ],

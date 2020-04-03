@@ -48,16 +48,23 @@ Future<Map> signInWithEmail(String email, String password) async {
         "userName": response2["credentials"]["userName"],
       });
 
-      return {"code": true, "body": response};
+      if ((await currentUser.getAccountData())["code"] == true) {
+        return {"code": true, "body": response};
+      }
+
       break;
-    default:
-      print("Sign in unsuccessful");
-      return {"code": false, "body": response};
   }
+  print("Sign in unsuccessful");
+
+  List temp = [];
+  response.map((key, value) {
+    temp.add(value);
+  });
+
+  String error = temp[0];
+  
+  return {"code": false, "body": error};
 }
-
-
-
 
 
 
@@ -73,8 +80,8 @@ Future<void> handleSignInGoogle() async {
   //keeps the auth data
   final GoogleSignInAuthentication googleAuth = await googelUser.authentication;
 
-  print("ID token: ${googleAuth.idToken}");
-  print("Access token: ${googleAuth.accessToken}");
+  // print("google_IdToken: ${googleAuth.idToken}");
+  // print("google_Accesstoken: ${googleAuth.accessToken}");
 
   //create firebase cretentials, using given auth account
   // AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -97,5 +104,7 @@ Future<void> handleSignInGoogle() async {
 
   print(response);
 }
+
+
 
 

@@ -11,6 +11,7 @@ class DetailedView extends StatefulWidget {
   final dateTime;
   final organizer;
   final category;
+  final id;
 
   DetailedView({
     @required this.imageUrl,
@@ -21,6 +22,7 @@ class DetailedView extends StatefulWidget {
     @required this.dateTime,
     @required this.organizer,
     @required this.category,
+    @required this.id,
   });
 
   @override
@@ -38,7 +40,7 @@ class _DetailedViewState extends State<DetailedView> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           border: Border.all(
-            width: 5,
+            width: 3,
             color: Colors.white
           )
         ),
@@ -48,10 +50,11 @@ class _DetailedViewState extends State<DetailedView> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ClipRRect(
-              borderRadius: BorderRadius.circular(7),
+              borderRadius: BorderRadius.circular(5),
               child: Image.network(widget.imageUrl)
             ),
             Details(
+              eventId: widget.id,
               title: widget.title,
               description: widget.description,
               dateTime: widget.dateTime,
