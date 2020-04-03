@@ -1,4 +1,7 @@
 const { db } = require('../util/admin');
+const { google } = require('googleapis');
+const OAuth2 = google.auth.OAuth2;
+const calendar = google.calendar('v3');
 
 exports.getAllEvents = (req,res)=>{
   db
@@ -102,11 +105,40 @@ exports.markAttended=(req,res)=>{
       .get()
       .then((doc) => {
         if (doc.exists) {
+            console.log('EVENT', doc);
           eventData = doc.data();
           eventData.eventId = doc.id;
           if(eventData.participants.indexOf(req.user.userName) === -1) {
+            let oauth = new OAuth2();
+            //let oauth = new OAuth2(googleCredentials.web.client_id, googleCredentials.web.client_secret, googleCredentials.web.redirect_urls[0]);
+            calendar.events.insert({
+                oauth,
+                calendarId: 'primary',
+                resource: {
+                    summary: eventData.name,
+                    description: eventData.description
+                    /*
+                    start: {
+                        dataTime: eventData.
+                        timeZone:
+                    },
+                    end: {
+                        dateTime:
+                        timeZone:
+                    }
+                    */
+                }
+            })
+            .then(result => {
+                console.log('RESULT', result);
+            })
+            .catch(err => {
+                console.log("ERROR\n-----------------\n", err);
+            });
             eventData.participants.push(req.user.userName);
             eventData.attending++;
+            console.log('EVENT DATA', eventData);
+
             return (eventDocument.update({ participants: eventData.participants },{attending:eventData.attending}));
           } else {
             return res.json({ error: `You are already attending` });
@@ -120,6 +152,7 @@ exports.markAttended=(req,res)=>{
            .then((doc)=>{
              if(doc.exists){
             userData=doc.data();
+            console.log('USER\n--------------\n', userData)
             console.log(userData.attending)
             userData.attending.push(eventData.eventId);
             userData.attending.indexOf(eventData.eventId) === -1 ? userData.attending.push(eventData.eventId) : 
