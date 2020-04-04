@@ -13,6 +13,7 @@ exports.getAllEvents = (req, res) => {
           organizer: data.data().organizer,
           time: data.data().time,
           cap: data.data().cap,
+          link: data.data().link,
           attending: data.data().attending,
           category: data.data().category,
           description: data.data().description,
@@ -26,7 +27,6 @@ exports.getAllEvents = (req, res) => {
 
 //Getting one event when the event ID is given
 exports.getOneEvent = (req, res) => {
-  let screamData = {};
   db.doc(`/events/${req.params.eventId}`)
     .get()
     .then(doc => {
@@ -51,6 +51,7 @@ exports.postEvents = (req, res) => {
     category: req.body.category,
     description: req.body.description,
     time: req.body.time,
+    link: req.body.link,
     imageUrl: req.body.imageUrl,
     attending: 0,
     participants,
@@ -260,6 +261,7 @@ exports.getCategoryEvents = (req, res) => {
             organizer: data.data().organizer,
             time: data.data().time,
             cap: data.data().cap,
+            link: data.data().link,
             attending: data.data().attending,
             category: data.data().category,
             description: data.data().description,
