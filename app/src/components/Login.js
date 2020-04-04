@@ -63,10 +63,11 @@ const Login = ({ history }) => {
           .auth()
           .signInWithEmailAndPassword(email.value, password.value)
           .then((res)=>{
-              setCurrentUser({res})
-              console.log(res)
+              setCurrentUser(res.user)
+              localStorage.setItem('user', JSON.stringify(res.user))
+              console.log(res.user)
           })
-        history.push("/");
+        history.push("/events");
       } catch (error) {
         alert(error);
       }
@@ -75,9 +76,9 @@ const Login = ({ history }) => {
   );
 
 
-//   if (currentUser) {
-//     return <Redirect to="/events" />;
-//   }
+  if (currentUser) {
+    return <Redirect to="/events" />;
+  }
   return (
             <Container component="main" maxWidth="xs">
             <CssBaseline />

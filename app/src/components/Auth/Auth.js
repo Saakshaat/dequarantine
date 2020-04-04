@@ -4,7 +4,7 @@ import app from "./base.js";
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState("");
+  const [currentUser, setCurrentUser] = useState(null || localStorage.getItem('user'));
   const [pending, setPending] = useState(true);
 
 //   useEffect(() => {
@@ -20,9 +20,9 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={()=>{
-          return ({currentUser, setCurrentUser})
-      }}
+      value={
+          {currentUser, setCurrentUser}
+      }
     >
       {children}
     </AuthContext.Provider>
