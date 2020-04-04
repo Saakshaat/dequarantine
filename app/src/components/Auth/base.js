@@ -2,12 +2,14 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 
 const app = firebase.initializeApp({
-  apiKey: process.env.REACT_APP_FIREBASE_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID
+  apiKey: "AIzaSyBd1r9PD9IRGs7-gdWoig-vjsvIZ2zpU5E",
+  authDomain: "dequarantine-aae5f.firebaseapp.com",
+  databaseURL: "https://dequarantine-aae5f.firebaseio.com",
+  projectId: "dequarantine-aae5f",
+  storageBucket: "dequarantine-aae5f.appspot.com",
+  messagingSenderId: "828379572147",
+  appId: "1:828379572147:web:f653c186b0fad986284dc6",
+  measurementId: "G-BMVNRLZBWH"
 });
 
 export default app;

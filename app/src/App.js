@@ -6,23 +6,29 @@ import Attending from './components/Attending'
 import theme  from './style/theme'
 import Nav from './components/NavBar'
 import Home from './components/Home'
-import AuthProvider from './components/Auth/Auth'
+import { AuthProvider } from './components/Auth/Auth'
+import Account from './components/Account'
+import Login from './components/Login'
+import PrivateRoute from './components/Auth/PrivateRoute'
 
 const App = ()=>{
+
     return (
-      <AuthProvider>
       <ThemeProvider theme={theme}>
+      <AuthProvider>
           <CssBaseline>
             <Router>
               <Nav />
               <Switch>
                 <Route exact path="/events" component={Attending} />
-                <Route exact path="/" component={Home} />
+                {/* <Route exact path="/" component={Home} /> */}
+                <PrivateRoute exact path="/" component={Home} />
+                <Route exact path="/login" component={Login} />
               </Switch>
             </Router>
           </CssBaseline>
-          </ThemeProvider>
-        </AuthProvider>
+         </AuthProvider>
+         </ThemeProvider>
     )
 }
 
