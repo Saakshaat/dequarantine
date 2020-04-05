@@ -1,17 +1,26 @@
 const { db } = require("../util/admin");
+const Timestamp = require('firebase-firestore-timestamp');
+var moment = require('moment-timezone');
+//moment().tz("America/Los_Angeles").format();
+console.log(moment.tz.guess());
+
 
 exports.getAllEvents = (req, res) => {
+  
   db.collection("events")
     .get()
     .then(doc => {
       let events = [];
       doc.forEach(data => {
+        let zone=moment.tz.guess();
+         let time=moment(data.data().time).tz(zone);
+         let timezone=time.format();
         events.push({
           eventId: data.id,
           imageUrl: data.data().imageUrl,
           name: data.data().name,
           organizer: data.data().organizer,
-          time: data.data().time,
+          time: timezone,
           cap: data.data().cap,
           attending: data.data().attending,
           category: data.data().category,
@@ -43,6 +52,10 @@ exports.getOneEvent = (req, res) => {
 };
 
 exports.postEvents = (req, res) => {
+  //let zone;
+  //zone=moment.tz.guess();
+  let time =req.body.time;
+  //a.utc().format();
   participants = [];
   let organizer = req.user.userName;
   const newEvent = {
@@ -50,7 +63,7 @@ exports.postEvents = (req, res) => {
     cap: req.body.cap,
     category: req.body.category,
     description: req.body.description,
-    time: req.body.time,
+    time: time.toUTCString(),
     imageUrl: req.body.imageUrl,
     attending: 0,
     participants,
