@@ -20,9 +20,8 @@ const App = ()=>{
             <Router>
               <Nav />
               <Switch>
-                <Route exact path="/events" component={Attending} />
-                {/* <Route exact path="/" component={Home} /> */}
-                <PrivateRoute exact path="/" component={Home} />
+                <Route exact path="/" component={Home} />
+                <PrivateRoute exact path="/profile" component={Home} />
                 <Route exact path="/login" component={Login} />
               </Switch>
             </Router>

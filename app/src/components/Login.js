@@ -77,7 +77,7 @@ const Login = ({ history }) => {
 
 
   if (currentUser) {
-    return <Redirect to="/events" />;
+    return <Redirect to="/" />;
   }
   return (
             <Container component="main" maxWidth="xs">

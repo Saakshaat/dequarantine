@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import { Tabs, Tab } from '@material-ui/core'
-import {Link , Redirect} from 'react-router-dom'
+import {Link , Redirect, withRouter} from 'react-router-dom'
 import { AuthContext } from './Auth/Auth'
 
 
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ButtonAppBar() {
+const ButtonAppBar = function({ history }) {
   const user = localStorage.getItem('user');
 
   const [navigate, setNavigate] = useState(false)
@@ -46,8 +46,11 @@ export default function ButtonAppBar() {
   const classes = useStyles();
 
   const signOutHandler = (e) =>{
+    console.log("clearing local storage")
     localStorage.clear('user');
-    setNavigate(true)
+    console.log('logging out')
+    window.location.pathname='/login'
+
   }
 
   const redirectHandler =()=>{
@@ -78,10 +81,11 @@ export default function ButtonAppBar() {
             <Tabs value={value} className={classes.tabsContainer} onChange={handleChange}>
                 <Tab value={0} className={classes.tab} label={<i class="fas fa-home">  Home</i>} component={Link} to="/" />
                 <Tab  value={1} className={classes.tab} label={<i class="fas fa-tasks">My Profile</i>} component={Link} to="/projects" />
-                {!currentUser ? <Redirect to="/login"  push={true} /> : <Button onClick={signOutHandler}>Sign Out</Button> }
+                {currentUser ? <Button onClick={signOutHandler}>Sign Out</Button> : <Redirect to="/login"  push={true} /> }
             </Tabs>
         </Toolbar>
       </AppBar>
     </div>
   );
 }
+export default withRouter(ButtonAppBar)
