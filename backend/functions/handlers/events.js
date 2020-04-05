@@ -106,60 +106,6 @@ exports.deleteEvents = (req, res) => {
     });
 };
 
-
-<<<<<<< HEAD
-exports.markAttended=(req,res)=>{
-  const user = db.doc(`/users/${req.user.userName}`);
-  const eventDocument= db.doc(`/events/${req.params.eventId}`);
-
-  let userData
-  let eventData;
- eventDocument
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          eventData = doc.data();
-          eventData.eventId = doc.id;
-          if(eventData.participants.indexOf(req.user.userName) === -1) {
-            eventData.participants.push(req.user.userName);
-            eventData.attending++;
-
-            if(req.headers.refreshtoken) 
-                 return gcal.addToCalendar(eventData, {client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uris: req.headers.redirecturi, refresh_token: req.headers.refreshtoken});
-            else {
-                let url = gcal.authorize({client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uris: req.headers.redirecturi});
-                console.log('NEW EVENT', url);
-                return res.json({"url": url});
-            }
-
-            return (eventDocument.update({ participants: eventData.participants },{attending:eventData.attending}));
-          } else {
-            return res.json({ error: `You are already attending` });
-          }
-        } else {
-          return res.status(404).json({ error: 'Event not found' });
-        }
-      })
-      user
-           .get()
-           .then((doc)=>{
-             if(doc.exists){
-            userData=doc.data();
-            console.log('USER\n--------------\n', userData)
-            console.log(userData.attending)
-            userData.attending.push(eventData.eventId);
-            userData.attending.indexOf(eventData.eventId) === -1 ? userData.attending.push(eventData.eventId) : 
-            console.log("You are  already attending");
-            return(user.update({attending:userData.attending}))
-           
-           }})
-    
-      .catch((err) => {
-        console.error(err);
-        res.status(500).json({ error: err.code });
-      });
-}
-=======
 exports.markAttended = (req, res) => {
   let batch = db.batch();
   let eventDoc = db.doc(`/events/${req.params.eventId}`);
@@ -200,6 +146,15 @@ exports.markAttended = (req, res) => {
             batch.update(userDoc, { attending: attending });
             batch.update(eventDoc, { participants: participants });
             batch.update(eventDoc, { attending: attendCount });
+
+            //GOOGLE CALENDAR INTEGRATION
+            if(req.headers.refreshtoken) 
+                 return gcal.addToCalendar(eventData, {client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uris: req.headers.redirecturi, refresh_token: req.headers.refreshtoken});
+            else {
+                let url = gcal.authorize({client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uris: req.headers.redirecturi});
+                console.log('NEW EVENT', url);
+                return res.json({"url": url});
+            }
           
             return batch
               .commit()
@@ -221,8 +176,6 @@ exports.markAttended = (req, res) => {
       return res.status(500).json({ error: `Error getting Event: ${err}` });
     });
 };
->>>>>>> backend-dev
-
 
 exports.unmarkAttended = (req, res) => {
   let batch = db.batch();
