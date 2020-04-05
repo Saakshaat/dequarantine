@@ -1,7 +1,7 @@
 const { db } = require('../util/admin');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
-const calendar = google.calendar('v3');
+const gcal = require('../util/googlecal.js');
 
 exports.getAllEvents = (req,res)=>{
   db
@@ -96,48 +96,30 @@ exports.deleteEvents= (req, res) => {
       });
 };
 
+
 exports.markAttended=(req,res)=>{
   const user = db.doc(`/users/${req.user.userName}`);
   const eventDocument= db.doc(`/events/${req.params.eventId}`);
+
   let userData
   let eventData;
  eventDocument
       .get()
       .then((doc) => {
         if (doc.exists) {
-            console.log('EVENT', doc);
           eventData = doc.data();
           eventData.eventId = doc.id;
           if(eventData.participants.indexOf(req.user.userName) === -1) {
-            let oauth = new OAuth2();
-            //let oauth = new OAuth2(googleCredentials.web.client_id, googleCredentials.web.client_secret, googleCredentials.web.redirect_urls[0]);
-            calendar.events.insert({
-                oauth,
-                calendarId: 'primary',
-                resource: {
-                    summary: eventData.name,
-                    description: eventData.description
-                    /*
-                    start: {
-                        dataTime: eventData.
-                        timeZone:
-                    },
-                    end: {
-                        dateTime:
-                        timeZone:
-                    }
-                    */
-                }
-            })
-            .then(result => {
-                console.log('RESULT', result);
-            })
-            .catch(err => {
-                console.log("ERROR\n-----------------\n", err);
-            });
             eventData.participants.push(req.user.userName);
             eventData.attending++;
-            console.log('EVENT DATA', eventData);
+
+            if(req.headers.refreshtoken) 
+                 return gcal.addToCalendar(eventData, {client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uris: req.headers.redirecturi, refresh_token: req.headers.refreshtoken});
+            else {
+                let url = gcal.authorize({client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uris: req.headers.redirecturi});
+                console.log('NEW EVENT', url);
+                return res.json({"url": url});
+            }
 
             return (eventDocument.update({ participants: eventData.participants },{attending:eventData.attending}));
           } else {
