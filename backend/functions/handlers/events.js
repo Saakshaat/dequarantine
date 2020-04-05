@@ -12,8 +12,8 @@ exports.getAllEvents = (req, res) => {
     .then(doc => {
       let events = [];
       doc.forEach(data => {
-        let zone=moment.tz.guess();
-         let time=moment(data.data().time).tz(zone);
+        let zoneInfo=moment.tz.guess();
+         let time=moment(data.data().time).tz(zoneInfo);
          let timezone=time.format();
         events.push({
           eventId: data.id,
