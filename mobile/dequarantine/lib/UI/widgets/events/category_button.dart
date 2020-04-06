@@ -6,11 +6,13 @@ class CategoryButton extends StatelessWidget {
   final IconData icon;
   final String category;
   final void Function() onTap;
+  final List events;
 
   CategoryButton({
     @required this.icon,
     @required this.category,
     @required this.onTap,
+    @required this.events,
   });
   
   @override

@@ -16,7 +16,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   List<Widget> _pages = [
-    DiscoverPage(),
+    DiscoverPageOld(),
     LikesPage(),
     CreatePage(),
     AccountPage()

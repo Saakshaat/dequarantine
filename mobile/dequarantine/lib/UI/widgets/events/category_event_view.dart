@@ -18,8 +18,15 @@ class CategoryRowEvents extends StatefulWidget {
 }
 
 class _CategoryRowEventsState extends State<CategoryRowEvents> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

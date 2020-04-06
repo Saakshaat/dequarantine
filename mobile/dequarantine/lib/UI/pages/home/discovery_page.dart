@@ -16,10 +16,15 @@ class _DiscoverPageOldState extends State<DiscoverPageOld> {
   void initState() {
     super.initState();
     print("first state");
-    _username = currentUser.getUserName()[0].toUpperCase() +
-        currentUser.getUserName().substring(1);
-    int now = DateTime.now().hour;
-    _greeting = _timeGreeting(now);
+    try {
+      _username = currentUser.getUserName()[0].toUpperCase() +
+          currentUser.getUserName().substring(1);
+      int now = DateTime.now().hour;
+      _greeting = _timeGreeting(now);
+
+    } catch (e) {
+      _greeting = _timeGreeting(DateTime.now().hour);
+    }
   }
 
   String _timeGreeting(int hour) {
@@ -54,17 +59,9 @@ class _DiscoverPageOldState extends State<DiscoverPageOld> {
             if (snapshot.hasData) {
               List eventsList = snapshot.data["body"];
 
-              return Stack(
-                children: <Widget>[
-                  Events(
-                    events: eventsList,
-                    length: eventsList.length,
-                  ),
-                  FlatButton(
-                    child: Text("Refresh"),
-                    onPressed: () => setState(() {}),
-                  )
-                ],
+              return Events(
+                events: eventsList,
+                length: eventsList.length,
               );
             }
 

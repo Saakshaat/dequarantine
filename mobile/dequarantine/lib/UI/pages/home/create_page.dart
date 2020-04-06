@@ -73,7 +73,6 @@ class _CreatePageState extends State<CreatePage> {
 
   //sends to api through backend
   void _onSubmit(BuildContext context) async {
-    Focus.of(context).unfocus();
 
     DateTime time = DateTime(
       _startDate.year,

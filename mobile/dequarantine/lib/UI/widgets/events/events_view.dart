@@ -78,7 +78,7 @@ class _EventsState extends State<Events> {
         ),
       ));
     });
-    return Column(
+    return ListView(
       children: widgets,
     );
   }
