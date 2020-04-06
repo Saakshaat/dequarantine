@@ -147,19 +147,18 @@ exports.markAttended = (req, res) => {
             batch.update(eventDoc, { participants: participants });
             batch.update(eventDoc, { attending: attendCount });
 
+            let url;
             //GOOGLE CALENDAR INTEGRATION
-            if(req.headers.refreshtoken) 
-                 return gcal.addToCalendar(eventData, {client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uris: req.headers.redirecturi, refresh_token: req.headers.refreshtoken});
-            else {
-                let url = gcal.authorize({client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uris: req.headers.redirecturi});
-                console.log('NEW EVENT', url);
-                return res.json({"url": url});
+            if(req.headers.refreshtoken) {
+                 return gcal.addToCalendar(eventData, {client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uri: req.headers.redirecturi, refresh_token: req.headers.refreshtoken});
+            } else {
+                url = gcal.authorize({client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uri: req.headers.redirecturi});
             }
           
             return batch
               .commit()
               .then(() => {
-                return res.status(200);
+                return res.status(200).json({url: url});
               })
               .catch(err => {
                 return res.status(500).json({ error: err });

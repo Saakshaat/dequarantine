@@ -2,8 +2,7 @@ const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
 exports.authorize = ( clientCredentials ) => {
-    const { client_secret, client_id, redirect_uris } = clientCredentials;
-    const redirect_uri = JSON.parse(redirect_uris)[0];
+    const { client_secret, client_id, redirect_uri } = clientCredentials;
     const OAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uri);
 
     const SCOPES = ['https://www.googleapis.com/auth/calendar.events'];
@@ -29,10 +28,10 @@ exports.addToCalendar= (eventData, credentials) => {
             summary: eventData.name,
             description: eventData.description,
             start: {
-                dateTime: "2020-04-30T10:30:00.0z"
+                dateTime: eventData.start
             },
             end: {
-                dateTime: "2020-05-01T10:30:00.0z"
+                dateTime: eventData.end
             }
         }
     })
