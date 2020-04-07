@@ -1,4 +1,5 @@
 const { db } = require("../util/admin");
+const gcal = require('../util/googlecal.js');
 const Timestamp = require('firebase-firestore-timestamp');
 var moment = require('moment-timezone');
 console.log(moment.tz.guess());
@@ -105,7 +106,6 @@ exports.deleteEvents = (req, res) => {
     });
 };
 
-
 exports.markAttended = (req, res) => {
   let batch = db.batch();
   let eventDoc = db.doc(`/events/${req.params.eventId}`);
@@ -125,6 +125,18 @@ exports.markAttended = (req, res) => {
             .status(409)
             .json({ general: `Event Full. It has a cap of ${eventDoc.cap}` });
         }
+
+        //GOOGLE CALENDAR INTEGRATION
+        let url;
+        if(req.headers.refreshtoken) {
+             gcal.addToCalendar(doc.data(), {client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uri: req.headers.redirecturi, refresh_token: req.headers.refreshtoken})
+             .catch(err => console.log('ERROR ADDING EVENT TO USER\'S GOOGLE CALENDAR\n', err));
+        } else {
+            url = gcal.authorize({client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uri: req.headers.redirecturi});
+            console.log('URL', url);
+        }
+        //END GOOGLE CAL INTEGRATION
+
         eventUpdated = true;
         let orgParticipants = doc.data().participants;
         orgParticipants.push(req.user.userName);
@@ -133,10 +145,11 @@ exports.markAttended = (req, res) => {
         return userDoc
           .get()
           .then(doc => {
+
             if (doc.data().attending.includes(req.params.eventId)) {
               return res
                 .status(409)
-                .json({ general: `Already attending this event` });
+                .json({ general: `Already attending this event`, ...url && {url} });
             }
             
             let orgAttending = doc.data().attending;
@@ -150,7 +163,7 @@ exports.markAttended = (req, res) => {
             return batch
               .commit()
               .then(() => {
-                return res.status(200);
+                return res.status(200).json({url: url});
               })
               .catch(err => {
                 return res.status(500).json({ error: err });
@@ -167,7 +180,6 @@ exports.markAttended = (req, res) => {
       return res.status(500).json({ error: `Error getting Event: ${err}` });
     });
 };
-
 
 exports.unmarkAttended = (req, res) => {
   let batch = db.batch();
