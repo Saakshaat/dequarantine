@@ -58,24 +58,36 @@ Upon signin or login, a token is generated and stored in the browser's local sto
 -   Getting all events in a category: GET /events/category/:categoryName 
 
 #### Workflow for Marking an Event as Attending
+
+##### Step 1
 ```
+    Authorization: Bearer Token
     ClientSecret: client_secret
     ClientId: client_id
     RedirectURI: redirect_uri
-    RefreshToken: Google Calendar Refresh Token (optional)
+    RefreshToken: Google Calendar Refresh Token (optional if not available)
 ```
-<br />
-`ClientSecret`, `ClientId`, and `RefreshURI` are gotten from the credentials.json file for the app, either Android or Web. <br />
-`redirect_uri` is an array but you need to select the first (and usually only) element in the array and feed that into the `RedirectURI` header.<br />
+<br> </br>
+`ClientSecret`, `ClientId`, and `RefreshURI` are gotten from the credentials.json file for the app, either Android or Web. <br/>
+`redirect_uri` is an array but you need to select the first (and usually only) element in the array and feed that into the `RedirectURI` header.<br/>
+If you already have a refresh token from Google Calendar, there is no need for step 3 and events will automatically be added to user's calendar. Just include `RefreshToken` header.
+
+##### Step 2
 Server will return a url if `RefreshToken` header is not present. 
+
 ```
     Response: {
                 url: 'http://oauthURlblahbalh`
               }
 ```
+
 Follow the url in Response body to get `Google Calendar Refresh Token`.
-<br />
-Then subsequent requests can incldue `RefreshToken` header.
+
+##### Step 3
+Make the request again, this time include the `RefreshToken` header.
+
+##### Step 4 
+Include the `RefreshToken` header in all subsequent requests to `/events/markAttended/:eventId`
 
 ## Utils
 This directory maintains all the utility functions and configuration files, used by the rest of the API functions. 
