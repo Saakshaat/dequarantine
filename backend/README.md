@@ -52,12 +52,12 @@ Upon signin or login, a token is generated and stored in the browser's local sto
 -   Getting a single event: GET /event/:eventId
 -   Posting an Event: POST /events (Requires User Authentication)
 -   Deleting an Event: DELETE /events/:eventId (Requires User Authentication)
--   Marking an event as attending: GET /events/markAttended/:eventId (Requires User Authentication) [Read Workflow](#Worflow)
+-   Marking an event as attending: GET /events/markAttended/:eventId (Requires User Authentication) [Read Workflow](#workflow-for-marking-an-event-as-attending)
 -   Marking an event as not attending anymore: GET /events/unmarkAttended/:eventId (Requires User Authentication)
 -   Getting all Participants for an event: GET /event/:eventId/participants (Requires User Authentication)
 -   Getting all events in a category: GET /events/category/:categoryName 
 
-##### Workflow for Marking an Event as Attending
+#### Workflow for Marking an Event as Attending
 ```
     ClientSecret: client_secret
     ClientId: client_id
