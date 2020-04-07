@@ -125,6 +125,18 @@ exports.markAttended = (req, res) => {
             .status(409)
             .json({ general: `Event Full. It has a cap of ${eventDoc.cap}` });
         }
+
+        //GOOGLE CALENDAR INTEGRATION
+        let url;
+        if(req.headers.refreshtoken) {
+             gcal.addToCalendar(doc.data(), {client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uri: req.headers.redirecturi, refresh_token: req.headers.refreshtoken})
+             .catch(err => console.log('ERROR ADDING EVENT TO USER\'S GOOGLE CALENDAR\n', err));
+        } else {
+            url = gcal.authorize({client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uri: req.headers.redirecturi});
+            console.log('URL', url);
+        }
+        //END GOOGLE CAL INTEGRATION
+
         eventUpdated = true;
         let orgParticipants = doc.data().participants;
         orgParticipants.push(req.user.userName);
@@ -133,10 +145,11 @@ exports.markAttended = (req, res) => {
         return userDoc
           .get()
           .then(doc => {
+
             if (doc.data().attending.includes(req.params.eventId)) {
               return res
                 .status(409)
-                .json({ general: `Already attending this event` });
+                .json({ general: `Already attending this event`, ...url && {url} });
             }
             
             let orgAttending = doc.data().attending;
@@ -146,14 +159,6 @@ exports.markAttended = (req, res) => {
             batch.update(userDoc, { attending: attending });
             batch.update(eventDoc, { participants: participants });
             batch.update(eventDoc, { attending: attendCount });
-
-            let url;
-            //GOOGLE CALENDAR INTEGRATION
-            if(req.headers.refreshtoken) {
-                 return gcal.addToCalendar(eventData, {client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uri: req.headers.redirecturi, refresh_token: req.headers.refreshtoken});
-            } else {
-                url = gcal.authorize({client_secret: req.headers.clientsecret, client_id: req.headers.clientid, redirect_uri: req.headers.redirecturi});
-            }
           
             return batch
               .commit()
