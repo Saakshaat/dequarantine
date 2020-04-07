@@ -48,13 +48,34 @@ Upon signin or login, a token is generated and stored in the browser's local sto
 #### Events Routes
 
 -   Getting all events: GET /events
+        
 -   Getting a single event: GET /event/:eventId
 -   Posting an Event: POST /events (Requires User Authentication)
 -   Deleting an Event: DELETE /events/:eventId (Requires User Authentication)
--   Marking an event as attending: GET /events/markAttended/:eventId (Requires User Authentication)
--   Marking an event as not attenidnh anymore: GET /events/unmarkAttended/:eventId (Requires User Authentication)
+-   Marking an event as attending: GET /events/markAttended/:eventId (Requires User Authentication) [Read Workflow](#Worflow)
+-   Marking an event as not attending anymore: GET /events/unmarkAttended/:eventId (Requires User Authentication)
 -   Getting all Participants for an event: GET /event/:eventId/participants (Requires User Authentication)
 -   Getting all events in a category: GET /events/category/:categoryName 
+
+##### Workflow for Marking an Event as Attending
+```
+    ClientSecret: client_secret
+    ClientId: client_id
+    RedirectURI: redirect_uri
+    RefreshToken: Google Calendar Refresh Token (optional)
+```
+<br />
+`ClientSecret`, `ClientId`, and `RefreshURI` are gotten from the credentials.json file for the app, either Android or Web. <br />
+`redirect_uri` is an array but you need to select the first (and usually only) element in the array and feed that into the `RedirectURI` header.<br />
+Server will return a url if `RefreshToken` header is not present. 
+```
+    Response: {
+                url: 'http://oauthURlblahbalh`
+              }
+```
+Follow the url in Response body to get `Google Calendar Refresh Token`.
+<br />
+Then subsequent requests can incldue `RefreshToken` header.
 
 ## Utils
 This directory maintains all the utility functions and configuration files, used by the rest of the API functions. 
