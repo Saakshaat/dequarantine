@@ -1,18 +1,15 @@
 import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:line_icons/line_icons.dart';
 
-
-class Details extends StatelessWidget {
+class MyEventsDetails extends StatelessWidget {
   final title;
   final attendees;
   final totalAttendents;
   final description;
-  final DateTime dateTime;
+  final dateTime;
   final eventId;
 
-  Details({
+  MyEventsDetails({
     @required this.title,
     @required this.attendees,
     @required this.totalAttendents,
@@ -31,11 +28,16 @@ class Details extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(title, style: Theme.of(context).textTheme.headline5,),
-              Text("${attendees.toString()} / ${totalAttendents.toString()}", style: Theme.of(context).textTheme.bodyText2,)
+              Text(
+                title,
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              Text(
+                "${attendees.toString()} / ${totalAttendents.toString()}",
+                style: Theme.of(context).textTheme.bodyText2,
+              )
             ],
-          ),
-          Divider(),
+          ),Divider(),
           Text(description),
           Divider(),
           Text("${dateTime.year.toString()} / ${dateTime.month.toString()} / ${dateTime.day.toString()} at ${dateTime.hour.toString()}:${dateTime.minute.toString()}"),
@@ -43,10 +45,7 @@ class Details extends StatelessWidget {
           Center(
             child: InkWell(
               onTap: () {
-                Fluttertoast.showToast(
-                  msg: "Adding to attending events"
-                );
-                currentUser.markAttending(eventId, context);
+                currentUser.markUnattending(eventId);
                 Navigator.pop(context);
               },
               child: Padding(
@@ -60,11 +59,17 @@ class Details extends StatelessWidget {
                     //   icon: Icon(LineIcons.sign_out),
                     //   onPressed: () {
                     //     print("Dismissed");
-                    //     Navigator.pop(context);  
+                    //     Navigator.pop(context);
                     //   },
                     // ),
-                    Text("Add to my event", style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Theme.of(context).primaryColor)),),
-                    Icon(LineIcons.save, color: Theme.of(context).primaryColor,),
+                    Text(
+                      "Remove from my event",
+                      style: Theme.of(context).textTheme.bodyText1.merge(
+                          TextStyle(
+                              color: Theme.of(context)
+                                  .sliderTheme
+                                  .activeTrackColor)),
+                    ),
                   ],
                 ),
               ),

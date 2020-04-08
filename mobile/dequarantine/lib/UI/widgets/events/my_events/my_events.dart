@@ -1,16 +1,15 @@
-import 'package:dequarantine/UI/widgets/events/detailed_view.dart';
+import 'package:dequarantine/UI/widgets/events/my_events/my_detailedview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class Events extends StatefulWidget {
-  Events({@required this.events, @required this.length});
+class MyEvents extends StatefulWidget {
+  MyEvents({@required this.events, @required this.length});
   final List events;
   final int length;
   @override
-  _EventsState createState() => _EventsState();
+  _MyEventsState createState() => _MyEventsState();
 }
 
-class _EventsState extends State<Events> {
+class _MyEventsState extends State<MyEvents> {
   void _createModalSheet(context, Widget event) {
     showModalBottomSheet(
         context: context,
@@ -46,7 +45,7 @@ class _EventsState extends State<Events> {
         child: InkWell(
           onTap: () => _createModalSheet(
               context,
-              DetailedView(
+              MyDetailedView(
                 id: eventId,
                 title: name,
                 description: description,
@@ -78,6 +77,12 @@ class _EventsState extends State<Events> {
         ),
       ));
     });
+
+    if (widgets.length == 0) {
+      return Center(
+        child: Text("No events to display"),
+      );
+    }
     return ListView(
       children: widgets,
     );

@@ -2,6 +2,8 @@ import 'dart:convert' as convert;
 import 'dart:core';
 
 import 'package:dequarantine/main.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -80,7 +82,7 @@ class User {
     }
   }
 
-  Future<void> markAttending(String eventId) async {
+  Future<bool> markAttending(String eventId, BuildContext context) async {
     print(eventId);
 
     String url = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/events/markAttended/$eventId";
@@ -92,14 +94,46 @@ class User {
     );
 
     //409 for already marked attending
+    print(marked.statusCode);
+
+    if (marked.statusCode == 200) {
+      Fluttertoast.showToast(msg: "Marked as attended");
+    } else if (marked.statusCode == 409) {
+      Fluttertoast.showToast(msg: "Already attending");
+    }
+  }
+
+  Future<void> markUnattending(String eventId) async {
+    print(eventId);
+
+    String url = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/events/unmarkAttended/$eventId";
+
+    http.Response marked = await http.get(url,
+      headers: {
+        "Authorization": "Bearer $_token"
+      }
+    );
 
     print(marked.statusCode);
   }
 
+  Future<List> getAttendingEvents() async {
+    String url = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/user/attending";
 
-  Future<Map<String, dynamic>> getLikedEvents() async {
-    //TODO: ask Saak on how to
+    http.Response markedAttending = await http.get(url,
+      headers: {
+        "Authorization": "Bearer $_token"
+      }
+    );
+
+    if (markedAttending.statusCode == 200) {
+      List response = convert.jsonDecode(markedAttending.body);
+      return response;
+    } else {
+      return [];
+    }
   }
 }
+
 
 

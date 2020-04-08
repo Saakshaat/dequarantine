@@ -1,5 +1,6 @@
 import 'package:dequarantine/UI/pages/home/category_pages/today.dart';
 import 'package:dequarantine/UI/widgets/events/events_view.dart';
+import 'package:dequarantine/UI/widgets/events/my_events/my_events.dart';
 import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +52,7 @@ class _LikesPageState extends State<LikesPage>
           ),
         ),
         body: FutureBuilder(
-          future: currentUser.getAccountData(),
+          future: currentUser.getAttendingEvents(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               DateTime today = DateTime.now();
@@ -59,7 +60,7 @@ class _LikesPageState extends State<LikesPage>
               List eventsToday = [];
               List eventsUpcoming = [];
 
-              snapshot.data["attending"].forEach((event) {
+              snapshot.data.forEach((event) {
                 DateTime time = DateTime.parse(event["time"]);
                 if (time.compareTo(today) == 0) {
                   eventsToday.add(event);
@@ -69,11 +70,11 @@ class _LikesPageState extends State<LikesPage>
               });
               return TabBarView(
                 children: <Widget>[
-                  Events(
+                  MyEvents(
                     events: eventsToday,
                     length: eventsToday.length,
                   ),
-                  Events(
+                  MyEvents(
                     events: eventsUpcoming,
                     length: eventsUpcoming.length,
                   )

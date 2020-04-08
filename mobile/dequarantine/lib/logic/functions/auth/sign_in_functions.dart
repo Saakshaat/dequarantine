@@ -70,7 +70,7 @@ Future<Map> signInWithEmail(String email, String password) async {
 
 
 
-Future<void> handleSignInGoogle() async {
+Future<Map<String, dynamic>> handleSignInGoogle() async {
   //create reauired consts used to sign in with firebase,
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -93,7 +93,7 @@ Future<void> handleSignInGoogle() async {
   String _baseGoogleUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/g/signin";
 
   Map body = {
-    "accessToken": googleAuth.accessToken,
+    "access_token": googleAuth.accessToken,
   };
 
   var a = await http.post(_baseGoogleUrl,
@@ -102,7 +102,11 @@ Future<void> handleSignInGoogle() async {
 
   var response = convert.jsonDecode(a.body);
 
-  print(response);
+  if (a.statusCode == 200 || a.statusCode == 201) {
+    print("Sign in successful");
+    print(response);
+    return {};
+  }
 }
 
 
