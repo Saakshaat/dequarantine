@@ -1,146 +1,149 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom'
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import firebase from 'firebase';
-import '../App.scss';
-import axios from 'axios';
-
-const initialState = {
-    email: '',
-    password: '',
-    emailError: '',
-    passwordError: '',
-    messageError: '',
-}
-
-const config = {
-    apiKey: 'AIzaSyBd1r9PD9IRGs7-gdWoig-vjsvIZ2zpU5E',
-    authDomain: 'dequarantine-aae5f.firebaseapp.com',
-}
+import React, { useCallback, useContext } from "react";
+import { withRouter, Redirect } from "react-router";
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import app from "./Auth/base";
+import { AuthContext } from "./Auth/Auth";
 
 
-firebase.initializeApp(config)
+function Copyright() {
+    return (
+      <Typography variant="body2" color="textSecondary" align="center">
+        {'Copyright © '}
+        <Link color="inherit" href="https://material-ui.com/">
+          Your Website
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
 
-class Login extends Component {
-    state = initialState
 
-    // componentDidMount(){
-    //     firebase.auth().onAuthStateChanged(user=>{
+const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  }));
 
-    //     })
-    // }
+const Login = ({ history }) => {
+    const {currentUser, setCurrentUser } = useContext(AuthContext)
+    const classes = useStyles();
+    const handleLogin = useCallback(
+    async event => {
+      event.preventDefault();
+      const { email, password } = event.target.elements;
+      try {
+        await app
+          .auth()
+          .signInWithEmailAndPassword(email.value, password.value)
+          .then((res)=>{
+              setCurrentUser(res.user)
+              localStorage.setItem('user', JSON.stringify(res.user))
+              console.log(res.user)
+          })
+        history.push("/events");
+      } catch (error) {
+        alert(error);
+      }
+    },
+    [history]
+  );
 
-    googlePopUp = () =>{
-        const provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(function(result) {
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            console.log(result)
-            console.log(result.user, result.user.displayName, result.user.email)
-            const token = result.credential.accessToken;
-            axios.post("https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/g/signin",{"access_token" :token}).then(res=>{
-                console.log(res)
-            }).catch(err=>{
-                console.log(err)
-            })
 
-            // ...
-          }).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-            // ...
-          });
-    }
-    formValidation = () => {
-        const { email, password } = this.state
-        let emailError = ''
-        let passwordError = ''
-
-        if (email === '') {
-            emailError = `Please input your Email`
-        } else if (email !== '' && !email.includes('@')) {
-            emailError = `Email must includes '@'`
-        }
-
-        if (password === '') {
-            passwordError = `Please input your Password`
-        }
-
-        if (emailError || passwordError) {
-          this.setState({ emailError, passwordError })
-          return false
-        }
-        return true
-    }
-
-    clearForm = () => {
-        this.setState(initialState)
-    }
-
-    handleOnChange = e => {
-        this.setState({ [e.target.name]: e.target.value})
-    }
-
-    handleOnSubmit = e => {
-        e.preventDefault()
-        const formValidation = this.formValidation()
-        if (formValidation) {
-            axios.post("https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/login", this.state)
-            .then((res) => {
-              console.log(res)
-            })
-            .catch((err)=>{
-              console.log(err);
-              console.log("checking for invalid password.....")
-              this.setState({
-                passwordError : "Invalid Password"
-              })
-            })
-        }
-    }
-
-    render () {
-        const { emailError, passwordError } = this.state
-
-        return (
-        <div className="modal-dialog modal-dialog-centered login-form" role="document">
-            <div className="modal-content">
-                <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalCenterTitle">Sign In</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span onClick={()=> {this.setState(initialState); this.props.handleModelOnClick()}}>&times;</span>
-                    </button>
-                </div>
-
-                <div className="modal-body">
-                    <form className="form-signin" onSubmit={ this.handleOnSubmit }>
-                        <div className="form-label-group">
-                            <label htmlFor="inputEmail">Email address</label>
-                            <input onChange={ this.handleOnChange } type="text" name='email' id="inputEmail" className="form-control"  value={this.state.email} />
-                            <div className='alert'>{emailError}</div>
-
-                        </div>
-                        <div className="form-label-group">
-                            <label htmlFor="inputPassword">Password</label>
-                            <input onChange={ this.handleOnChange } type="password" name='password' id="inputPassword" className="form-control" value={ this.state.password } />
-                            <div className='alert'>{passwordError}</div>
-                            <div className="form-btn">
-                                <button className="btn btn-primary"><span><i class="fas fa-sign-in-alt"></i></span>Login</button>
-                            </div>
-                        </div>
-                    </form>
-                    <div className="login-footer">
-                            <button className="google-btn" onClick={this.googlePopUp}><span><i class="fab fa-google"></i></span>Sign In with Google</button>
-                    </div>
-                </div>
+  if (currentUser) {
+    return <Redirect to="/" />;
+  }
+  return (
+            <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+                <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+                Sign in
+            </Typography>
+            <form className={classes.form} noValidate onSubmit={handleLogin}>
+                <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                />
+                <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                />
+                <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+                />
+                <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                >
+                Sign In
+                </Button>
+                <Grid container>
+                <Grid item xs>
+                    <Link href="#" variant="body2">
+                    Forgot password?
+                    </Link>
+                </Grid>
+                <Grid item>
+                    <Link href="#" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                    </Link>
+                </Grid>
+                </Grid>
+            </form>
             </div>
-        </div>
-        )
-    }
-}
+            <Box mt={8}>
+            <Copyright />
+            </Box>
+        </Container>
+  );
+};
 
-export default Login
+export default withRouter(Login);
