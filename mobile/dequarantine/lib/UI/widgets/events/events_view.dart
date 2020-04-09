@@ -35,11 +35,12 @@ class _EventsState extends State<Events> {
       final String imageUrl = item["imageUrl"];
       final String name = item["name"];
       final String organizer = "test"; //item["organizer"].toString();
-      final String time = item["time"].toString();
+      final String startTime = item["startTime"].toString();
       final String cap = item["cap"].toString();
       final String attending = item["attending"].toString();
       final String category = item["category"];
       final String description = item["description"];
+      final String url = item["link"];
 
       widgets.add(Card(
         elevation: 3,
@@ -48,9 +49,10 @@ class _EventsState extends State<Events> {
               context,
               DetailedView(
                 id: eventId,
+                url: url,
                 title: name,
                 description: description,
-                dateTime: DateTime.tryParse(time).toLocal(),
+                dateTime: DateTime.tryParse(startTime).toLocal(),
                 attendees: attending.toString(),
                 totalAttendents: cap.toString(),
                 imageUrl:

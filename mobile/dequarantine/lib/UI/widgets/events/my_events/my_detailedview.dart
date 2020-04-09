@@ -13,6 +13,7 @@ class MyDetailedView extends StatefulWidget {
   final organizer;
   final category;
   final id;
+  final String url;
 
   MyDetailedView({
     @required this.imageUrl,
@@ -24,6 +25,7 @@ class MyDetailedView extends StatefulWidget {
     @required this.organizer,
     @required this.category,
     @required this.id,
+    @required this.url,
   });
 
   @override
@@ -61,6 +63,7 @@ class _MyDetailedViewState extends State<MyDetailedView> {
               dateTime: widget.dateTime,
               attendees: widget.attendees,
               totalAttendents: widget.totalAttendents,
+              url: widget.url
             )
           ],
         ),

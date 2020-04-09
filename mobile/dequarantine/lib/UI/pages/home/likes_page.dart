@@ -13,23 +13,29 @@ class _LikesPageState extends State<LikesPage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
 
+  bool isUserLoggedIn = false;
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
+    if (currentUser != null) {
+      setState(() {
+        isUserLoggedIn = true;
+      });
+    } else {
+      setState(() {
+        isUserLoggedIn = false;
+      });
+    }
   }
 
-  // List<Widget> _pages = [
-  //   Today(),
-  //   Upcoming(),
-  // ];
-
-  @override
-  Widget build(BuildContext context) {
+  Widget loggedIn(){
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          brightness: Brightness.light,
           centerTitle: true,
           title: Text("My events"),
           bottom: PreferredSize(
@@ -55,14 +61,20 @@ class _LikesPageState extends State<LikesPage>
           future: currentUser.getAttendingEvents(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              DateTime today = DateTime.now();
 
               List eventsToday = [];
               List eventsUpcoming = [];
 
+              DateTime today = DateTime.now().toLocal();
+              
               snapshot.data.forEach((event) {
-                DateTime time = DateTime.parse(event["time"]);
-                if (time.compareTo(today) == 0) {
+                DateTime time = DateTime.parse(event["startTime"]).toLocal();
+
+                int todayDay = today.day;
+
+                int timeDay = time.day;
+
+                if (todayDay == timeDay) {
                   eventsToday.add(event);
                 } else {
                   eventsUpcoming.add(event);
@@ -96,4 +108,33 @@ class _LikesPageState extends State<LikesPage>
       ),
     );
   }
+
+  Widget loggedOut() {
+    return Container(
+      child: Center(
+        child: FlatButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          color: Theme.of(context).buttonColor,
+          child: Text(
+            "Sign in",
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () => Navigator.pushNamedAndRemoveUntil(
+            context,
+            "/login",
+            (Route<dynamic> route) => false
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return isUserLoggedIn ? loggedIn() : loggedOut();
+  }
 }
+
+

@@ -14,11 +14,13 @@ class _CreatePageState extends State<CreatePage> {
   TextEditingController _descriptionController;
   TextEditingController _capController;
   TextEditingController _nameController;
+  TextEditingController _linkController;
 
   //not to sure what i'm doing with those but they should stay here
   String _titleString = "";
   String _description = "";
   String _category = "Professional";
+  String _link = "Link";
   int _cap = 0;
 
   String _dropDownValueCategory = "Professional";
@@ -74,23 +76,33 @@ class _CreatePageState extends State<CreatePage> {
   //sends to api through backend
   void _onSubmit(BuildContext context) async {
 
-    DateTime time = DateTime(
+    String startTime = DateTime(
       _startDate.year,
       _startDate.month,
       _startDate.day,
       _startTime.hour,
       _startTime.minute
-    ).toUtc();
+    ).toUtc().toIso8601String();
+
+    String endTime = DateTime(
+      _endDate.year,
+      _endDate.month,
+      _endDate.day,
+      _endTime.hour,
+      _endTime.minute
+    ).toUtc().toIso8601String();
 
     Map body = {
       "name": _titleController.text,
       "cap": _capController.text,
       "category": _category,
-      "organizer": _nameController.text,
+      "organizer": currentUser.getUserName(),
       "description": _descriptionController.text,
       "imageUrl":
           "https://aatc-bkk.com/wp-content/uploads/2015/01/tempimage.png",
-      "time": time.toIso8601String()
+      "startTime": startTime,
+      "endTime": endTime,
+      "link": _linkController.text
     };
 
     print(body);
@@ -99,7 +111,6 @@ class _CreatePageState extends State<CreatePage> {
     bool passed = await createEvent(body, currentUser.getToken());
 
     if (passed) {
-      Focus.of(context).unfocus();
       Fluttertoast.showToast(msg: "Event created");
       _deleteFields();
     } else {
@@ -126,6 +137,7 @@ class _CreatePageState extends State<CreatePage> {
     _descriptionController = TextEditingController();
     _capController = TextEditingController();
     _nameController = TextEditingController();
+    _linkController = TextEditingController();
   }
 
 
@@ -169,6 +181,23 @@ class _CreatePageState extends State<CreatePage> {
             onEditingComplete: () {
               setState(() {
                 _description = _descriptionController.text;
+              });
+            },
+          ),
+
+          //Event link
+          TextFormField(
+            decoration: InputDecoration(
+              hintText:
+                "Link to event",
+            ),
+            expands: false,
+            minLines: 1,
+            maxLines: 9,
+            controller: _linkController,
+            onEditingComplete: () {
+              setState(() {
+                _link = _linkController.text;
               });
             },
           ),

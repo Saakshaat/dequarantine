@@ -12,6 +12,7 @@ class DetailedView extends StatefulWidget {
   final organizer;
   final category;
   final id;
+  final String url;
 
   DetailedView({
     @required this.imageUrl,
@@ -23,6 +24,7 @@ class DetailedView extends StatefulWidget {
     @required this.organizer,
     @required this.category,
     @required this.id,
+    @required this.url,
   });
 
   @override
@@ -54,6 +56,7 @@ class _DetailedViewState extends State<DetailedView> {
               child: Image.network(widget.imageUrl)
             ),
             Details(
+              url: widget.url,
               eventId: widget.id,
               title: widget.title,
               description: widget.description,

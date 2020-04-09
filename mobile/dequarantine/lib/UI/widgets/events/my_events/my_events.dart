@@ -34,11 +34,12 @@ class _MyEventsState extends State<MyEvents> {
       final String imageUrl = item["imageUrl"];
       final String name = item["name"];
       final String organizer = "test"; //item["organizer"].toString();
-      final String time = item["time"].toString();
+      final String time = item["startTime"].toString();
       final String cap = item["cap"].toString();
       final String attending = item["attending"].toString();
       final String category = item["category"];
       final String description = item["description"];
+      final String url = item["link"];
 
       widgets.add(Card(
         elevation: 3,
@@ -46,6 +47,7 @@ class _MyEventsState extends State<MyEvents> {
           onTap: () => _createModalSheet(
               context,
               MyDetailedView(
+                url: url,
                 id: eventId,
                 title: name,
                 description: description,

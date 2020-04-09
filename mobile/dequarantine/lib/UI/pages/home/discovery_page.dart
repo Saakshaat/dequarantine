@@ -50,6 +50,7 @@ class _DiscoverPageOldState extends State<DiscoverPageOld> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          brightness: Brightness.light,
           elevation: 3,
           title: Text("$_greeting $_username"),
         ),

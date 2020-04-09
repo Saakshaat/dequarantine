@@ -27,6 +27,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.light,
         elevation: 0,
         centerTitle: true,
         title: Text("Dequrantine"),

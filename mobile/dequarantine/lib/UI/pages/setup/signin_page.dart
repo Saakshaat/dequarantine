@@ -34,9 +34,15 @@ class _SignInPageState extends State<SignInPage> {
             pop: true,
           ),
 
-          GoogleSignInButton(
-            onPressed: () => handleSignInGoogle(),
+          OutlineButtonLandingPage(
+            text: "Create an account",
+            route: "/signup",
+            pop: true,
           ),
+
+          // GoogleSignInButton(
+          //   onPressed: () => handleSignInGoogle(),
+          // ),
 
           OutlineButtonLandingPage(
             text: "Continue without signing in",

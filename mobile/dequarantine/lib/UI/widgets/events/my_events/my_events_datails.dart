@@ -1,5 +1,8 @@
+import 'package:dequarantine/logic/functions/general/open_link.dart';
 import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:line_icons/line_icons.dart';
 
 class MyEventsDetails extends StatelessWidget {
   final title;
@@ -8,6 +11,7 @@ class MyEventsDetails extends StatelessWidget {
   final description;
   final dateTime;
   final eventId;
+  final String url;
 
   MyEventsDetails({
     @required this.title,
@@ -16,6 +20,7 @@ class MyEventsDetails extends StatelessWidget {
     @required this.description,
     @required this.dateTime,
     @required this.eventId,
+    @required this.url,
   });
 
   @override
@@ -74,7 +79,37 @@ class MyEventsDetails extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
+          Center(
+            child: InkWell(
+              onTap: () {
+                Fluttertoast.showToast(
+                  msg: "Opening event"
+                );
+                openUrl(url, context);
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    // IconButton(
+                    //   color: Colors.redAccent,
+                    //   icon: Icon(LineIcons.sign_out),
+                    //   onPressed: () {
+                    //     print("Dismissed");
+                    //     Navigator.pop(context);  
+                    //   },
+                    // ),
+                    Text("Open event", style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Theme.of(context).primaryColor)),),
+                    Icon(LineIcons.opencart, color: Theme.of(context).primaryColor,),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
