@@ -276,6 +276,7 @@ exports.uploadImage = (req, res) => {
 //Get all the events that the user is attending
 exports.getAttending = (req, res) => {
   const userName = req.user.userName;
+  let events = [];
   db.doc(`/users/${userName}`)
     .get()
     .then(doc => {
@@ -286,10 +287,22 @@ exports.getAttending = (req, res) => {
           .get();
       }
     })
-    .then(data => {
-      let events = [];
-      data.forEach(doc => {
-        events.push(doc.data());
+    .then(doc => {
+      doc.forEach(data => {
+        events.push({
+          eventId: data.id,
+          imageUrl: data.data().imageUrl,
+          name: data.data().name,
+          organizer: data.data().organizer,
+          startTime: data.data().startTime,
+          endTime: data.data().endTime,
+          cap: data.data().cap,
+          link: data.data().link,
+          attending: data.data().attending,
+          category: data.data().category,
+          description: data.data().description,
+          participants: data.data().participants
+        });
       });
       return res.json(events);
     })
@@ -297,4 +310,4 @@ exports.getAttending = (req, res) => {
       console.error(err);
       return res.status(500).json({ error: err.code });
     });
-}
+};
