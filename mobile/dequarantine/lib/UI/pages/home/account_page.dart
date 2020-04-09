@@ -1,4 +1,5 @@
-import 'package:dequarantine/logic/functions/sign_out_functions.dart';
+import 'package:dequarantine/UI/widgets/general/button.dart';
+import 'package:dequarantine/logic/functions/auth/sign_out_functions.dart';
 import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class _AccountPageState extends State<AccountPage> {
     userData["userId"] = data["credentials"]["userId"];
     userData["userName"] = data["credentials"]["userName"];
     userData["imageUrl"] = data["credentials"]["imageUrl"];
-    userData["attending"] = data["attending"].length;
+    userData["attending"] = data["credentials"]["attending"].length.toString();
   }
 
   @override
@@ -39,87 +40,104 @@ class _AccountPageState extends State<AccountPage> {
       });
     }
   }
-
-
   
+
 
 
   @override
   Widget build(BuildContext context) {
     return isUserLoggedIn ? 
-      FutureBuilder(
-      future: currentUser.getAccountData(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if(snapshot.hasData){
-          _buildUserData(snapshot.data);
+      SafeArea(
+        child: FutureBuilder(
+        future: currentUser.getAccountData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if(snapshot.hasData){
+            _buildUserData(snapshot.data);
 
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://www.nicepng.com/png/detail/152-1529091_happy-smile-png-smiley-face-icon-png.png"),
-                // child: Text("GL"),
-                foregroundColor: Colors.transparent,
-                minRadius: MediaQuery.of(context).size.width / 8,
-                maxRadius: MediaQuery.of(context).size.width / 8,
-              ),
-              Text(
-                userData["userName"],
-                style: Theme.of(context).textTheme.headline1,
-              ),
-              Text(
-                userData["email"],
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Column(
+            return Flex(
+              direction: Axis.vertical,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        "Not done",
-                        style: _numTextStyle,
+                      Column(
+                        children: <Widget>[
+                          Text(
+                            userData["userName"].toString(),
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                          Text(
+                            userData["email"],
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                          CustomButton(
+                            onPress: () => null,
+                            text: "Edit account details",
+                          )
+                        ],
                       ),
-                      Text(
-                        "Past events",
-                        style: Theme.of(context).textTheme.bodyText2,
+                      CircleAvatar(
+                        backgroundImage: NetworkImage("https://interactive-examples.mdn.mozilla.net/media/examples/grapefruit-slice-332-332.jpg"),
+                        radius: MediaQuery.of(context).size.width / 7,
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.white
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Ready ?"),
+                          Text("Attended")
+                        ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        color: Colors.white,
+                        width: 3,
+                        child: Text(""),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(userData["attending"], style: Theme.of(context).textTheme.bodyText2,),
+                          Text("Upcoming")
+                        ],
                       ),
                     ],
                   ),
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        userData["attending"].toString(),
-                        style: _numTextStyle,
-                      ),
-                      Text("Upcoming events"),
-                    ],
-                  ),
-                ],
-              ),
-              Text("Settings"),
-              FlatButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
                 ),
-                color: Theme.of(context).buttonColor,
-                child: Text(
-                  "Sign out",
-                  style: TextStyle(color: Colors.white),
+                CustomButton(
+                  text: "My events",
+                  onPress: () => null,
                 ),
-                onPressed: () => signOut(context),
-              ),
-            ],
+                CustomButton(
+                  text: "Manage my event",
+                  onPress: () => null,
+                ),
+              ],
+            );
+          }
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
-        }
-        return Container(
-          child: Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      },
+        },
+      ),
     )
     :
     Container(

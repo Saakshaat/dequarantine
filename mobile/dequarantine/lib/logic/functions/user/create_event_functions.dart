@@ -14,9 +14,9 @@ Future<bool> createEvent(Map body, String token) async {
   var response = convert.jsonDecode(event.body);
   print(response);
 
-  print(event.statusCode);
+  print(event.statusCode.toString().substring(0,1));
 
-  if (event.statusCode == 201) {
+  if (event.statusCode.toString().substring(0,1) == "2") {
     return true;
   }
   return false;

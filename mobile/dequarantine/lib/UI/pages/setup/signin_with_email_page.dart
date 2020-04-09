@@ -1,4 +1,5 @@
-import 'package:dequarantine/logic/functions/sign_in_functions.dart';
+import 'package:dequarantine/logic/functions/auth/sign_in_functions.dart';
+import 'package:dequarantine/main.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -35,6 +36,10 @@ class _SignInWithEmailPageState extends State<SignInWithEmailPage> {
       case true:
         Fluttertoast.showToast(
           msg: "Sign in successful"
+        );
+
+        Fluttertoast.showToast(
+          msg: "Loading account details"
         );
         Navigator.pushNamedAndRemoveUntil(
           context,

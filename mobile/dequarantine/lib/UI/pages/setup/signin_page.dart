@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'package:dequarantine/UI/widgets/logins/outline_button.dart';
-import 'package:dequarantine/logic/functions/sign_in_functions.dart';
+import 'package:dequarantine/logic/functions/auth/sign_in_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
@@ -34,9 +34,9 @@ class _SignInPageState extends State<SignInPage> {
             pop: true,
           ),
 
-          // GoogleSignInButton(
-          //   onPressed: () => handleSignInGoogle(),
-          // ),
+          GoogleSignInButton(
+            onPressed: () => handleSignInGoogle(),
+          ),
 
           OutlineButtonLandingPage(
             text: "Continue without signing in",

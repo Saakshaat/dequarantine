@@ -21,7 +21,7 @@ void main() => runApp(MaterialApp(
   theme: ThemeData(
     primaryColor: Color.fromRGBO(	105, 240, 174, 1),
     buttonColor: Color.fromRGBO(63, 81, 181, 1),
-    backgroundColor: Colors.white60,
+    backgroundColor: Colors.grey[100],
       
     textTheme: TextTheme(
       headline1: TextStyle(
@@ -41,14 +41,20 @@ void main() => runApp(MaterialApp(
         color: Colors.black,
         fontWeight: FontWeight.w500
       ),
+
+      bodyText2: TextStyle(
+        fontSize: 17,
+        color: Colors.black,
+        fontWeight: FontWeight.w500
+      ),
     )
   ),
 
   darkTheme: ThemeData(
     brightness: Brightness.dark,
-    backgroundColor: Colors.black87,
+    backgroundColor: Colors.blueGrey[900],
     primaryColor: Color.fromRGBO(43, 189, 126, 1),
-    buttonColor: Color.fromRGBO(0, 41, 132, 1),
+    buttonColor: Color.fromRGBO(0, 81, 172, 1),
 
     textTheme: TextTheme(
       headline1: TextStyle(
@@ -65,6 +71,12 @@ void main() => runApp(MaterialApp(
 
       bodyText1: TextStyle(
         fontSize: 20,
+        color: Colors.white,
+        fontWeight: FontWeight.w500
+      ),
+
+      bodyText2: TextStyle(
+        fontSize: 17,
         color: Colors.white,
         fontWeight: FontWeight.w500
       ),
