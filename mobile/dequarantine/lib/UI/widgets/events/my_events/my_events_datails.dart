@@ -104,7 +104,7 @@ class MyEventsDetails extends StatelessWidget {
                     //   },
                     // ),
                     Text("Open event", style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Theme.of(context).primaryColor)),),
-                    Icon(LineIcons.opencart, color: Theme.of(context).primaryColor,),
+                    Icon(Icons.launch, color: Theme.of(context).primaryColor,),
                   ],
                 ),
               ),
