@@ -4,7 +4,7 @@ import {Route, Redirect } from 'react-router-dom'
 import AuthContext from './base'
 
 const PrivateRoute = ({component : RouteComponent, ...rest}) => {
-    const currentUser   = useContext(AuthContext)
+    const currentUser   = localStorage.getItem('user')
 
     return (
         <Route
@@ -13,7 +13,7 @@ const PrivateRoute = ({component : RouteComponent, ...rest}) => {
           currentUser ? (
             <RouteComponent {...routeProps} />
           ) : (
-            <Redirect to={"/"} />
+            <Redirect to={"/login"} />
           )
         }
       />

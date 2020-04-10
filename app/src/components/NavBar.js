@@ -5,6 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import EventIcon from '@material-ui/icons/Event';
 import { Tabs, Tab } from '@material-ui/core'
 import {Link , Redirect, withRouter} from 'react-router-dom'
 import { AuthContext } from './Auth/Auth'
@@ -28,7 +30,10 @@ const useStyles = makeStyles(theme => ({
       textTransform : "none",
       fontWeight : "700",
       minWidth : "10",
-      color : "#ffffff"
+      color : "#ffffff",
+      "&:hover" : {
+        color : "#ffffff"
+      }
   },
   img : {
     borderRadius : "100px",
@@ -78,10 +83,10 @@ const ButtonAppBar = function({ history }) {
       <AppBar position="static" color="secondary">
         <Toolbar>
           <img src="" className={classes.img} />
-            <Tabs value={value} className={classes.tabsContainer} onChange={handleChange}>
+            <Tabs centered={true} value={value} className={classes.tabsContainer} onChange={handleChange} indicatorColor="ffffff" textColor="ffffff">
                 <Tab value={0} className={classes.tab} label={<i class="fas fa-home">  Home</i>} component={Link} to="/" />
-                <Tab  value={1} className={classes.tab} label={<i class="fas fa-tasks">My Profile</i>} component={Link} to="/projects" />
-                {currentUser ? <Button onClick={signOutHandler}>Sign Out</Button> : <Redirect to="/login"  push={true} /> }
+                <Tab  value={1} className={classes.tab} label={<i class="fas fa-tasks">My Profile</i>} component={Link} to="/profile" />
+                {currentUser ? <IconButton onClick={signOutHandler} ><ExitToAppIcon /></IconButton> : ''}
             </Tabs>
         </Toolbar>
       </AppBar>

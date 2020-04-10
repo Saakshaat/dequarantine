@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme=>({
   paper : {
     display : "flex",
     flexDirection : "row",
-    flexWrap: "grow",
+    flexWrap: "wrap",
     justifyContent : "space-evenly",
     width : "100%",
     height : "100%",
@@ -22,7 +22,7 @@ const Attending = () => {
   return (
     <Paper elevation={0} className={classes.paper}>
       {
-        [1,3,4].map((p)=>{
+        [1,3,4,5,6,7].map((p)=>{
           return (
             <EventCard />
           )

@@ -23,6 +23,9 @@ export default createMuiTheme({
           },
           main: {
             main: "#BD986D"
+          },
+          wh : {
+            main : '#ffffff'
           }
     }
 })

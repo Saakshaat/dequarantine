@@ -5,6 +5,7 @@ import { ThemeProvider } from '@material-ui/styles'
 import Attending from './components/Attending'
 import theme  from './style/theme'
 import Nav from './components/NavBar'
+import Profile from './components/Account'
 import Home from './components/Home'
 import { AuthProvider } from './components/Auth/Auth'
 import Account from './components/Account'
@@ -21,7 +22,7 @@ const App = ()=>{
               <Nav />
               <Switch>
                 <Route exact path="/" component={Home} />
-                <PrivateRoute exact path="/profile" component={Home} />
+                <PrivateRoute exact path="/profile" component={Profile} />
                 <Route exact path="/login" component={Login} />
               </Switch>
             </Router>

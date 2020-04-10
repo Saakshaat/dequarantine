@@ -24,12 +24,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection : "row",
-    width: "100vw",
+    width: "2400px",
     height : "90vh",
   },
   container : {
-      width : "auto",
-      height : "100%",
+      width : "100%",
+      height : "85vh",
       boxShadow : theme.shadows[7]
   },
   list : {
@@ -38,9 +38,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent : "space-evenly"
   },
   listContainer: {
-    width: "100%",
+    width: "100vw",
     height : "90%",
-    boxShadow : theme.shadows[4]
   }
 }));
 
@@ -48,21 +47,9 @@ export default function Home() {
   const classes = useStyles();
 
   return (
-      <Container elevation={3} className={classes.container}>
-          <div className={classes.toolbar} />
-            <Divider />
-            <List className={classes.list}>
-              {['Category #1', 'Category #2', 'Category #4', 'Category #5'].map((text, index) => (
-                  <Button>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                  <ListItemText primary={text} />
-                  </Button>
-              ))}
-            </List>
-            <Divider />
-        <Container className={classes.listContainer}>
-          <Attending />
-        </Container>
-      </Container>
+    <div>
+      <Attending />
+    </div>
+
   );
 }
