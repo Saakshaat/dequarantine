@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper, Container, Button }from '@material-ui/core';
+import {Paper, Container, Button, Grid }from '@material-ui/core';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,6 +19,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { useTheme } from '@material-ui/core/styles';
 import Attending from './Attending';
+import axios from 'axios';
+import EventCard from './EventCard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
       height : "100%",
       boxShadow : theme.shadows[7]
   },
+  Divider: 
+  {
+    paddingTop: "10px"
+  },
   list : {
     display : "flex",
     flexDirection : "row",
@@ -44,25 +50,75 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
+
+
+var ListItem = {};
+
+
+
+function calltoCheck(CategoryArguemenat) {
+  //alert("Buttton clicked");
+  
+  
+  axios.get("gs://dequarantine-aae5f.appspot.com`/events/category/".concat(CategoryArguemenat) )
+      .then(res => {
+        alert(res.data);
+        List_to = res.data;
+      })
+      alert(CategoryArguemenat);
+      ListItem = List_to;
+      return List_to;
+
+  
+}
+
+
+
+
 export default function Home() {
   const classes = useStyles();
-
+  var List_to;
   return (
+
+   
       <Container elevation={3} className={classes.container}>
+          
+          
           <div className={classes.toolbar} />
-            <Divider />
-            <List className={classes.list}>
-              {['Category #1', 'Category #2', 'Category #4', 'Category #5'].map((text, index) => (
-                  <Button>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                  <ListItemText primary={text} />
+          <List className={classes.list}>
+              {['Sports', 'Entartainment', 'Gaming', 'Movies'].map((text, index) => (
+                  <Button onClick={() => {ListItem =calltoCheck(text)}} color= "primary">
+
+                  <ListItemText primary={text}  />
+                  
                   </Button>
               ))}
+              
             </List>
-            <Divider />
-        <Container className={classes.listContainer}>
-          <Attending />
-        </Container>
+          
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="center"
+                >
+
+              <List className={classes.list}>
+              {ListItem.map((  ) => (
+                  <EventCard>
+                    
+
+                 </EventCard>
+              ))}
+              
+            </List>
+
+
+          </Grid>
+         
+      
       </Container>
+     
   );
 }
