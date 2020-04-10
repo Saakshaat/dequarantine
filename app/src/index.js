@@ -9,10 +9,8 @@ import PersistentDrawerLeft from './components/drawer';
 ReactDOM.render(
   <React.StrictMode>
     {/* <App /> */}
-    <PersistentDrawerLeft>
-
-      
-    </PersistentDrawerLeft>
+    <Home>
+    </Home>
     
     
     </React.StrictMode>,

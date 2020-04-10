@@ -6,10 +6,10 @@ function EventCard(props) {
   return (
     <div className='event'>
       <div className='container'>
-        <div className='media'><img src={props.event.img}/></div>
+        
         <div className='content'>
-          <div className='title'>{props.event.title}</div>
-          <p className='description'>{props.event.description}</p>
+          <div className='title'>{props.title}</div>
+          <p className='description'>{props.description}</p>
         </div>
         <div className='action'>
           <Button variant="outlined" color="secondary">Decline</Button>

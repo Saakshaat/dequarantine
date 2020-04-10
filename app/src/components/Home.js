@@ -1,4 +1,5 @@
 import React from 'react';
+import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Container, Button, Grid }from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -21,6 +22,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Attending from './Attending';
 import axios from 'axios';
 import EventCard from './EventCard';
+import AutoGrid from './grid';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,14 +35,24 @@ const useStyles = makeStyles((theme) => ({
       width : "auto",
       height : "100%",
       boxShadow : theme.shadows[7]
+      
   },
+  
   Divider: 
   {
     paddingTop: "10px"
   },
+  Container1: {
+   alignContent: 'center',
+  },
   list : {
     display : "flex",
-    flexDirection : "row",
+    flexDirection : "",
+    justifyContent : "space-evenly"
+  },
+  list1 : {
+   
+    flexDirection : "flex-row",
     justifyContent : "space-evenly"
   },
   listContainer: {
@@ -53,21 +65,22 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-var ListItem = {};
+
 
 
 
 function calltoCheck(CategoryArguemenat) {
-  //alert("Buttton clicked");
   
+  var List_to = {}
   
-  axios.get("gs://dequarantine-aae5f.appspot.com`/events/category/".concat(CategoryArguemenat) )
+  axios.get("http://www.omdbapi.com/?s=guardians+of+the+galaxy&apikey=thewdb" )
       .then(res => {
-        alert(res.data);
+        alert(res.data['Search'][0]['Title']);
         List_to = res.data;
       })
+    
       alert(CategoryArguemenat);
-      ListItem = List_to;
+
       return List_to;
 
   
@@ -78,17 +91,22 @@ function calltoCheck(CategoryArguemenat) {
 
 export default function Home() {
   const classes = useStyles();
-  var List_to;
+  var List_to = ['1','2','3', '4', '5', '6', '8' ];
   return (
 
-   
+      
+      <div>
+      <div className={classes.Jumbotron}>
+
+       
+      </div>
       <Container elevation={3} className={classes.container}>
           
           
           <div className={classes.toolbar} />
           <List className={classes.list}>
-              {['Sports', 'Entartainment', 'Gaming', 'Movies'].map((text, index) => (
-                  <Button onClick={() => {ListItem =calltoCheck(text)}} color= "primary">
+              {['Sports', 'Entartainment', 'Gaming', 'Movies'].map( (text, index) => (
+                  <Button varaint="outlined" onClick={() => {calltoCheck(text)}} color= "primary">
 
                   <ListItemText primary={text}  />
                   
@@ -97,28 +115,38 @@ export default function Home() {
               
             </List>
           
-            <Grid
-              container
-              direction="row"
-              justify="center"
-              alignItems="center"
-                >
-
-              <List className={classes.list}>
-              {ListItem.map((  ) => (
-                  <EventCard>
-                    
-
-                 </EventCard>
-              ))}
-              
-            </List>
-
-
-          </Grid>
-         
+            
       
       </Container>
+      
+      
+      <Container className={classes.Container1}>
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="center"
+       >
+              {List_to.map( () => (
+                <Paper elevation={3} >
+                  <EventCard title = "sc" description ="sdsd">
+                 
+                  
+                 </EventCard>
+                 </Paper>
+              ))}
+              
+      </Box>
+      </Container>
+
+        
+      
+        
+      
+     
+      
+      
+      
+      </div>
       
   );
 }
