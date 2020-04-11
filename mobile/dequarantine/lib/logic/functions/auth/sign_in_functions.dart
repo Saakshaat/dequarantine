@@ -1,6 +1,7 @@
 import 'dart:convert' as convert;
 import 'dart:core';
 
+import 'package:dequarantine/logic/functions/auth/shared_prefs.dart';
 import 'package:dequarantine/logic/models/user.dart';
 import 'package:dequarantine/main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,6 +9,10 @@ import 'package:http/http.dart' as http;
 
 Future<Map> signInWithEmail(String email, String password) async {
   String _baseSignInEmailUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/login";
+
+  // Map body = Map<String, String>();
+  // body["email"] = email;
+  // body["password"] = password;
 
   http.Response signIn  = await http.post(
     _baseSignInEmailUrl,
@@ -22,6 +27,9 @@ Future<Map> signInWithEmail(String email, String password) async {
   switch (signIn.statusCode) {
     case 200:
       print("Sign in successful");
+
+      writeToShared("email", email);
+      writeToShared("password", password);
 
       String userToken = response["token"];
 

@@ -1,6 +1,7 @@
 import 'dart:convert' as convert;
 import 'dart:core';
 
+import 'package:dequarantine/logic/functions/general/open_link.dart';
 import 'package:dequarantine/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -14,6 +15,8 @@ class User {
   String _email;
   String _imageUrl;
   String _userName;
+
+  String _googleCalToken;
 
   Map _userDataFB = {};
 
@@ -82,7 +85,7 @@ class User {
     }
   }
 
-  Future<bool> markAttending(String eventId, BuildContext context) async {
+  Future<bool> markAttendingOld(String eventId, BuildContext context) async {
     print(eventId);
 
     String url = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/events/markAttended/$eventId";
@@ -102,6 +105,28 @@ class User {
       Fluttertoast.showToast(msg: "Already attending");
     }
   }
+
+
+  Future markAttending(String eventId, BuildContext context) async {
+    String url = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/events/markAttended/$eventId";
+    Map<String, String> headersAuth = Map.from({
+      "Authorization": "Bearer $_token",
+      "ClientSecret": "wTmD8HiXIXM0z77KiC5Kz3ot",
+      "RedirectURI": "urn:ietf:wg:oauth:2.0:oob",
+      "ClientID": "828379572147-fq36c6ct551l1llcv3v79j0er417gcgi.apps.googleusercontent.com"
+    });
+
+    http.Response markAttendedResponse = await http.get(url, headers: headersAuth);
+
+    if (markAttendedResponse.statusCode == 200) {
+      Map<String, String> resp = Map.from(convert.jsonDecode(markAttendedResponse.body));
+      print(resp);
+      openUrl(resp["url"], context);
+    }
+
+    
+  }
+
 
   Future<void> markUnattending(String eventId) async {
     print(eventId);
