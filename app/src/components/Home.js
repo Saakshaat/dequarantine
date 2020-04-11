@@ -71,31 +71,44 @@ const useStyles = makeStyles((theme) => ({
 
 function calltoCheck(CategoryArguemenat) {
   
-  var List_to = {}
+  var List_to = [];
   
   axios.get("http://www.omdbapi.com/?s=guardians+of+the+galaxy&apikey=thewdb" )
       .then(res => {
-        alert(res.data['Search'][0]['Title']);
-        List_to = res.data;
+       
+           res.data['Search'].forEach(element => {
+           List_to.push(element);
+           //alert(List_to.length);
+
+         });
+        
+         return List_to;
       })
     
-      alert(CategoryArguemenat);
+      
 
-      return List_to;
+  
 
   
 }
 
+function check(args) {
+    return args.length;
+}
 
 
 
 export default function Home() {
+  
+  var List_to = [ ];
+  alert(List_to.length);
   const classes = useStyles();
-  var List_to = ['1','2','3', '4', '5', '6', '8' ];
+  
   return (
 
       
       <div>
+      
       <div className={classes.Jumbotron}>
 
        
@@ -103,11 +116,11 @@ export default function Home() {
       <Container elevation={3} className={classes.container}>
           
           
-          <div className={classes.toolbar} />
+          
           <List className={classes.list}>
               {['Sports', 'Entartainment', 'Gaming', 'Movies'].map( (text, index) => (
-                  <Button varaint="outlined" onClick={() => {calltoCheck(text)}} color= "primary">
-
+                  <Button varaint="outlined" onClick={() => { (List_to) = calltoCheck(text)}} color= "primary">
+                   
                   <ListItemText primary={text}  />
                   
                   </Button>
@@ -126,12 +139,11 @@ export default function Home() {
         flexWrap="wrap"
         justifyContent="center"
        >
-              {List_to.map( () => (
+              { 
+                List_to.map( () => (
                 <Paper elevation={3} >
-                  <EventCard title = "sc" description ="sdsd">
-                 
-                  
-                 </EventCard>
+                  <EventCard >
+                  </EventCard>
                  </Paper>
               ))}
               
@@ -148,5 +160,7 @@ export default function Home() {
       
       </div>
       
+      
   );
+ 
 }

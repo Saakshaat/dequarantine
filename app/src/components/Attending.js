@@ -17,19 +17,37 @@ const useStyles = makeStyles(theme=>({
     marginLeft : "15px"
   }
 }))
-const Attending = () => {
-  const classes = useStyles()
-  return (
-    <Paper elevation={0} className={classes.paper}>
-      {
-        [1,3,4].map((p)=>{
-          return (
-            <EventCard />
-          )
-        })
+class Attending extends React.Component  {
+  
+  constructor(props) {
+    super(props);
+      this.state = {
+        EventsList: [],
+        Upcoming:[],
+        Attended:[]
+    
+        
       }
-    </Paper>
-  )
+    
+    }
+  
+  render(){
+    return(
+
+      <div>
+          
+
+      
+      
+      
+      
+      
+      
+      
+      
+      </div>
+    )
+  };
 }
 
 export default Attending

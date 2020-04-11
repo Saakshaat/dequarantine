@@ -5,12 +5,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Home from './components/Home'
 import PersistentDrawerLeft from './components/drawer';
+import HomePage from './components/HomePage'
+
 
 ReactDOM.render(
   <React.StrictMode>
     {/* <App /> */}
-    <Home>
-    </Home>
+   
+   <HomePage></HomePage>
     
     
     </React.StrictMode>,
