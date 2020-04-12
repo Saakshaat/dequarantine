@@ -98,56 +98,43 @@ exports.deleteEvents = (req, res) => {
 };
 
 exports.authGoogleCal = (req, res) => { //OAuth Redirect Uri leads here.
-    console.log('REQ QUERY', req.query);
+    console.debug('REQ QUERY', req.query);
 
     const state = JSON.parse(req.query.state);
-    console.log('STATE USERID', state.userId);
+    console.debug('STATE USERID', state.userId);
     let userDoc = db.doc(`/users/${ state.userId }`);
     
     //userDoc.
     gcal.authorize(req.headers, state, req.query.code )
     .then(result => {
         const { oauth2client } = result;
-        console.log('OAUTH2CLIENT\n******************************\n', oauth2client)
         eventDoc = db.doc(`/events/${state.eventId}`)
         .get()
         .then(doc => {
             gcal.addToCalendar( doc.data(), oauth2client )
-            .then(res=> {
-                return res.send("DONE");
+            .then(result => {
+                return res.send("You can close this page now.");
             })
             .catch(err => res.status(400).send(`ERROR: ${ err }`));
         })
         .catch(err => {
-            console.log('ERROR\n--------------------------------\n', err);
+            console.error('ERROR\n--------------------------------\n', err);
             return res.send('ERROR');
         });
     })
     .catch(err => {
-        console.log('ERROR\n--------------------------------\n', err);
+        console.error('ERROR\n--------------------------------\n', err);
         return res.send('ERROR');
     });
 };
 
 exports.markAttended = (req, res) => {
-  let eventDoc;
-  let userDoc;
-
-  if(req.query.userID && req.query.eventID) {
-      console.log('REQ QUERY', req.query);
-      console.log('REQ PARAMS', req.params);
-
-      eventDoc = db.doc(`/events/${req.query.eventId}`);
-      userDoc = db.doc(`/users/${req.user.userId}`);
-  } else {
-     eventDoc = db.doc(`/events/${req.params.eventId}`);
-     userDoc = db.doc(`/users/${req.user.userName}`);
-  }
-  
+//  let eventDoc = db.doc(`/events/${req.params.eventId}`);
+//  let userDoc= db.doc(`/users/${req.user.userName}`);
 
   let batch = db.batch();
-//  let eventDoc = db.doc(`/events/${req.params.eventId}`);
-//  let userDoc = db.doc(`/users/${req.user.userName}`);
+  let eventDoc = db.doc(`/events/${req.params.eventId}`);
+  let userDoc = db.doc(`/users/${req.user.userName}`);
   let attending = [];
   let attendCount = 0;
   let participants = [];
@@ -190,8 +177,8 @@ exports.markAttended = (req, res) => {
                 });
             } else {
               url = gcal.authorize( req.headers, {userId: req.user.userName,  eventId: req.params.eventId }, null );
-              console.debug("URL", url);
             }
+            //if(gcalAuthResponse !== undefined && gcalAuthResponse !== ) url = gcalAuthResponse.url;
             //END GOOGLE CAL INTEGRATION
 
             if (doc.data().attending.includes(req.params.eventId)) {

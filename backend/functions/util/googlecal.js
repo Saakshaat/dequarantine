@@ -1,7 +1,6 @@
 const { db } = require("../util/admin");
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
-const axios = require('axios');
 const functions = require('firebase-functions');
 
 //Function authorize will return the Google OAuth2Client that will be used by the addToCalendar function.
@@ -34,7 +33,6 @@ exports.authorize = ( headers, payload = null, authcode = null, tokens = null ) 
             gcalAccessToken: access_token
         })
         .then(res => {
-            console.log('BLAH', res);
             return { oauth2client: OAuth2Client }
         });
 
@@ -59,13 +57,12 @@ exports.authorize = ( headers, payload = null, authcode = null, tokens = null ) 
                 gcalAccessToken: access_token
             })
             .then(res => {
-                console.log('BLAH', res);
                 return { oauth2client: OAuth2Client }
             });
             //OAuth2.setCredentials(tokens);
         })
         .catch(err => { 
-            console.log('ERR', err);
+            console.error('ERR', err);
             throw "Error";
         });
     } else { //We don't have the RefreshToken or AccessToken for the user's Google Calendar
@@ -84,14 +81,14 @@ exports.authorize = ( headers, payload = null, authcode = null, tokens = null ) 
           userId: userId, eventId: eventId,
           clientid: clientid, clientsecret: clientsecret
       });
-      console.log('STATE', state);
+      console.debug('STATE', state);
 
       let url = OAuth2Client.generateAuthUrl({
         access_type: "offline",
         scope: SCOPES,
         state
       });
-      return { url };
+      return url;
     }
 };
 
@@ -114,7 +111,7 @@ exports.addToCalendar = (eventData, OAuth2Client) => {
       }
     })
     .then(result => {
-      console.log("RESULT", result);
+      console.debug("RESULT", result);
       return "Successful";
     })
     .catch(err => {
