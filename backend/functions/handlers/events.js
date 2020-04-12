@@ -97,10 +97,57 @@ exports.deleteEvents = (req, res) => {
     });
 };
 
+exports.authGoogleCal = (req, res) => { //OAuth Redirect Uri leads here.
+    console.log('REQ QUERY', req.query);
+
+    const state = JSON.parse(req.query.state);
+    console.log('STATE USERID', state.userId);
+    let userDoc = db.doc(`/users/${ state.userId }`);
+    
+    //userDoc.
+    gcal.authorize(req.headers, state, req.query.code )
+    .then(result => {
+        const { oauth2client } = result;
+        console.log('OAUTH2CLIENT\n******************************\n', oauth2client)
+        eventDoc = db.doc(`/events/${state.eventId}`)
+        .get()
+        .then(doc => {
+            gcal.addToCalendar( doc.data(), oauth2client )
+            .then(res=> {
+                return res.send("DONE");
+            })
+            .catch(err => res.status(400).send(`ERROR: ${ err }`));
+        })
+        .catch(err => {
+            console.log('ERROR\n--------------------------------\n', err);
+            return res.send('ERROR');
+        });
+    })
+    .catch(err => {
+        console.log('ERROR\n--------------------------------\n', err);
+        return res.send('ERROR');
+    });
+};
+
 exports.markAttended = (req, res) => {
+  let eventDoc;
+  let userDoc;
+
+  if(req.query.userID && req.query.eventID) {
+      console.log('REQ QUERY', req.query);
+      console.log('REQ PARAMS', req.params);
+
+      eventDoc = db.doc(`/events/${req.query.eventId}`);
+      userDoc = db.doc(`/users/${req.user.userId}`);
+  } else {
+     eventDoc = db.doc(`/events/${req.params.eventId}`);
+     userDoc = db.doc(`/users/${req.user.userName}`);
+  }
+  
+
   let batch = db.batch();
-  let eventDoc = db.doc(`/events/${req.params.eventId}`);
-  let userDoc = db.doc(`/users/${req.user.userName}`);
+//  let eventDoc = db.doc(`/events/${req.params.eventId}`);
+//  let userDoc = db.doc(`/users/${req.user.userName}`);
   let attending = [];
   let attendCount = 0;
   let participants = [];
@@ -117,37 +164,57 @@ exports.markAttended = (req, res) => {
             .json({ general: `Event Full. It has a cap of ${eventDoc.cap}` });
         }
 
-        //GOOGLE CALENDAR INTEGRATION
-        let url;
-        if (req.headers.refreshtoken) {
-          gcal
-            .addToCalendar(doc.data(), {
-              client_secret: req.headers.clientsecret,
-              client_id: req.headers.clientid,
-              redirect_uri: req.headers.redirecturi,
-              refresh_token: req.headers.refreshtoken
+        if(req.query.code) {
+        console.log('REQ QUERY', req.query);
+            gcal.authorize(null, req.query.code)
+            .then(result => {
+                console.log('USER DOC', userDoc);
+                console.log('RESULT', result);
+                const { oauth2client } = result;
+                
+                gcal.addToCalendar( doc.data(), oauth2client )
+                return res.send("Done");
             })
-            .catch(err =>
-              console.log("ERROR ADDING EVENT TO USER'S GOOGLE CALENDAR\n", err)
-            );
-        } else {
-          url = gcal.authorize({
-            client_secret: req.headers.clientsecret,
-            client_id: req.headers.clientid,
-            redirect_uri: req.headers.redirecturi
-          });
-          console.log("URL", url);
+            .catch(err => {
+                console.log('ERROR\n----------------------------\n', err);
+                res.status(400);
+                return res.send("ERROR");
+            });
         }
-        //END GOOGLE CAL INTEGRATION
 
         eventUpdated = true;
         let orgParticipants = doc.data().participants;
         orgParticipants.push(req.user.userName);
         participants = orgParticipants;
         attendCount = doc.data().attending + 1;
+
+        const eventData = doc.data();
+
         return userDoc
           .get()
           .then(doc => {
+            //GOOGLE CALENDAR INTEGRATION
+            let url;
+            if( doc.data().gcalAccessToken || doc.data().gcalRefreshToken ) {
+                gcal.authorize(req.headers, { userId: req.user.userName} , null, {refresh_token: doc.data().gcalRefreshToken, access_token: doc.data().gcalRefreshToken} )
+                .then(result => {
+                    const { oauth2client } = result;
+
+                    return gcal.addToCalendar( eventData, oauth2client )
+                    .then(res=> {
+                        return res.send("DONE");
+                    })
+                    .catch(err => { throw err } );
+                })
+                .catch(err => {
+                    console.error('ERROR: Google Calendar Action.\n--------------------------------\n', err);
+                });
+            } else {
+              url = gcal.authorize( req.headers, {userId: req.user.userName,  eventId: req.params.eventId }, null );
+              console.debug("URL", url);
+            }
+            //END GOOGLE CAL INTEGRATION
+
             if (doc.data().attending.includes(req.params.eventId)) {
               return res
                 .status(409)
@@ -175,6 +242,7 @@ exports.markAttended = (req, res) => {
               });
           })
           .catch(err => {
+            console.debug(err);
             return res
               .status(500)
               .json({ error: `Error getting User. ${err}` });

@@ -20,6 +20,7 @@ const {
 } = require("./handlers/users"); 
 
 const {
+    authGoogleCal,
     getAllEvents,
     getOneEvent,
     postEvents,
@@ -49,6 +50,8 @@ app.get("/events/markAttended/:eventId", FBAuth, markAttended);
 app.get("/events/unmarkAttended/:eventId",FBAuth, unmarkAttended);
 app.get("/event/:eventId/participants", FBAuth, getParticipants);
 app.get("/events/category/:categoryName", getCategoryEvents);
+
+app.get('/googlecal/oauth', authGoogleCal);
 
 /**
  * TODO: write all the user methods for basic user functionality
