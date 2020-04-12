@@ -125,8 +125,9 @@ exports.forgotPassword = (req, res) => {
  *  * Use the token to authorize access person and keep them signed in
  */
 exports.googleSignin = (req, res) => {
+  console.log('BODY FOR GOOGLE SIGNIN', req.body);
   const credential = firebase.auth.GoogleAuthProvider.credential(
-    null,
+    req.body.id_token,
     req.body.access_token
   );
 
