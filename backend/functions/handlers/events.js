@@ -97,7 +97,41 @@ exports.deleteEvents = (req, res) => {
     });
 };
 
+exports.authGoogleCal = (req, res) => { //OAuth Redirect Uri leads here.
+    console.debug('REQ QUERY', req.query);
+
+    const state = JSON.parse(req.query.state);
+    console.debug('STATE USERID', state.userId);
+    let userDoc = db.doc(`/users/${ state.userId }`);
+    
+    //userDoc.
+    gcal.authorize(req.headers, state, req.query.code )
+    .then(result => {
+        const { oauth2client } = result;
+        eventDoc = db.doc(`/events/${state.eventId}`)
+        .get()
+        .then(doc => {
+            gcal.addToCalendar( doc.data(), oauth2client )
+            .then(result => {
+                return res.send("You can close this page now.");
+            })
+            .catch(err => res.status(400).send(`ERROR: ${ err }`));
+        })
+        .catch(err => {
+            console.error('ERROR\n--------------------------------\n', err);
+            return res.send('ERROR');
+        });
+    })
+    .catch(err => {
+        console.error('ERROR\n--------------------------------\n', err);
+        return res.send('ERROR');
+    });
+};
+
 exports.markAttended = (req, res) => {
+//  let eventDoc = db.doc(`/events/${req.params.eventId}`);
+//  let userDoc= db.doc(`/users/${req.user.userName}`);
+
   let batch = db.batch();
   let eventDoc = db.doc(`/events/${req.params.eventId}`);
   let userDoc = db.doc(`/users/${req.user.userName}`);
@@ -117,37 +151,36 @@ exports.markAttended = (req, res) => {
             .json({ general: `Event Full. It has a cap of ${eventDoc.cap}` });
         }
 
-        //GOOGLE CALENDAR INTEGRATION
-        let url;
-        if (req.headers.refreshtoken) {
-          gcal
-            .addToCalendar(doc.data(), {
-              client_secret: req.headers.clientsecret,
-              client_id: req.headers.clientid,
-              redirect_uri: req.headers.redirecturi,
-              refresh_token: req.headers.refreshtoken
-            })
-            .catch(err =>
-              console.log("ERROR ADDING EVENT TO USER'S GOOGLE CALENDAR\n", err)
-            );
-        } else {
-          url = gcal.authorize({
-            client_secret: req.headers.clientsecret,
-            client_id: req.headers.clientid,
-            redirect_uri: req.headers.redirecturi
-          });
-          console.log("URL", url);
-        }
-        //END GOOGLE CAL INTEGRATION
-
         eventUpdated = true;
         let orgParticipants = doc.data().participants;
         orgParticipants.push(req.user.userName);
         participants = orgParticipants;
         attendCount = doc.data().attending + 1;
+
+        const eventData = doc.data();
+
         return userDoc
           .get()
           .then(doc => {
+            //GOOGLE CALENDAR INTEGRATION
+            let url;
+            if( doc.data().gcalAccessToken || doc.data().gcalRefreshToken ) {
+                gcal.authorize(req.headers, { userId: req.user.userName} , null, {refresh_token: doc.data().gcalRefreshToken, access_token: doc.data().gcalRefreshToken} )
+                .then(result => {
+                    const { oauth2client } = result;
+
+                    return gcal.addToCalendar( eventData, oauth2client )
+                    .catch(err => { throw err } );
+                })
+                .catch(err => {
+                    console.error('ERROR: Google Calendar Action.\n--------------------------------\n', err);
+                });
+            } else {
+              url = gcal.authorize( req.headers, {userId: req.user.userName,  eventId: req.params.eventId }, null );
+            }
+            //if(gcalAuthResponse !== undefined && gcalAuthResponse !== ) url = gcalAuthResponse.url;
+            //END GOOGLE CAL INTEGRATION
+
             if (doc.data().attending.includes(req.params.eventId)) {
               return res
                 .status(409)
@@ -175,6 +208,7 @@ exports.markAttended = (req, res) => {
               });
           })
           .catch(err => {
+            console.debug(err);
             return res
               .status(500)
               .json({ error: `Error getting User. ${err}` });
