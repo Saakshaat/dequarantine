@@ -164,24 +164,6 @@ exports.markAttended = (req, res) => {
             .json({ general: `Event Full. It has a cap of ${eventDoc.cap}` });
         }
 
-        if(req.query.code) {
-        console.log('REQ QUERY', req.query);
-            gcal.authorize(null, req.query.code)
-            .then(result => {
-                console.log('USER DOC', userDoc);
-                console.log('RESULT', result);
-                const { oauth2client } = result;
-                
-                gcal.addToCalendar( doc.data(), oauth2client )
-                return res.send("Done");
-            })
-            .catch(err => {
-                console.log('ERROR\n----------------------------\n', err);
-                res.status(400);
-                return res.send("ERROR");
-            });
-        }
-
         eventUpdated = true;
         let orgParticipants = doc.data().participants;
         orgParticipants.push(req.user.userName);
@@ -201,9 +183,6 @@ exports.markAttended = (req, res) => {
                     const { oauth2client } = result;
 
                     return gcal.addToCalendar( eventData, oauth2client )
-                    .then(res=> {
-                        return res.send("DONE");
-                    })
                     .catch(err => { throw err } );
                 })
                 .catch(err => {
