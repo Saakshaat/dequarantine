@@ -1,11 +1,10 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Container, Button, Grid }from '@material-ui/core';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
@@ -46,45 +45,35 @@ const useStyles = makeStyles((theme) => ({
   listContainer: {
     width: "100vw",
     height : "90%",
+  },
+  events : {
+    display : "flex",
+    flexDirection : "row",
+    flexWrap : "wrap"
   }
 }));
 
 
 
 
-var ListItem = {};
-
-
-
-function calltoCheck(CategoryArguemenat) {
-  //alert("Buttton clicked");
-  
-  
-  axios.get("gs://dequarantine-aae5f.appspot.com`/events/category/".concat(CategoryArguemenat) )
-      .then(res => {
-        alert(res.data);
-        List_to = res.data;
-      })
-      alert(CategoryArguemenat);
-      ListItem = List_to;
-      return List_to;
-
-  
-}
-
 
 
 
 export default function Home() {
+  const [category, setCategory] = useState(undefined)
   const classes = useStyles();
-  var List_to;
-  return (
-<<<<<<< HEAD
-    <div>
-      <Attending />
-    </div>
+  // When new categories are created then we will need a new function that will make api calls to those specific endpoints. 
 
-=======
+  useEffect(()=>{
+    axios.get(`https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/events`)
+      .then(res => {
+        console.log(res.data)
+        setCategory(res.data)
+      }).catch(err => {
+        console.log(err)
+      });
+  },[])
+  return (
 
    
       <Container elevation={3} className={classes.container}>
@@ -93,38 +82,21 @@ export default function Home() {
           <div className={classes.toolbar} />
           <List className={classes.list}>
               {['Sports', 'Entartainment', 'Gaming', 'Movies'].map((text, index) => (
-                  <Button onClick={() => {ListItem =calltoCheck(text)}} color= "primary">
+                  <Button onClick={() => {console.log(text)}} color= "primary">
 
                   <ListItemText primary={text}  />
                   
                   </Button>
               ))}
-              
             </List>
-          
-            <Grid
-              container
-              direction="row"
-              justify="center"
-              alignItems="center"
-                >
-
-              <List className={classes.list}>
-              {ListItem.map((  ) => (
-                  <EventCard>
-                    
-
-                 </EventCard>
-              ))}
-              
-            </List>
-
-
-          </Grid>
-         
-      
+            <Container className={classes.events}>
+              {
+                category ? category.map(c => {
+                  return <EventCard event={c} />
+                }): <p>no data</p>
+              }
+            </Container>
       </Container>
      
->>>>>>> 8efd8b22bacddec918b3069227e43bc6a1ce99a3
   );
 }
