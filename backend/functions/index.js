@@ -59,4 +59,9 @@ app.get("user/:handle", getUserDetails);
 app.post("/notifications", FBAuth, markNotificationsRead);
  */
 
+ // Cron Jobs
+const deleteExpiredEvents = require('./util/deleteEvents.js');
+
+deleteExpiredEvents();
+
 exports.baseapi = functions.https.onRequest(app);
