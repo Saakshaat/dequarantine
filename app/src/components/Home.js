@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper, Container, Button, Grid }from '@material-ui/core';
+import {Paper, Container, Button, Grid, Box }from '@material-ui/core';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -22,33 +22,16 @@ import axios from 'axios';
 import EventCard from './EventCard';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
+  events : {
+    display : "flex",
     flexDirection : "row",
-    width: "2400px",
-    height : "90vh",
-  },
-  container : {
-      width : "100%",
-      height : "85vh",
-      boxShadow : theme.shadows[7]
-  },
-  Divider: 
-  {
-    paddingTop: "10px"
+    justifyContent : "space-evenly",
+    flexWrap : "wrap"
   },
   list : {
     display : "flex",
     flexDirection : "row",
-    justifyContent : "space-evenly"
-  },
-  listContainer: {
-    width: "100vw",
-    height : "90%",
-  },
-  events : {
-    display : "flex",
-    flexDirection : "row",
+    justifyContent : "space-evenly",
     flexWrap : "wrap"
   }
 }));
@@ -76,9 +59,7 @@ export default function Home() {
   return (
 
    
-      <Container elevation={3} className={classes.container}>
-          
-          
+      <Box elevation={3} className={classes.container}>
           <div className={classes.toolbar} />
           <List className={classes.list}>
               {['Sports', 'Entartainment', 'Gaming', 'Movies'].map((text, index) => (
@@ -92,11 +73,11 @@ export default function Home() {
             <Container className={classes.events}>
               {
                 category ? category.map(c => {
-                  return <EventCard event={c} />
+                  return <EventCard className={classes.card} event={c} />
                 }): <p>no data</p>
               }
             </Container>
-      </Container>
+      </Box>
      
   );
 }
