@@ -18,7 +18,8 @@
     "firebase-firestore-timestamp": "^1.0.4",
     "firebase-functions": "^3.5.0",
     "googleapis": "^48.0.0",
-    "moment-timezone": "^0.5.28"
+    "moment-timezone": "^0.5.28",
+    "node-cron": "^2.0.3"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.1.6"
