@@ -25,13 +25,13 @@ class EmailSignIn with ChangeNotifier {
       "password": passwordController.text
     });
 
-    Map jsonRespone = Map.from(jsonDecode(signInPost.body));
+    Map jsonResponse = Map.from(jsonDecode(signInPost.body));
 
-    print(jsonRespone);
+    print(jsonResponse);
 
     switch (signInPost.statusCode) {
       case 200:
-        String authToken = jsonRespone["token"];
+        String authToken = jsonResponse["token"];
 
         Response userDataGet = await get(_userDataEndPoint,
             headers: {"Authorization": "Bearer $authToken"});
@@ -48,7 +48,7 @@ class EmailSignIn with ChangeNotifier {
         error = "Email must be valid";
         break;
       case 403:
-        error = jsonRespone["general"];
+        error = jsonResponse["general"];
         break;
       default:
         error = "Something unexpected went wrong";

@@ -18,10 +18,8 @@ class EventProvider with ChangeNotifier {
     notifyListeners();
     Response getEventsFromFB = await get(eventEndPoint);
 
-
     switch (getEventsFromFB.statusCode) {
       case 200:
-
         List<dynamic> jsonResponseEvents = jsonDecode(getEventsFromFB.body);
 
         jsonResponseEvents.forEach((element) {

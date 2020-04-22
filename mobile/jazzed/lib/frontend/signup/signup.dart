@@ -24,7 +24,6 @@ class SignUpUI extends StatelessWidget {
     Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
   }
 
-
   @override
   Widget build(BuildContext context) {
     final signUp = Provider.of<EmailSignUp>(context);

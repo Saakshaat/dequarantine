@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:jazzed/backend/auth/email_sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -39,11 +38,10 @@ class LoginUI extends StatelessWidget {
         children: <Widget>[
           Center(
               child: AnimatedOpacity(
-                duration: Duration(milliseconds: 200),
-                opacity: emailSignIn.isLoggedIn ? 0 : 1,
-                child: Text(emailSignIn.error),
-              )
-          ),
+            duration: Duration(milliseconds: 200),
+            opacity: emailSignIn.isLoggedIn ? 0 : 1,
+            child: Text(emailSignIn.error),
+          )),
           TextField(
             focusNode: emailFocus,
             decoration: InputDecoration(labelText: "Email"),
@@ -53,14 +51,13 @@ class LoginUI extends StatelessWidget {
             },
           ),
           TextField(
-            focusNode: passwordFocus,
-            decoration: InputDecoration(labelText: "Password"),
-            controller: emailSignIn.passwordController,
-            onEditingComplete: () {
-              emailSignIn.signIn();
-              FocusScope.of(context).unfocus();
-            }
-          ),
+              focusNode: passwordFocus,
+              decoration: InputDecoration(labelText: "Password"),
+              controller: emailSignIn.passwordController,
+              onEditingComplete: () {
+                emailSignIn.signIn();
+                FocusScope.of(context).unfocus();
+              }),
           FlatButton(
             onPressed: emailSignIn.signIn,
             child: Text("Sign in"),

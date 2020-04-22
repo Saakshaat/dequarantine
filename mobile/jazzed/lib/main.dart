@@ -3,10 +3,10 @@ import 'package:jazzed/backend/auth/user/user.dart';
 import 'package:jazzed/frontend/login/login_splash_screen.dart';
 import 'package:jazzed/theme.dart';
 
-import 'frontend/app/home.dart';
-import 'frontend/entry/entry_point.dart';
-import 'frontend/login/login.dart';
-import 'frontend/signup/signup.dart';
+import 'package:jazzed/frontend/app/home.dart';
+import 'package:jazzed/frontend/entry/entry_point.dart';
+import 'package:jazzed/frontend/login/login.dart';
+import 'package:jazzed/frontend/signup/signup.dart';
 
 CustomTheme theme = CustomTheme();
 User currentUser;

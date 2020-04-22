@@ -24,7 +24,8 @@ class TitleAndDescription extends StatelessWidget {
               "You are not alone during",
               style: theme.textTheme.headline1,
             ),
-            Text("#socialdistancing",
+            Text(
+              "#socialdistancing",
               style: theme.textTheme.headline1,
             ),
             SizedBox(height: 20),

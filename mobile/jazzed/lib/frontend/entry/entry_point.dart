@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jazzed/frontend/entry/button_block.dart';
 import 'package:jazzed/frontend/entry/title.dart';
 
-import '../../main.dart';
+import 'package:jazzed/main.dart';
 
 class EntryPoint extends StatelessWidget {
   @override

@@ -7,20 +7,12 @@ class CustomTheme {
 }
 
 class CustomTextTheme {
-  TextStyle title = TextStyle(
-    fontSize: 40,
-    fontStyle: FontStyle.italic
-  );
+  TextStyle title = TextStyle(fontSize: 40, fontStyle: FontStyle.italic);
 
-  TextStyle headline1 = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.w500
-  );
+  TextStyle headline1 = TextStyle(fontSize: 20, fontWeight: FontWeight.w500);
 }
 
-class CustomCardTheme {
-
-}
+class CustomCardTheme {}
 
 class CustomColorTheme {
   Color electricBlue = Color.fromRGBO(0, 232, 252, 1);
