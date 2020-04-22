@@ -11,6 +11,8 @@ class EmailSignIn with ChangeNotifier {
 
   String error = "";
 
+  bool attempting = false;
+
   bool isLoggedIn = false;
 
   String _emailSignInEndPoint =
@@ -20,6 +22,9 @@ class EmailSignIn with ChangeNotifier {
       "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/user";
 
   void signIn() async {
+    attempting = true;
+    notifyListeners();
+
     Response signInPost = await post(_emailSignInEndPoint, body: {
       "email": emailController.text,
       "password": passwordController.text
@@ -54,6 +59,7 @@ class EmailSignIn with ChangeNotifier {
         error = "Something unexpected went wrong";
         break;
     }
+    attempting = false;
     notifyListeners();
   }
 }

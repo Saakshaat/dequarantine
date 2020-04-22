@@ -14,6 +14,7 @@ User currentUser;
 void main() {
   runApp(MaterialApp(
     initialRoute: '/entry',
+    theme: ThemeData(fontFamily: 'Montserrat'),
     routes: {
       '/entry': (context) => Material(child: EntryPoint()),
       '/login': (context) => Material(child: Login()),

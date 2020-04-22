@@ -18,19 +18,30 @@ class CustomAppBar extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Stack(
                 children: <Widget>[
-                  Text(
-                    "Go get Jazzed",
-                    style: theme.textTheme.headline1.merge(TextStyle(color: Colors.white)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Jazzed",
+                        style: theme.textTheme.appBarTitle.merge(TextStyle(color: Colors.white)),
+                      ),
+                    ],
                   ),
-                  GestureDetector(
-                    onTap: () => null,
-                    child: CircleAvatar(
-                      backgroundColor: theme.colorTheme.electricBlue,
-                      foregroundColor: Colors.black,
-                      child: Text("GL"),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (currentUser == null) {
+                          Navigator.of(context).pushNamedAndRemoveUntil('/entry', (route) => false);
+                        }
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: theme.colorTheme.electricBlue,
+                        foregroundColor: Colors.black,
+                        child: Text(currentUser == null ? "" : currentUser.credentials.userName[0]) 
+                      ),
                     ),
                   ),
                 ],

@@ -54,6 +54,7 @@ class LoginUI extends StatelessWidget {
               focusNode: passwordFocus,
               decoration: InputDecoration(labelText: "Password"),
               controller: emailSignIn.passwordController,
+              obscureText: true,
               onEditingComplete: () {
                 emailSignIn.signIn();
                 FocusScope.of(context).unfocus();
@@ -62,6 +63,8 @@ class LoginUI extends StatelessWidget {
             onPressed: emailSignIn.signIn,
             child: Text("Sign in"),
           ),
+          SizedBox(height: 5),
+          emailSignIn.attempting == true ? CircularProgressIndicator() : Container(),
         ],
       ),
     );
