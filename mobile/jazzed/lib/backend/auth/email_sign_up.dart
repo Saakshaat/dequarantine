@@ -39,37 +39,45 @@ class EmailSignUp with ChangeNotifier {
     if (email1Controller.text != email2Controller.text) {
       error = "Emails don't match";
       notifyListeners();
-
     } else if (password1Controller.text != password2Controller.text) {
       error = "Password don't match";
       notifyListeners();
-
     } else if (email1Controller.text == email2Controller.text &&
         password1Controller.text == password2Controller.text) {
-
       Response signUp = await postCredentials();
 
       Map<String, dynamic> signUpResponse = Map.from(jsonDecode(signUp.body));
 
       print(signUp.statusCode);
 
-      if (signUp.statusCode == 201) {
-        String authToken = signUpResponse["token"];
+      switch (signUp.statusCode) {
+        case 201:
+          String authToken = signUpResponse["token"];
 
-        Response userDataGet = await get(_userDataEndPoint,
-          headers: {
-            "Authorization": "Bearer $authToken"
-          }
-        );
+          Response userDataGet = await get(_userDataEndPoint,
+              headers: {"Authorization": "Bearer $authToken"});
 
-        Map<String, dynamic> userData = Map.from(jsonDecode(userDataGet.body));
+          Map<String, dynamic> userData =
+              Map.from(jsonDecode(userDataGet.body));
 
-        currentUser = User.fromJson(userData);
-        success = true;
-        notifyListeners();
+          currentUser = User.fromJson(userData);
+          success = true;
+          break;
+
+        case 400:
+          error = signUpResponse[signUpResponse.keys.toList()[0]];
+
+          break;
+
+        case 500:
+          error = "We made an error somewhere, please try again later";
+          break;
+
+        default:
+          error = "idk dude";
+          break;
       }
-
-
+      notifyListeners();
     } else {
       error = "Unexpected error, please try again";
       notifyListeners();
