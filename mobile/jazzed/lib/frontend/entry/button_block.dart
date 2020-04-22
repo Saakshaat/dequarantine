@@ -20,9 +20,11 @@ class ButtonBlock extends StatelessWidget {
             '/signup',
           ),
         ),
+        CustomRaisedButton(text: "Google", action: () => print("GOOGLE")),
         CustomRaisedButton(
-          text: "Google",
-          action: () => print("GOOGLE")
+          text: "Just browse",
+          action: () => Navigator.of(context)
+              .pushNamedAndRemoveUntil('/home', (route) => false),
         )
       ],
     );
@@ -33,10 +35,7 @@ class CustomRaisedButton extends StatelessWidget {
   final dynamic action;
   final String text;
 
-  const CustomRaisedButton({
-    @required this.action,
-    @required this.text
-  });
+  const CustomRaisedButton({@required this.action, @required this.text});
 
   @override
   Widget build(BuildContext context) {
