@@ -125,8 +125,8 @@ class _AccountPageState extends State<AccountPage> {
                   onPress: () => null,
                 ),
                 CustomButton(
-                  text: "Manage my event",
-                  onPress: () => null,
+                  text: "Sign out",
+                  onPress: () => signOut(context),
                 ),
               ],
             );

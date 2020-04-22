@@ -40,9 +40,9 @@ class _SignInPageState extends State<SignInPage> {
             pop: true,
           ),
 
-          // GoogleSignInButton(
-          //   onPressed: () => handleSignInGoogle(),
-          // ),
+          GoogleSignInButton(
+            onPressed: () => handleSignInGoogle(context),
+          ),
 
           OutlineButtonLandingPage(
             text: "Continue without signing in",

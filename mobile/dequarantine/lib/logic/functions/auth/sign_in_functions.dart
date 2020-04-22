@@ -4,6 +4,8 @@ import 'dart:core';
 import 'package:dequarantine/logic/functions/auth/shared_prefs.dart';
 import 'package:dequarantine/logic/models/user.dart';
 import 'package:dequarantine/main.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,12 +35,12 @@ Future<Map> signInWithEmail(String email, String password) async {
 
       String userToken = response["token"];
 
-      String _baseUserUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/user";
+      String userDataUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/user";
 
       print("Token: $userToken");
 
       http.Response userData  = await http.get(
-        _baseUserUrl,
+        userDataUrl,
         headers: {
           "Authorization" : "Bearer $userToken"
         }
@@ -78,45 +80,142 @@ Future<Map> signInWithEmail(String email, String password) async {
 
 
 
-Future<Map<String, dynamic>> handleSignInGoogle() async {
-  //create reauired consts used to sign in with firebase,
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+Future<Map<String, dynamic>> handleSignInGoogle(BuildContext context) async {
+  try{
+    //create reauired consts used to sign in with firebase,
+    final GoogleSignIn _googleSignIn = GoogleSignIn(
+      // signInOption: SignInOption.standard,
+      // clientId: "828379572147-fq36c6ct551l1llcv3v79j0er417gcgi.apps.googleusercontent.com",
+      // hostedDomain: 
+    );
+    //grabs general user data from Google pop up
+    final GoogleSignInAccount googelUser = await _googleSignIn.signIn();
 
-  //grabs general user data from Google pop up
-  final GoogleSignInAccount googelUser = await _googleSignIn.signIn();
+    //keeps the auth data
+    final GoogleSignInAuthentication googleAuth = await googelUser.authentication;
 
-  //keeps the auth data
-  final GoogleSignInAuthentication googleAuth = await googelUser.authentication;
-
-  // print("google_IdToken: ${googleAuth.idToken}");
-  // print("google_Accesstoken: ${googleAuth.accessToken}");
-
-  //create firebase cretentials, using given auth account
-  // AuthCredential credential = GoogleAuthProvider.getCredential(
-  //   accessToken: googleAuth.accessToken,
-  //   idToken: googleAuth.idToken,
-  // );
+    
 
 
-  String _baseGoogleUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/g/signin";
+    // print("google_IdToken: ${googleAuth.idToken}");
+    // print("google_Accesstoken: ${googleAuth.accessToken}");
 
-  Map body = {
-    "access_token": googleAuth.accessToken,
-  };
+    //create firebase cretentials, using given auth account
+    // AuthCredential credential = GoogleAuthProvider.getCredential(
+    //   accessToken: googleAuth.accessToken,
+    //   idToken: googleAuth.idToken,
+    // );
 
-  var a = await http.post(_baseGoogleUrl,
-    body: body
-  );
 
-  var response = convert.jsonDecode(a.body);
+    String _baseGoogleUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/g/signin";
 
-  if (a.statusCode == 200 || a.statusCode == 201) {
-    print("Sign in successful");
-    print(response);
-    return {};
+
+    Map body = {
+      "access_token": googleAuth.accessToken,
+      "id_token": googleAuth.idToken,
+    };
+
+    var postTokens = await http.post(_baseGoogleUrl,
+      body: body
+    );
+
+    var responsePostToken = convert.jsonDecode(postTokens.body);
+
+    if (postTokens.statusCode == 200 || postTokens.statusCode == 201) {
+      String refreshToken = responsePostToken["refreshToken"];
+
+      String getAccessTokenUrl = "https://securetoken.googleapis.com/v1/token?key=AIzaSyBd1r9PD9IRGs7-gdWoig-vjsvIZ2zpU5E";
+      var postRefreshToken = await http.post(getAccessTokenUrl,
+        body: {
+          "refreshToken": refreshToken,
+          "grant_type": "refresh_token",
+        }
+      );
+
+      if (postRefreshToken.statusCode == 200) {
+
+        Map userData = Map.from(convert.jsonDecode(postRefreshToken.body));
+
+        String userDataUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/user";
+        http.Response userDataResponse  = await http.get(
+          userDataUrl,
+          headers: {
+            "Authorization" : "Bearer ${userData["access_token"]}"
+          }
+        );
+
+        Map userDataFromFb = convert.jsonDecode(userDataResponse.body);
+
+        currentUser = User({
+          "token": userData["access_token"],
+          "userId": userDataFromFb["credentials"]["userId"],
+          "email": userDataFromFb["credentials"]["email"],
+          "imageUrl": userDataFromFb["credentials"]["imageUrl"],
+          "userName": userDataFromFb["credentials"]["userName"],
+        });
+
+        writeToShared("refreshToken", refreshToken);
+        Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
+      }
+    }
+    return Map.from({"code": false});
+
+  } catch (e) {
+    Fluttertoast.showToast(msg: e.toString());
   }
 }
 
 
 
 
+void logInFromSavedEmail(context) async {
+  String email = await readFromShared("email");
+  String password = await readFromShared("password");
+
+  var funcResponse = await signInWithEmail(email, password);
+
+  Map<String, dynamic> resp = Map.from(funcResponse);
+
+  bool code = resp["code"];
+  if (code) {
+    Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
+  }
+}
+
+void logInFromSavedGoogle(BuildContext context) async {
+  String refreshToken = await readFromShared("refreshToken");
+
+  String getAccessTokenUrl = "https://securetoken.googleapis.com/v1/token?key=AIzaSyBd1r9PD9IRGs7-gdWoig-vjsvIZ2zpU5E";
+  var postRefreshToken = await http.post(getAccessTokenUrl,
+    body: {
+      "refreshToken": refreshToken,
+      "grant_type": "refresh_token",
+    }
+  );
+
+  if (postRefreshToken.statusCode == 200) {
+
+    Map userData = Map.from(convert.jsonDecode(postRefreshToken.body));
+
+    String userDataUrl = "https://us-central1-dequarantine-aae5f.cloudfunctions.net/baseapi/user";
+    http.Response userDataResponse  = await http.get(
+      userDataUrl,
+      headers: {
+        "Authorization" : "Bearer ${userData["access_token"]}"
+      }
+    );
+
+    Map userDataFromFb = convert.jsonDecode(userDataResponse.body);
+
+    currentUser = User({
+      "token": userData["access_token"],
+      "userId": userDataFromFb["credentials"]["userId"],
+      "email": userDataFromFb["credentials"]["email"],
+      "imageUrl": userDataFromFb["credentials"]["imageUrl"],
+      "userName": userDataFromFb["credentials"]["userName"],
+    });
+
+    writeToShared("refreshToken", refreshToken);
+    Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
+  }
+}

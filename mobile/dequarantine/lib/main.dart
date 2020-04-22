@@ -15,11 +15,16 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String initalRoute = "/login";
 
-  
+  int mode = 0;
   bool checkEmail = prefs.containsKey('email');
   bool checkPassword = prefs.containsKey('password');
+  bool checkGoogle = prefs.containsKey("refreshToken");
 
   if (checkEmail && checkPassword) {
+    mode = 1;
+    initalRoute = "/loginSplashScreen";
+  } else if (checkGoogle) {
+    mode = 1;
     initalRoute = "/loginSplashScreen";
   }
 
@@ -33,7 +38,7 @@ void main() async {
         "/login" : ( context ) => Material(child: SignInPage()),
         "/email" : ( context ) => Material(child: SignInWithEmailPage()),
         "/signup" : ( context ) => Material(child: SignUpPage()),
-        "/loginSplashScreen": ( context ) => Material(child: LoginSplash()),
+        "/loginSplashScreen": ( context ) => Material(child: LoginSplash(mode: mode,)),
       },
 
       theme: ThemeData(
@@ -103,3 +108,19 @@ void main() async {
     )
   );
 }
+
+// ##3 categories
+//  - career
+//  - Mental health / mood
+//  - move
+
+// what are other people doing now ? ideas on what to do
+// how are other people living now ?
+//  - self care
+//  - dating
+//  - how are
+
+
+// What we are doing:
+//  - provide live streaming events for people to connect
+//  - curation of things to do 

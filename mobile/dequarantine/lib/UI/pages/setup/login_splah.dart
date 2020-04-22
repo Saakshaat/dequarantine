@@ -6,35 +6,25 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
 class LoginSplash extends StatefulWidget {
+  LoginSplash({@required this.mode});
+
+  final int mode;
+
   @override
   _LoginSplashState createState() => _LoginSplashState();
 }
 
 class _LoginSplashState extends State<LoginSplash> {
-  //LOGIN HERE
-  void logIn() async {
-    String email = await readFromShared("email");
-    String password = await readFromShared("password");
-
-    var funcResponse = await signInWithEmail(email, password);
-
-    Map<String, dynamic> resp = Map.from(funcResponse);
-
-    bool code = resp["code"];
-    if (code) {
-      Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false);
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    logIn();
-  }
-
 
   @override
   Widget build(BuildContext context) {
+    switch (widget.mode) {
+      case 0:
+        logInFromSavedEmail(context);
+        break;
+      case 1:
+        
+    }
     return Material(
       child: Container(
         decoration: BoxDecoration(

@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "828379572147-fq36c6ct551l1llcv3v79j0er417gcgi.apps.googleusercontent.com",
+          "client_id": "828379572147-vjvr9321h4lq5kk9031d97l4tja31lan.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.dq.dequarantine",
-            "certificate_hash": "f20d6b95724f1eaad05565a819802ff67e2e5419"
+            "certificate_hash": "aacf128e3c0019b53b5b1afebf962629e906551f"
           }
         },
         {
