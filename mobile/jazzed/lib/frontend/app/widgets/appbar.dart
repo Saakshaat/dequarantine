@@ -37,14 +37,16 @@ class CustomAppBar extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         if (currentUser == null) {
-                          Navigator.of(context).pushNamedAndRemoveUntil('/entry', (route) => false);
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/entry', (route) => false);
                         }
                       },
                       child: CircleAvatar(
-                        backgroundColor: Theme.of(context).accentColor,
-                        foregroundColor: Colors.black,
-                        child: Text(currentUser == null ? "" : currentUser.credentials.userName[0]) 
-                      ),
+                          backgroundColor: Theme.of(context).accentColor,
+                          foregroundColor: Colors.black,
+                          child: Text(currentUser == null
+                              ? ""
+                              : currentUser.credentials.userName[0])),
                     ),
                   ),
                 ],

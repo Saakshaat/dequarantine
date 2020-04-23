@@ -64,7 +64,9 @@ class LoginUI extends StatelessWidget {
             child: Text("Sign in"),
           ),
           SizedBox(height: 5),
-          emailSignIn.attempting == true ? CircularProgressIndicator() : Container(),
+          emailSignIn.attempting == true
+              ? CircularProgressIndicator()
+              : Container(),
         ],
       ),
     );

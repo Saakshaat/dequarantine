@@ -15,9 +15,7 @@ class Home extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => EventProvider(),
       child: ChangeNotifierProvider(
-        create: (context) => NavigationProvider(),
-        child: HomeUI()
-      ),
+          create: (context) => NavigationProvider(), child: HomeUI()),
     );
   }
 }
@@ -52,13 +50,12 @@ class EventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      separatorBuilder: (BuildContext context, int index) {
-        return Divider();
-      },
+    return ListView.builder(
       itemCount: events.length,
       itemBuilder: (BuildContext context, int index) {
-        return EventCard(event: events[index],);
+        return EventCard(
+          event: events[index],
+        );
       },
     );
   }

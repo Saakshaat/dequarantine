@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class MyEvents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
