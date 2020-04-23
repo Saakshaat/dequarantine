@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jazzed/main.dart';
 
@@ -9,7 +10,7 @@ class CustomAppBar extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.zero,
-      color: theme.colorTheme.blackCharcoal,
+      color: Theme.of(context).primaryColor,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(bottomRight: Radius.circular(30))),
       child: SafeArea(
@@ -22,10 +23,12 @@ class CustomAppBar extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Text(
                         "Jazzed",
-                        style: theme.textTheme.appBarTitle.merge(TextStyle(color: Colors.white)),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline3,
                       ),
                     ],
                   ),
@@ -38,7 +41,7 @@ class CustomAppBar extends StatelessWidget {
                         }
                       },
                       child: CircleAvatar(
-                        backgroundColor: theme.colorTheme.electricBlue,
+                        backgroundColor: Theme.of(context).accentColor,
                         foregroundColor: Colors.black,
                         child: Text(currentUser == null ? "" : currentUser.credentials.userName[0]) 
                       ),

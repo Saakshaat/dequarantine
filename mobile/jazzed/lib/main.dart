@@ -8,13 +8,13 @@ import 'package:jazzed/frontend/entry/entry_point.dart';
 import 'package:jazzed/frontend/login/login.dart';
 import 'package:jazzed/frontend/signup/signup.dart';
 
-CustomTheme theme = CustomTheme();
 User currentUser;
 
 void main() {
   runApp(MaterialApp(
     initialRoute: '/entry',
-    theme: ThemeData(fontFamily: 'Montserrat'),
+    theme: lightTheme,
+//    darkTheme: darkTheme,
     routes: {
       '/entry': (context) => Material(child: EntryPoint()),
       '/login': (context) => Material(child: Login()),
@@ -24,3 +24,5 @@ void main() {
     },
   ));
 }
+
+

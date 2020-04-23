@@ -16,7 +16,7 @@ class LoginSplashScreen extends StatelessWidget {
           children: <Widget>[
             Text(
               "Dequarantine",
-              style: theme.textTheme.headline1,
+              style: Theme.of(context).textTheme.headline1,
             ),
             SizedBox(
               height: 5,

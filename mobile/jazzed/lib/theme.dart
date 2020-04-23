@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 
-class CustomTheme {
-  CustomTextTheme textTheme = CustomTextTheme();
-  CustomCardTheme cardTheme = CustomCardTheme();
-  CustomColorTheme colorTheme = CustomColorTheme();
-}
+ThemeData lightTheme = ThemeData(
+  fontFamily: "Montserrat",
+  primaryColor: Color.fromRGBO(33, 150, 243, 1),
+  accentColor: Color.fromRGBO(255, 193, 7, 1),
+  dividerColor: Color.fromRGBO(189, 189, 189, 1),
+  textTheme: TextTheme(
+    headline2: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
+    headline1: TextStyle(fontSize: 40, fontStyle: FontStyle.italic, color: Colors.black),
+    headline3: TextStyle(fontSize: 30, fontStyle: FontStyle.italic, color: Colors.black),
+  ),
+);
 
-class CustomTextTheme {
-  TextStyle title = TextStyle(fontSize: 40, fontStyle: FontStyle.italic);
-
-  TextStyle appBarTitle = TextStyle(fontSize: 30, fontStyle: FontStyle.italic);
-
-  TextStyle headline1 = TextStyle(fontSize: 20, fontWeight: FontWeight.w500);
-}
-
-class CustomCardTheme {}
-
-class CustomColorTheme {
-  Color electricBlue = Color.fromRGBO(0, 232, 252, 1);
-  Color yellowRed = Color.fromRGBO(246, 189, 87, 1);
-  Color blackCharcoal = Color.fromRGBO(84, 88, 99, 1);
-
-  Color blue = Color.fromRGBO(36, 123, 160, 1);
-  Color blueGreen = Color.fromRGBO(112, 193, 179, 1);
-  Color dark = Color.fromRGBO(36, 58, 63, 1);
-  Color pale = Color.fromRGBO(243, 255, 189, 1);
-  Color red = Color.fromRGBO(255, 22, 84, 1);
-}
+ThemeData darkTheme = ThemeData(
+  fontFamily: "Montserrat",
+  primaryColor: Color.fromRGBO(25, 118, 210, 1),
+  accentColor: Color.fromRGBO(255, 193, 7, 1),
+  dividerColor: Color.fromRGBO(189, 189, 189, 1),
+  textTheme: TextTheme(
+    headline2: TextStyle(
+        fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white),
+    headline1: TextStyle(
+        fontSize: 40, fontStyle: FontStyle.italic, color: Colors.white),
+    headline3: TextStyle(
+        fontSize: 30, fontStyle: FontStyle.italic, color: Colors.white),
+  ),
+);

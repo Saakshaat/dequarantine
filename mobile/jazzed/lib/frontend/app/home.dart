@@ -5,6 +5,7 @@ import 'package:jazzed/backend/navigation/navigation.dart';
 import 'package:jazzed/frontend/app/my_events.dart';
 import 'package:jazzed/frontend/app/create.dart';
 import 'package:jazzed/frontend/app/widgets/appbar.dart';
+import 'package:jazzed/frontend/app/widgets/events_card.dart';
 import 'package:jazzed/frontend/app/widgets/navbar.dart';
 import 'package:provider/provider.dart';
 
@@ -57,10 +58,7 @@ class EventList extends StatelessWidget {
       },
       itemCount: events.length,
       itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          title: Text(events[index].name),
-          subtitle: Text(events[index].description),
-        );
+        return EventCard(event: events[index],);
       },
     );
   }

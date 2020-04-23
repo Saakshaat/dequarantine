@@ -13,7 +13,7 @@ class CustomNavBar extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.zero,
-      color: theme.colorTheme.blackCharcoal,
+      color: Theme.of(context).primaryColor,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(30))),
       child: Padding(
@@ -26,7 +26,7 @@ class CustomNavBar extends StatelessWidget {
           iconSize: 24,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           duration: Duration(milliseconds: 400),
-          tabBackgroundColor: theme.colorTheme.electricBlue,
+          tabBackgroundColor: Theme.of(context).accentColor,
           selectedIndex: navigation.selectedPage,
           tabs: [
             GButton(

@@ -8,7 +8,7 @@ class EntryPoint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: theme.colorTheme.blackCharcoal,
+      color: Theme.of(context).primaryColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
